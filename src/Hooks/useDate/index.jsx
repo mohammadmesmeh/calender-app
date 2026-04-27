@@ -28,7 +28,7 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 DAY: state.DAY !== 0 ? state.DAY - action.payload : 7,
-
+                
             }
 
     }
