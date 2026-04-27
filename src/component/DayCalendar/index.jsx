@@ -1,0 +1,47 @@
+import { ChevronLeft, ChevronRight } from "lucide-react"
+import { CONST } from "../../constants/const"
+import { useDate } from "../../Hooks/useDate"
+import { CurrentTimeLine } from "../CurrentTimeLine"
+import { IconBtn } from "../Buttons/IconBtn"
+
+export const DayCalendar = () => {
+    const { DAY, hoursOfDay, day, thisMonth , handleClickNextDay,
+        handleClickPrevDay } = useDate()
+
+    return (
+
+
+        <div className=" overflow-y-scroll bg-surface h-full  px-8 pb-8 rounded-xl shadow-sm  w-full">
+            
+            <div className="header-day flex gap-6 w-full sticky bg-surface/70 backdrop-blur top-0 p-6 z-10 " >
+            
+                <IconBtn icon={ChevronLeft} onClick={handleClickPrevDay }/>
+                   <h3 className=" font-bold text-3xl text-center w-60  ">{CONST.DAYS__OF__WEEK[DAY]}<span className=" font-normal text-sm">{day},{CONST.MONTHS__OF__YEAR[thisMonth]}</span></h3>
+                 
+                <IconBtn icon={ChevronRight} onClick={handleClickNextDay}/>
+                
+            </div>
+
+            <div className="w-full flex flex-row px-3 mt-10  ">
+                
+                <div className="w-12">
+                    {hoursOfDay.map((i) => (
+                        <p className={`w-full h-[60px] text-[12px] relative bottom-2`}>{i.label}</p>
+                    ))}
+                </div>
+                <div className="w-full relative">
+                    <CurrentTimeLine />
+                    {hoursOfDay.map((i, index) => (
+                        <p className={`w-full h-[60px] border-b border-border  ${index === 0 ? "border-t border-border " : ""} `}></p>
+                    ))}
+                </div>
+
+
+
+            </div>
+        </div>
+
+
+
+    )
+}
