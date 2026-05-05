@@ -15,7 +15,7 @@ export const DayInWeekCalendar = ({
                 <span className="text-sm block px-3  ">{day},{Month}</span>
            </div> */}
             <div className="  w-full border-l  border-border" >
-                {hoursOfDay.map((i) => (
+                {hoursOfDay.map(() => (
                     <div className="h-[120px]  text-sm border-b border-[#cccccc]">
 
                         {children}

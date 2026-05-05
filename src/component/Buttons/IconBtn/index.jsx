@@ -7,19 +7,19 @@ export const IconBtn = ({ icon: Icon, onClick, className = "" }) => {
         <button
             type="button"
             onClick={onClick}
-            className={`
-    
- 
-    p-2 rounded-lg
-    bg-white border border-border
-    shadow-sm
-    hover:shadow-md
-    hover:bg-gray-50
-    active:scale-95
-    transition-all duration-200
-
-        ${className}
-      `}
+            className={` 
+        p-2
+        rounded-lg
+      bg-white
+        border
+      border-border
+        shadow-sm
+        :hover:shadow-md
+      hover:bg-gray-50
+        active:scale-95
+        transition-all 
+        duration-200
+        ${className}`}
         >
             <Icon />
         </button>

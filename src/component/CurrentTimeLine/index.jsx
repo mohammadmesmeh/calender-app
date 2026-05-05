@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 
-const HOUR_HEIGHT = 60 // غيّرها حسب تصميمك
-
+const HOUR_HEIGHT = 60 
 export const CurrentTimeLine = () => {
     const [top, setTop] = useState(0)
 
@@ -27,10 +26,10 @@ export const CurrentTimeLine = () => {
 
     return (
         <div
-            className="absolute  w-full   left-0 h-[1.3px] bg-red-500 z-50  before:content-[''] before:absolute before:w-3 before:h-3  before:top-1/2
+            className="absolute  w-full   left-0 h-[1.3px] bg-red-500 z-10  before:content-[''] before:absolute before:w-2 before:h-2  md:before:w-3 md:before:h-3  before:top-1/2
       before:-translate-y-1/2 before:-left-1 before:rounded-full before:bg-red-500"
             style={{ top: `${top}px` }}
-       />
-        
+        />
+
     )
 }

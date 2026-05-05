@@ -15,8 +15,11 @@ export const CONST = {
     THIS__DAY: 'THIS__DAY',
     FIRST__DAY__IN__MONTH:'FIRST__DAY__IN__MONTH',
     WEEK:'WEEK',
+    NEXT__WEEK:'NEXT__WEEK',
+    PREV__WEEK:"PREV__WEEK",
     NEXT__DAY:'NEXT__DAY',
     PREV__DAY : 'PREV__DAY'
+
 
 
   }

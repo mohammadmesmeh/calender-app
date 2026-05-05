@@ -8,19 +8,23 @@ import { BrowserRouter } from 'react-router-dom'
 import { Routeing } from './routes'
 import { MainMenu } from './component/MainMenu'
 import { VisibleContextProvider } from './context/VisibleContext'
+import { motion } from 'framer-motion'
 
 function App() {
-  
+
   return (
-    <BrowserRouter>
-    <VisibleContextProvider >
-      <Layout >
-        <Container>
-          <HomePage/>
-        </Container>
-      </Layout>
-    </VisibleContextProvider>
-    </BrowserRouter>
+    <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: 'easeInOut' }}>
+
+      <BrowserRouter>
+        <VisibleContextProvider >
+          <Layout  >
+            <Container>
+              <HomePage />
+            </Container>
+          </Layout>
+        </VisibleContextProvider>
+      </BrowserRouter>
+    </motion.div>
   )
 }
 

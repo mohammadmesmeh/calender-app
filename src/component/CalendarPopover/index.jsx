@@ -8,19 +8,19 @@ import { ArrowLeft, ArrowRight, CalendarPlus } from 'lucide-react';
 import { useDate } from '../../Hooks/useDate';
 
 export const CalendarPopover = () => {
-    const { MONTH,
-        YEAR,
-        handleClickNextMonth,
-        handleClickPrevMonth,
-        monthName,
-        NumFirstDayInMonth,
-        PrevMonthDaysNumsArray,
-        ThisMonthDaysNumsArray,
-        day,
-        thisMonth,
-        NextMonthDaysNumsArray,
-        thisYear
-    } = useDate()
+    // const { MONTH,
+    //     YEAR,
+    //     handleClickNextMonth,
+    //     handleClickPrevMonth,
+    //     monthName,
+    //     NumFirstDayInMonth,
+    //     PrevMonthDaysNumsArray,
+    //     ThisMonthDaysNumsArray,
+    //     thisDay,
+    //     thisMonth,
+    //     NextMonthDaysNumsArray,
+    //     thisYear
+    // } = useDate()
 
 
 
@@ -29,7 +29,7 @@ export const CalendarPopover = () => {
 
     return (
         <>
-            <div className="calendarPopover-container w-[284px] min-h-[364px]  p-4 shadow-md rounded-md border border-border text-text select-none">
+            {/* <div className="calendarPopover-container w-[284px] min-h-[364px]  p-4 shadow-md rounded-md border border-border text-text select-none">
                 <div className=' flex w-full h-[32px] justify-between items-center'>
                     <IconBtn icon={ArrowLeft} onClick={handleClickPrevMonth} />
                     <p className=" w-full text-center h-21 font-medium text-[17px] font-sans capitalize">{monthName} {YEAR}</p>
@@ -65,7 +65,7 @@ export const CalendarPopover = () => {
 
                     {
                         ThisMonthDaysNumsArray.map((item) => (
-                            < DayNum content={item} className={item === day && thisMonth === MONTH && thisYear === YEAR ? 'bg-primary text-white hover:text-text rounded-full' : ''} />
+                            < DayNum content={item} className={item === thisDay && thisMonth === MONTH && thisYear === YEAR ? 'bg-primary text-white hover:text-text rounded-full' : ''} />
 
                         ))
                     }
@@ -89,7 +89,7 @@ export const CalendarPopover = () => {
                     </AddButtons>
                 </div>
 
-            </div>
+            </div> */}
 
         </>
     )
