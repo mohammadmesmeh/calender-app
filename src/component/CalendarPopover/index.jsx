@@ -8,28 +8,29 @@ import { ArrowLeft, ArrowRight, CalendarPlus } from 'lucide-react';
 import { useDate } from '../../Hooks/useDate';
 
 export const CalendarPopover = () => {
-    // const { MONTH,
-    //     YEAR,
-    //     handleClickNextMonth,
-    //     handleClickPrevMonth,
-    //     monthName,
-    //     NumFirstDayInMonth,
-    //     PrevMonthDaysNumsArray,
-    //     ThisMonthDaysNumsArray,
-    //     thisDay,
-    //     thisMonth,
-    //     NextMonthDaysNumsArray,
-    //     thisYear
-    // } = useDate()
+    const { 
+        MONTH,
+        YEAR,
+        handleClickNextMonth,
+        handleClickPrevMonth,
+        monthName,
+        NumFirstDayInMonth,
+        PrevMonthDaysNumsArray,
+        ThisMonthDaysNumsArray,
+        thisDay,
+        thisMonth,
+        NextMonthDaysNumsArray,
+        thisYear
+    } = useDate()
 
 
 
-  
+
 
 
     return (
         <>
-            {/* <div className="calendarPopover-container w-[284px] min-h-[364px]  p-4 shadow-md rounded-md border border-border text-text select-none">
+            <div className="calendarPopover-container w-[284px] min-h-[364px]  p-4 shadow-md rounded-md border border-border text-text select-none">
                 <div className=' flex w-full h-[32px] justify-between items-center'>
                     <IconBtn icon={ArrowLeft} onClick={handleClickPrevMonth} />
                     <p className=" w-full text-center h-21 font-medium text-[17px] font-sans capitalize">{monthName} {YEAR}</p>
@@ -40,7 +41,7 @@ export const CalendarPopover = () => {
                     {
                         CONST.DAYS__OF__WEEK.map((item) => (
 
-                            <Day day={item.slice(0,2)} className='text-text-muted text-sm' />
+                            <Day day={item.slice(0, 2)} className='text-text-muted text-sm' />
 
 
 
@@ -89,7 +90,7 @@ export const CalendarPopover = () => {
                     </AddButtons>
                 </div>
 
-            </div> */}
+            </div>
 
         </>
     )

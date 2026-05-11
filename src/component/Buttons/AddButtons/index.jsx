@@ -1,7 +1,7 @@
-export const AddButtons = ({ content, children }) => (
+export const AddButtons = ({ content, children,className }) => (
 
     <button type="button"
-        className="
+        className={`
      flex
      items-center gap-2
       bg-primary
@@ -13,7 +13,7 @@ export const AddButtons = ({ content, children }) => (
   hover:shadow-md
       active:scale-95
       transition-all duration-300
-      shadow-sm   ">
+      shadow-sm  ${className} `}>
         {children}
         {content}
     </button>

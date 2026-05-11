@@ -3,6 +3,7 @@ import { Menu, Logs, ChevronDown, ChevronUp } from "lucide-react"
 import { NavLink, useLocation } from "react-router-dom"
 import { useContext, useState, useEffect } from "react"
 import { VisibleContext } from "../../context/VisibleContext"
+import { Logo } from "../Logo"
 export const Header = () => {
 
     const location = useLocation();
@@ -37,10 +38,7 @@ export const Header = () => {
         <>
             <header className="logo w-auto flex px-5 sm:px-16 py-3 bg-white/80 backdrop-blur sticky top-2 z-50  h-14 content-center items-center   justify-between  shadow-lg mx-10 my-4 rounded-full text-text ">
                 <div >
-                    <h1 className=" text-xl font-bold tracking-tight bg-gradient-to-r from-primary to-secondary
-                                 bg-clip-text text-transparent text-heading sm:text-2xl lg:text-3xl">
-                        Calender
-                    </h1>
+                    <Logo />
                 </div>
                 {/* <nav className="max-w-[300px] min-w-[200px] hidden md:flex ">
                     <ul className="  hidden md:flex  justify-between items-center w-full ">
@@ -51,8 +49,8 @@ export const Header = () => {
                     </ul>
 
                 </nav> */}
-                <nav className={`rounded-2xl flex justify-between relative  items-center `} >
-                    <nav className={`relative flex items-center  justify-end gap-2  min-w-28   `}>
+                <nav className={`rounded-2xl flex justify-between relative  items-center gap-2 `} >
+                    <nav className={`relative flex items-center  justify-end   min-w-28   `}>
                         <div
                             onClick={handleClickDropDown}
                             className={`cursor-pointer px-2 sm:px-4  py-1 sm:py-2 flex items-center gap-1 sm:gap-2 text-xs sm:text-[14px] rounded-full bg-gray-100
@@ -103,9 +101,18 @@ export const Header = () => {
                             )}
                         </nav>
                     </nav>
+                    <NavLink
+                        to="/dashboard"
+                        className={({ isActive }) =>
+                            `bg-gray-100 hover:bg-gray-200 shadow-lg rounded-xl transition-all px-4 py-2 text-sm font-medium ${isActive ? "text-primary" : ""
+                            }`
+                        }
+                    >
+                        Dashboard
+                    </NavLink>
                     <div
                         onClick={handleClickMenu}
-                        className="cursor-pointer p-2 rounded-full hover:bg-gray-200 active:scale-95 transition-all duration-200 ease-out
+                        className="cursor-pointer p-2 rounded-full bg-gray-100 hover:bg-gray-200 active:scale-95 transition-all duration-200 ease-out
                              shadow-sm hover:shadow-md"
                     >
                         {isVisibleMenu ? (

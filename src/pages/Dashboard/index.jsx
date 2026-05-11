@@ -1,0 +1,21 @@
+import { Slidebar } from "../../component/Slidebar"
+import { DashboardHeader } from "../../component/DashboardHeader"
+import { WelcomeSection } from "../../component/WelcomeSection"
+import { GridStatus } from "../../component/GridStatus"
+export const Dashboard = () => {
+    return (
+        <div className="dashboard-container flex flex-col  min-h-dvh w-full ">
+            <DashboardHeader />
+            <div className="dashboard-content flex-1 flex flex-row gap-6 ">
+                <Slidebar />
+                <div className="flex-1 flex flex-col gap-6">
+                    <WelcomeSection />
+                    <GridStatus />
+
+
+                </div>
+            </div>
+        </div>
+    )
+}
+

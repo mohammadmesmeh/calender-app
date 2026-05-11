@@ -1,9 +1,9 @@
 
 import './App.css'
 import { Container } from './component/container'
-import { Layout } from './component/Layout'
+import { MainLayout } from './component/MainLayout'
 // import { CalendarPopover } from './component/CalendarPopover'
-import { HomePage } from './pages/HomePage'
+
 import { BrowserRouter } from 'react-router-dom'
 import { Routeing } from './routes'
 import { MainMenu } from './component/MainMenu'
@@ -17,11 +17,9 @@ function App() {
 
       <BrowserRouter>
         <VisibleContextProvider >
-          <Layout  >
-            <Container>
-              <HomePage />
-            </Container>
-          </Layout>
+
+            <Routeing />
+        
         </VisibleContextProvider>
       </BrowserRouter>
     </motion.div>

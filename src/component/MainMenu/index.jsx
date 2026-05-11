@@ -8,8 +8,8 @@ export const MainMenu = ({ className }) => {
     return (
         <div style={{
             display: isVisibleMenu ? 'flex' : 'none'
-        }} className={`MainMenu w-96 bg-white  flex-row justify-end overflow-hidden flex-grow my-3  ${className}`}>
-           <div className="overflow-x-hidden overflow-y-scroll h-[100vh] py-4 px-3">
+        }} className={`MainMenu w-96 bg-white  flex-row justify-end overflow-hidden  my-3  ${className}`}>
+           <div className="overflow-x-hidden overflow-y-scroll w-fit h-[100vh] py-4 px-3">
 
             <CalendarPopover />
            </div>
