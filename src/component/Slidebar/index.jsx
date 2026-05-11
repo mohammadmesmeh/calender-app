@@ -20,7 +20,7 @@ export const Slidebar = () => {
 
                 </ul>
             </nav>
-            <ShineButton className="mt-4 ">
+            <ShineButton className="mt-4 h-fit">
                 <CalendarPlus />
                 Add Task
             </ShineButton>
