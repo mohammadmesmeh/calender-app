@@ -13,7 +13,7 @@ export const Calendar = () => {
             <Container>
                 <div
 
-                    className=" flex h-full justify-between "
+                    className=" flex h-dvh justify-between "
                     style={{
                         flexDirection: isVisibleMenu ? 'row' : 'column'
                     }}

@@ -1,7 +1,7 @@
 import { CircleCheckBig, Clock2, ClipboardList, CalendarClock } from "lucide-react";
 export const GridStatus = () => {
     return (
-        <div className="grid grid-cols-2 gap-5 mx-auto w-full max-w-3xl">
+        <div className="grid grid-cols-2 gap-5   w-full px-10">
             <div className="text-green-500 bg-white p-6 rounded-lg  shadow-xl ">
                 <span className="flex items-center justify-center w-10 h-10 bg-green-200/75 rounded-lg">
                     <CircleCheckBig />

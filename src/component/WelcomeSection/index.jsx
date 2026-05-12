@@ -1,6 +1,6 @@
 export const WelcomeSection = () => {
     return (
-        <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-8 text-white mb-6 h-fit mt-6 flex items-center justify-between mx-auto w-full max-w-4xl  group ">
+        <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-8 text-white mb-6 h-fit mt-6 flex items-center justify-between  w-full  group ">
             <div className="flex items-center justify-between">
                 <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">

@@ -162,7 +162,7 @@ export const WeekCalendar = () => {
     const weekDays = getWeekDays();
 
     return (
-        <div className="flex flex-col  h-full bg-surface rounded-3xl shadow-sm   overflow-hidden overflow-y-scroll">
+        <div className="flex flex-col  h-dvh bg-surface rounded-3xl shadow-sm   overflow-hidden overflow-y-scroll">
 
             {/* Navigation */}
             {/* <div>

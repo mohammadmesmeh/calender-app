@@ -42,7 +42,7 @@ export const MonthCalendar = () => {
         <>
 
 
-            <div ref={carouselRef} className=" relative flex-grow flex-shrink bg-surface rounded-3xl shadow-sm   pb-8  h-full overflow-x-hidden overflow-y-scroll  w-full">
+            <div ref={carouselRef} className=" relative flex-grow flex-shrink bg-surface rounded-3xl shadow-sm   pb-8  h-dvh overflow-x-hidden overflow-y-scroll  w-full">
                 <div className=" sticky  top-0 bg-white/70 backdrop-blur w-auto  py-3 z-10  px-3 md:px-8   ">
                     <motion.div
                         id="scroll-indicator"

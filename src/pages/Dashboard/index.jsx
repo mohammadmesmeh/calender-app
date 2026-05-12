@@ -8,7 +8,7 @@ export const Dashboard = () => {
             <DashboardHeader />
             <div className="dashboard-content flex-1 flex flex-row gap-6 ">
                 <Slidebar />
-                <div className="flex-1 flex flex-col gap-6">
+                <div className="flex-1 flex flex-col gap-6 w-full items-center  justify-start px-6 ">
                     <WelcomeSection />
                     <GridStatus />
 
