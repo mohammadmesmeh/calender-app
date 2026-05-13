@@ -36,7 +36,7 @@ export const Header = () => {
     return (
 
         <>
-            <header className="logo w-auto flex px-5 sm:px-16 py-3 bg-white/80 backdrop-blur sticky top-2 z-50  h-14 content-center items-center   justify-between  shadow-lg mx-10 my-4 rounded-full text-text ">
+            <header className="logo w-auto flex px-3 sm:px-16 py-3 bg-white/80 backdrop-blur sticky top-2 z-50  h-14 content-center items-center   justify-between  shadow-lg mx-5 md:10 my-4 rounded-full text-text ">
                 <div >
                     <Logo />
                 </div>
@@ -104,7 +104,7 @@ export const Header = () => {
                     <NavLink
                         to="/dashboard"
                         className={({ isActive }) =>
-                            `bg-gray-100 hover:bg-gray-200 shadow-lg rounded-xl transition-all px-4 py-2 text-sm font-medium ${isActive ? "text-primary" : ""
+                            `bg-gray-100 hover:bg-gray-200 shadow-sm hover:shadow-md rounded-xl transition-all  px-2 sm:px-4  py-1 sm:py-2 text-sm font-medium ${isActive ? "text-primary" : ""
                             }`
                         }
                     >

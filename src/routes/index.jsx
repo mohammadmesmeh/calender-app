@@ -8,7 +8,7 @@
 // export const Routeing = () => {
 //     return (
 
-      
+
 //         <div className="flex-1 min-h-0 flex flex-col">
 
 //             <Routes>
@@ -22,7 +22,7 @@
 //             </Routes>
 
 //         </div>
-      
+
 //     )
 
 // }
@@ -40,18 +40,18 @@ export const Routeing = () => {
 
       {/* Layout العام */}
 
-        {/* <Route index element={<Calendar />} /> */}
-        <Route path="dashboard" element={<Dashboard />} />
+      {/* <Route index element={<Calendar />} /> */}
+      <Route path="dashboard" element={<Dashboard />} />
 
-        {/* calendar routes */}
-     
+      {/* calendar routes */}
+
       <Route path="/" element={<MainLayout />}>
-          <Route index element={<MonthCalendar />} />
-          <Route path="week" element={<WeekCalendar />} />
-          <Route path="day" element={<DayCalendar />} />
-        </Route>
+        <Route index element={<MonthCalendar />} />
+        <Route path="week" element={<WeekCalendar />} />
+        <Route path="day" element={<DayCalendar />} />
+      </Route>
 
-     
+
 
     </Routes>
   );

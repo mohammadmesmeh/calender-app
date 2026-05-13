@@ -1,4 +1,4 @@
-export const AddButtons = ({ content, children,className }) => (
+export const AddButtons = ({ content, children, className }) => (
 
     <button type="button"
         className={`

@@ -13,7 +13,7 @@ export const DayCalendar = () => {
         
 
 
-        <div className=" overflow-y-scroll bg-surface h-dvh z-10  px-4 md:px-8 pb-8 rounded-xl shadow-sm  w-full">
+        <div className=" overflow-y-scroll  bg-surface  flex-1 min-h-0 z-10 px-4  md:px-8 pb-8 rounded-xl shadow-sm  w-full">
             
             <div className="header-day flex gap-6 w-full sticky bg-surface/70 backdrop-blur justify-center sm:justify-start items-center  top-0 p-6 z-50 " >
             

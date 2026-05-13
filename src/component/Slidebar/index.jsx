@@ -29,7 +29,6 @@ export const Slidebar = () => {
         <div className="my-4 h-px w-full bg-gradient-to-r from-transparent via-white/30 to-transparent" />
 
         <UserProfile classNameIcon='bg-white text-primary ' className='bg-secondary p-4 rounded-lg text-white mt-4  ' />
-
         <div />
 
 

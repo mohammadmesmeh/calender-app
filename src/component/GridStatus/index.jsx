@@ -1,7 +1,8 @@
 import { CircleCheckBig, Clock2, ClipboardList, CalendarClock } from "lucide-react";
+import { events } from "../../Mock Data/data";
 export const GridStatus = () => {
     return (
-        <div className="grid grid-cols-2 gap-5   w-full px-10">
+        <div className="grid grid-cols-2 gap-5   w-full">
             <div className="text-green-500 bg-white p-6 rounded-lg  shadow-xl ">
                 <span className="flex items-center justify-center w-10 h-10 bg-green-200/75 rounded-lg">
                     <CircleCheckBig />
@@ -29,7 +30,7 @@ export const GridStatus = () => {
                     <CalendarClock />
                 </span>
                 <h3 className="text-sm text-text-muted font-light my-5">Upcoming Events</h3>
-               <p className="text-4xl text-text font-bold">3</p>
+               <p className="text-4xl text-text font-bold">{events.length}</p>
             </div>
         </div>
     )
