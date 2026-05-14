@@ -59,7 +59,11 @@ export default {
         active: '0 0 0 4px rgba(59,130,246,0.2)',
         activeLg: '0 0 0 4px rgba(59,130,246,0.2), 0 4px 12px rgba(0,0,0,0.1)',
       },
-  
+
+      // 🎨 Custom background gradients
+      backgroundImage: {
+        bgCard: 'linear-gradient(to bottom right, #ede9fe, #dbeafe)',
+      },
 
     // 🔘 Border Radius
     borderRadius: {

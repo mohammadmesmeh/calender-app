@@ -4,6 +4,7 @@ import { WelcomeSection } from "../../component/WelcomeSection"
 import { GridStatus } from "../../component/GridStatus"
 import { UpcomingEvents } from "../../component/UpcomingEvents"
 import { TodaysTasks } from "../../component/Today'sTasks"
+import {NotesWidget} from '../../component/NotesWidget'
 export const Dashboard = () => {
     return (
         <div className="dashboard-container flex flex-col  min-h-dvh w-full ">
@@ -15,6 +16,7 @@ export const Dashboard = () => {
                     <GridStatus />
                     <UpcomingEvents />
                     <TodaysTasks />
+                    <NotesWidget />
                 </div>
 
             </div>

@@ -2,8 +2,8 @@ import { motion } from "framer-motion";
 export const ShineButton = ({ children, className }) => {
   return (
     <motion.button
-      className={`relative px-8 py-2 rounded-xl h-12
-        hover:bg-primary-hover hover:-translate-y-0.5
+      className={`relative px-1 md:px-8 py-2 rounded-xl h-12
+        hover:bg-primary-hover hover:-translate-y-0.5 
         hover:shadow-md active:scale-95
         transition-all duration-300 shadow-sm ${className}`}
       style={{ backgroundColor: "#3b82f6" }}
@@ -29,7 +29,8 @@ export const ShineButton = ({ children, className }) => {
         />
       </span>
 
-      <span className="relative z-10 flex items-center gap-2 justify-center">
+      <span className="relative z-10 flex items-center w-full md:gap-2 justify-center">
+        
         {children}
       </span>
     </motion.button>

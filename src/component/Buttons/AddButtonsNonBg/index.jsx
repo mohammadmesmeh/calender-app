@@ -13,7 +13,7 @@ export const AddButtonsNonBg = ({ content, children, className }) => (
       hover:shadow-md
       active:scale-95
       transition-all duration-300
-      shadow-sm  ${className} `}>
+      ${className} `}>
         {children}
         {content}
     </button>
