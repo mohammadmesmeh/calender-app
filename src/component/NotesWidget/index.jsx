@@ -38,7 +38,7 @@ export const NotesWidget = () => {
     const sortedNotes = [...notes].sort((a, b) => b.pinned - a.pinned);
 
     return (
-        <div className="bg-bgCard rounded-lg p-6 shadow-sm border border-purple-100 min-h-96 flex flex-col">
+        <div className="bg-bgCard w-full rounded-lg p-6 shadow-sm border border-purple-100 min-h-96 flex flex-col">
             {/* Header */}
             <div className="mb-4">
                 <h3 className="text-lg font-semibold text-gray-800">Notes</h3>
@@ -59,7 +59,7 @@ export const NotesWidget = () => {
             </div>
 
             {/* Notes List */}
-            <div className="flex-1 overflow-y-auto space-y-2 max-h-64">
+            <div className="flex-1 overflow-y-auto space-y-2 max-h-64 ">
                 {sortedNotes.length === 0 ? (
                     <div className="text-center py-8 text-gray-400">
                         <p className="text-sm">No notes yet</p>

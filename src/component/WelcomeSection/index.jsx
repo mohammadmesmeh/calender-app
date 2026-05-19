@@ -1,9 +1,9 @@
 export const WelcomeSection = () => {
     return (
         <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-8 text-white mb-6 h-fit mt-6 flex items-center justify-between  w-full  group ">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between flex-col md:flex-row">
                 <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
+                    <div className="flex items-center gap-2 mb-2 ">
                         {/* <Sparkles className="w-5 h-5" /> */}
                         <span className="text-indigo-100">Welcome back,</span>
                     </div>
@@ -44,7 +44,7 @@ export const WelcomeSection = () => {
             </div>
           </div> */}
 
-                <div className="w-40 h-40 opacity-30">
+                <div className="w-40 h-40 opacity-30 hidden md:flex">
                     <svg viewBox="0 0 200 200" className="w-full h-full group-hover:rotate-180 transition-transform duration-500">
                         <path
                             d="M100 20 L120 80 L180 80 L135 120 L155 180 L100 145 L45 180 L65 120 L20 80 L80 80 Z"

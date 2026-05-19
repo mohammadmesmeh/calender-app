@@ -2,7 +2,7 @@ import { CircleCheckBig, Clock2, ClipboardList, CalendarClock } from "lucide-rea
 import { events } from "../../Mock Data/data";
 export const GridStatus = () => {
     return (
-        <div className="grid grid-cols-2 gap-5   w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5   w-full">
             <div className="text-green-500 bg-white p-6 rounded-lg  shadow-xl ">
                 <span className="flex items-center justify-center w-10 h-10 bg-green-200/75 rounded-lg">
                     <CircleCheckBig />

@@ -41,39 +41,87 @@ export const events = [
   },
 ];
 export const tasks = [
-  {
-    id: 1,
-    title: "Project Deadline",
-    time: "5:00 PM",
-    completed: false,
-    priority: "high"
-  },
-  {
-    id: 2,
-    title: "Study React",
-    time: "8:00 PM",
-    completed: true,
-    priority: "high"
-  },
-  {
-    id: 3,
-    title: "Gym Workout",
-    time: "6:30 AM",
-    completed: false,
-    priority: "medium"
-  },
-  {
-    id: 4,
-    title: "Grocery Shopping",
-    time: "4:00 PM",
-    completed: true,
-    priority: "low"
-  },
-  {
-    id: 5,
-    title: "Read a Book",
-    time: "7:00 PM",
-    completed: false,
-    priority: "low"
-  }
+  // MON
+  { id: 1, title: "Project Deadline", time: "5:00 PM", day: "Mon", completed: false, priority: "high" },
+  { id: 2, title: "Fix UI Bugs", time: "10:00 AM", day: "Mon", completed: true, priority: "high" },
+  { id: 3, title: "Team Sync", time: "1:00 PM", day: "Mon", completed: true, priority: "medium" },
+
+  // TUE
+  { id: 4, title: "Study React", time: "8:00 PM", day: "Tue", completed: true, priority: "high" },
+  { id: 5, title: "API Practice", time: "6:00 PM", day: "Tue", completed: true, priority: "high" },
+  { id: 6, title: "Read Docs", time: "3:00 PM", day: "Tue", completed: false, priority: "low" },
+
+  // WED
+  { id: 7, title: "Gym Workout", time: "6:30 AM", day: "Wed", completed: false, priority: "medium" },
+  { id: 8, title: "Write Code", time: "2:00 PM", day: "Wed", completed: true, priority: "high" },
+
+  // THU
+  { id: 9, title: "Grocery Shopping", time: "4:00 PM", day: "Thu", completed: true, priority: "low" },
+  { id: 10, title: "Learn Recharts", time: "9:00 PM", day: "Thu", completed: false, priority: "medium" },
+  { id: 11, title: "Fix Bugs", time: "11:00 AM", day: "Thu", completed: false, priority: "high" },
+
+  // FRI
+  { id: 12, title: "Code Review", time: "11:00 AM", day: "Fri", completed: true, priority: "high" },
+  { id: 13, title: "Deploy App", time: "5:00 PM", day: "Fri", completed: true, priority: "high" },
+  { id: 14, title: "Clean Code", time: "8:00 PM", day: "Fri", completed: true, priority: "medium" },
+
+  // SAT
+  { id: 15, title: "Weekend Planning", time: "6:00 PM", day: "Sat", completed: false, priority: "low" },
+  { id: 16, title: "Side Project", time: "2:00 PM", day: "Sat", completed: false, priority: "medium" },
+
+  // SUN
+  { id: 17, title: "Watch Tutorials", time: "8:30 PM", day: "Sun", completed: true, priority: "medium" },
+  { id: 18, title: "Database Practice", time: "7:00 PM", day: "Sun", completed: false, priority: "high" },
+  { id: 19, title: "Plan Week", time: "9:00 PM", day: "Sun", completed: true, priority: "low" }
 ];
+// export const chartData = [
+//   {
+//     name: "Completed",
+//     tasks: tasks.filter(task => task.completed).length,
+//   },
+//   {
+//     name: "Pending",
+//     tasks: tasks.filter(task => !task.completed).length,
+//   },
+// ];
+const getDayProgressRate= (day) => {
+  const dayTasks = tasks.filter(t => t.day === day);
+
+  if (dayTasks.length === 0) return 0;
+
+  const completed = dayTasks.filter(t => t.completed).length;
+
+  return Math.round((completed / dayTasks.length) * 100);
+};
+console.log(getDayProgressRate('Tue'));
+
+export const chartData = [
+  {
+    day: "Mon",
+   Rate: getDayProgressRate('Mon')
+  },
+  {
+    day: "Tue",
+    Rate: getDayProgressRate('Tue')
+  },
+  {
+    day: "Wed",
+    Rate: getDayProgressRate('Wed')
+  },
+  {
+    day: "Thu",
+    Rate: getDayProgressRate('Thu')
+  },
+  {
+    day: "Fri",
+    Rate: getDayProgressRate('Fri')
+  },
+  {
+    day: "Sat",
+    Rate: getDayProgressRate('Sat')
+  },
+  {
+    day: "Sun",
+    Rate: getDayProgressRate('Sun')
+  },
+] 
