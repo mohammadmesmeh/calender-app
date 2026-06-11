@@ -38,7 +38,7 @@ export const NotesWidget = () => {
     const sortedNotes = [...notes].sort((a, b) => b.pinned - a.pinned);
 
     return (
-        <div className="bg-bgCard w-full rounded-lg p-6 shadow-sm border border-purple-100 min-h-96 flex flex-col">
+        <div className="bg-white w-full rounded-lg p-6 shadow-sm border border-purple-100 min-h-96 flex flex-col">
             {/* Header */}
             <div className="mb-4">
                 <h3 className="text-lg font-semibold text-gray-800">Notes</h3>

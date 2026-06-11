@@ -4,12 +4,12 @@ export const NavigationMenuItem = ({ to, text, icon: Icon }) => {
   if (!Icon) return null;
 
   return (
-    <li>
+    <li className="text-text hover:bg-primary-hover hover:shadow-md hover:text-white  rounded-xl  transition-all">
       <NavLink
         to={to}
         className={({ isActive }) =>
-          ` px-1 md:px-4 font-bold text-lg py-2 flex  justify-center md:justify-start rounded-xl items-center hover:bg-primary-hover transition-all ${
-            isActive ? "text-primary bg-white hover:bg-white shadow-md" : ""
+          ` px-1 md:px-4 font-bold text-lg py-2 flex rounded-xl justify-center md:justify-start items-center ${
+            isActive ?  "bg-primary text-white" : ""
           }`
         }
       >

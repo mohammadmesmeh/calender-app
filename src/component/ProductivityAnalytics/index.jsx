@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 import { BarChart3, CheckCircle2, Activity, CalendarDays } from "lucide-react";
 import { tasks } from "../../Mock Data/data";
-import { CustomizeLegendAndTooltipStyle} from '../Char';
+import { CustomizeLegendAndTooltipStyle } from '../Char';
+import { AnimatedProgressBar } from "../Animated Freamer Motion/AnimatedProgressBar";
 
 const weeklyData = [
   { day: "Mon", value: 72 },
@@ -43,7 +44,7 @@ export const ProductivityAnalytics = () => {
 
       <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
         <section className="space-y-4">
-         < CustomizeLegendAndTooltipStyle />
+          < CustomizeLegendAndTooltipStyle />
 
           <div className="grid gap-4 md:grid-cols-2">
             <div className="rounded-2xl border border-slate-200 p-4">
@@ -88,12 +89,9 @@ export const ProductivityAnalytics = () => {
                 <span>Completion Rate</span>
                 <span className="font-semibold text-slate-900">{completionStats.completion}%</span>
               </div>
-              <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-200">
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-green-500 to-emerald-500"
-                  style={{ width: `${completionStats.completion}%` }}
-                />
-              </div>
+             
+              <AnimatedProgressBar value={completionStats.completion} duration={2.1} />
+              
             </div>
 
             <div className="rounded-2xl bg-white p-4 shadow-sm">
