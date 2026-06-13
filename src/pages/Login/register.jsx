@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate , Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { createUserWithEmailAndPassword } from 'firebase/auth';// Firebase Auth: لإنشاء مستخدم جديد
-import { auth } from '../../firebase';//auth: إعدادات Firebase الخاصة بك
+import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';// Firebase Auth: لإنشاء مستخدم جديد
+import { auth, googleProvider } from '../../firebase';//auth: إعدادات Firebase الخاصة بك
+import { useAuth } from '../../Hooks/useAuth';
 
 const validationSchema = yup.object({
   email: yup
@@ -23,10 +24,13 @@ const validationSchema = yup.object({
 
 export function Register() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
-  // رسالة خطأ من Firebase
   const [firebaseError, setFirebaseError] = useState('');
+  const {user,
+        isLoading,
+        isLoadingGoogle,
+        signUpWithEmail,
+        signUpWithGoogle} = useAuth()
 
   const {
     register,
@@ -37,37 +41,36 @@ export function Register() {
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit = async (data) => {
-    setLoading(true);
+  const onSubmitEmail = async (data) => {
+    setFirebaseError('');
+    setSuccessMessage('');
+    try {
+     await signUpWithEmail(data)
+      setSuccessMessage('Account created successfully! Redirecting...');
+      reset();
+      navigate('/dashboard');
+    } catch (error) {
+      const errorMessage = error?.code?.replace('auth/', '').replace(/-/g, ' ') || 'An error occurred during sign up';
+      setFirebaseError(errorMessage);
+    } 
+    
+  };
+  const onSubmitGoogle = async () => {
     setFirebaseError('');
     setSuccessMessage('');
 
     try {
       // إنشاء المستخدم في Firebase
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        data.email,
-        data.password
-      );
+     await signUpWithGoogle()
       // جلب المستخدم الحالي 
-      const user = userCredential.user;
-      const token = await user.getIdToken();
-
-      localStorage.setItem('token', token)
-      console.log('User UID:', userCredential.user.uid, user, token);
-
       setSuccessMessage('Account created successfully! Redirecting...');
       reset();
-
-      setTimeout(() => {
-        navigate('/dashboard');
-      }, 1500);
+      navigate('/dashboard');
     } catch (error) {
       const errorMessage = error.code?.replace('auth/', '').replace(/-/g, ' ') || 'An error occurred during sign up';
       setFirebaseError(errorMessage);
-    } finally {
-      setLoading(false);
-    }
+    } 
+   
   };
 
   return (
@@ -89,7 +92,7 @@ export function Register() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          <form onSubmit={handleSubmit(onSubmitEmail)} className="space-y-5">
             {/* Email Field */}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
@@ -104,7 +107,7 @@ export function Register() {
                   ? 'border-red-300 focus:ring-red-200 bg-red-50'
                   : 'border-gray-300 focus:ring-blue-200 focus:border-blue-500'
                   }`}
-                disabled={loading}
+                disabled={isLoading || isLoadingGoogle}
               />
               {errors.email && (
                 <p className="mt-1 text-sm text-red-600 font-medium">{errors.email.message}</p>
@@ -125,7 +128,7 @@ export function Register() {
                   ? 'border-red-300 focus:ring-red-200 bg-red-50'
                   : 'border-gray-300 focus:ring-blue-200 focus:border-blue-500'
                   }`}
-                disabled={loading}
+                disabled={isLoading ||isLoadingGoogle}
               />
               {errors.password && (
                 <p className="mt-1 text-sm text-red-600 font-medium">{errors.password.message}</p>
@@ -146,7 +149,7 @@ export function Register() {
                   ? 'border-red-300 focus:ring-red-200 bg-red-50'
                   : 'border-gray-300 focus:ring-blue-200 focus:border-blue-500'
                   }`}
-                disabled={loading}
+                disabled={isLoading || isLoadingGoogle}
               />
               {errors.confirmPassword && (
                 <p className="mt-1 text-sm text-red-600 font-medium">{errors.confirmPassword.message}</p>
@@ -156,13 +159,13 @@ export function Register() {
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={loading}
-              className={`w-full py-2 px-4 rounded-lg font-semibold text-white transition-all duration-200 ${loading
+              disabled={isLoading||isLoadingGoogle}
+              className={`w-full py-2 px-4 rounded-lg font-semibold text-white transition-all duration-200 ${isLoading
                 ? 'bg-gray-400 cursor-not-allowed'
                 : 'bg-blue-600 hover:bg-blue-700 active:scale-95'
                 }`}
             >
-              {loading ? (
+              {isLoading ? (
                 <span className="flex items-center justify-center">
                   <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="4" />
@@ -174,14 +177,38 @@ export function Register() {
                 'Create Account'
               )}
             </button>
+            <button
+              type="button"
+              onClick={onSubmitGoogle}
+              disabled={isLoading || isLoadingGoogle }
+              className={`w-full py-2 px-4 rounded-lg font-semibold text-white transition-all duration-200 ${isLoading
+                ? 'bg-gray-400 cursor-not-allowed'
+                : 'bg-blue-600 hover:bg-blue-700 active:scale-95'
+                }`}
+            >
+              {isLoadingGoogle ? (
+                <span className="flex items-center justify-center">
+                  <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  </svg>
+                  Register With Google...
+                </span>
+              ) : (
+                'Register With Google'
+              )}
+            </button>
+
           </form>
 
           {/* Login Link */}
           <p className="mt-6 text-center text-gray-600 text-sm">
             Already have an account?{' '}
-            <a href="/login" className="text-blue-600 hover:text-blue-700 font-medium">
+            <Link to="/login" className="text-blue-600 hover:text-blue-700 font-medium">
               Sign In
-            </a>
+            </Link>
+            
+
           </p>
         </div>
       </div>

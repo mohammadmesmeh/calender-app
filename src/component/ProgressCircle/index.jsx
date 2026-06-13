@@ -11,7 +11,7 @@ export function ProgressCircle({
     { name: "progress", value },
     { name: "remaining", value: 100 - value },
   ];
-const COLORS = ["#ffffff", "rgba(255,255,255,0.15)"];
+const COLORS = ["#437FF7", "#E5ECED"];
 
   return (
     <div className="relative flex items-center justify-center">
@@ -39,6 +39,8 @@ const COLORS = ["#ffffff", "rgba(255,255,255,0.15)"];
          <AnimatedCounter value={value} duration={2.1} />%
         </span>
       </div>
+      
     </div>
+    
   );
 }

@@ -2,7 +2,7 @@
 import { Menu, Logs, ChevronDown, ChevronUp } from "lucide-react"
 import { NavLink, useLocation } from "react-router-dom"
 import { useContext, useState, useEffect } from "react"
-import { VisibleContext } from "../../context/VisibleContext"
+import { VisibleContext} from '../../context/VisibleContext'
 import { Logo } from "../Logo"
 export const Header = () => {
 
@@ -40,15 +40,7 @@ export const Header = () => {
                 <div >
                     <Logo />
                 </div>
-                {/* <nav className="max-w-[300px] min-w-[200px] hidden md:flex ">
-                    <ul className="  hidden md:flex  justify-between items-center w-full ">
-                        <li className="cursor-pointer  text-sm px-3 py-6 hover:text-gray-400 transition-all  "><NavLink to='/' className={({ isActive }) => isActive ? 'text-primary' : ''}>Month</NavLink></li>
-                        <li className="cursor-pointer text-sm px-3 py-6 hover:text-gray-400 transition-all "><NavLink to='/week' className={({ isActive }) => isActive ? 'text-primary' : ''}>Week</NavLink></li>
-                        <li className="cursor-pointer text-sm px-3 py-6 hover:text-gray-400 transition-all "><NavLink to='/day' className={({ isActive }) => isActive ? 'text-primary' : ''}>Day</NavLink></li>
-                        <li className="cursor-pointer  text-[55px] px-3 py-6 ">{isVisibleMenu ? <Logs onClick={() => handleClickMenu()} size='20px' className="text-primary " /> : <Menu onClick={() => handleClickMenu()} size='20px' className="hover:text-gray-400 transition-all " />}</li>
-                    </ul>
-
-                </nav> */}
+                
                 <nav className={`rounded-2xl flex justify-between relative  items-center gap-2 `} >
                     <nav className={`relative flex items-center  justify-end   min-w-28   `}>
                         <div
