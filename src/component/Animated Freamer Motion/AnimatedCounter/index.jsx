@@ -1,4 +1,4 @@
-import { motion, useInView, useMotionValue, animate } from "framer-motion";
+import { useInView, useMotionValue, animate, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 export function AnimatedCounter({ value, duration = 1 }) {
@@ -7,9 +7,14 @@ export function AnimatedCounter({ value, duration = 1 }) {
 
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+  const shouldReduce = useReducedMotion();
 
   useEffect(() => {
     if (!isInView) return;
+    if (shouldReduce) {
+      setDisplay(value);
+      return;
+    }
 
     const controls = animate(motionValue, value, {
       duration,
@@ -20,11 +25,11 @@ export function AnimatedCounter({ value, duration = 1 }) {
     });
 
     return controls.stop;
-  }, [isInView, value, duration]);
+  }, [isInView, value, duration, shouldReduce]);
 
   return (
-    <motion.span ref={ref}>
+    <span ref={ref}>
       {display}
-    </motion.span>
+    </span>
   );
 }

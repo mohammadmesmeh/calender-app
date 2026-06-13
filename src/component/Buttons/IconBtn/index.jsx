@@ -1,13 +1,21 @@
 // import { ArrowLeft } from "lucide-react";
 // BtnIconLeft
+import {motion }from 'framer-motion'
 export const IconBtn = ({ icon: Icon, onClick, className = "" }) => {
-    if (!Icon) return null;
+  if (!Icon) return null;
 
-    return (
-        <button
-            type="button"
-            onClick={onClick}
-            className={` 
+  return (
+    <motion.button
+      
+      whileTap={{ scale: 0.92 }}
+      transition={{
+        type: "spring",
+        stiffness: 400,
+        damping: 15,
+      }}
+      type="button"
+      onClick={onClick}
+      className={` 
         p-2
         rounded-lg
       bg-white
@@ -20,8 +28,8 @@ export const IconBtn = ({ icon: Icon, onClick, className = "" }) => {
         transition-all 
         duration-200
         ${className}`}
-        >
-            <Icon />
-        </button>
-    );
+    >
+      <Icon />
+    </motion.button >
+  );
 };

@@ -8,26 +8,19 @@ import { BrowserRouter } from 'react-router-dom'
 import { Routeing } from './routes'
 import { MainMenu } from './component/MainMenu'
 import { VisibleContextProvider } from './context/VisibleContext'
-import { motion } from 'framer-motion'
 
-import {AuthContextProvider  } from "./context/authContext";
+import { AuthContextProvider } from "./context/authContext";
 
 function App() {
 
   return (
-    <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: 'easeInOut' }}>
-
-      <BrowserRouter>
-      
-      <AuthContextProvider >
-        <VisibleContextProvider >
-
-            <Routeing />
-        
-        </VisibleContextProvider>
-      </AuthContextProvider>
-      </BrowserRouter>
-    </motion.div>
+    <AuthContextProvider>
+      <VisibleContextProvider>
+        <BrowserRouter>
+          <Routeing />
+        </BrowserRouter>
+      </VisibleContextProvider>
+    </AuthContextProvider>
   )
 }
 

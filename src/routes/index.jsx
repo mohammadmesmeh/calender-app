@@ -1,5 +1,7 @@
 
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence } from 'framer-motion'
+import { MotionPage } from '../animations'
 import { MainLayout } from "../component/MainLayout";
 import { Dashboard } from "../pages/Dashboard";
 import { MonthCalendar } from "../component/MonthCalendar";
@@ -11,37 +13,41 @@ import { ProtectedRoute } from "./ProtectedRoute/index.jsx";
 
 export const Routeing = () => {
 
+  const location = useLocation();
+
   return (
-    <Routes>
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
 
-      {/* Login route */}
-      <Route path="/register" element={<Register />} />
+        {/* Login route */}
+        <Route path="/register" element={<MotionPage><Register /></MotionPage>} />
 
-      {/* Protected App */}
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <MainLayout />
-          </ProtectedRoute>
-        }
-      >
-        <Route index element={<MonthCalendar />} />
-        <Route path="week" element={<WeekCalendar />} />
-        <Route path="day" element={<DayCalendar />} />
-      </Route>
+        {/* Protected App */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <MainLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<MotionPage><MonthCalendar /></MotionPage>} />
+          <Route path="week" element={<MotionPage><WeekCalendar /></MotionPage>} />
+          <Route path="day" element={<MotionPage><DayCalendar /></MotionPage>} />
+        </Route>
 
-      {/* dashboard محمي كمان */}
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        }
-      />
+        {/* dashboard محمي كمان */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <MotionPage><Dashboard /></MotionPage>
+            </ProtectedRoute>
+          }
+        />
 
-    </Routes>
+      </Routes>
+    </AnimatePresence>
   );
 };
 
