@@ -40,6 +40,16 @@ export const events = [
     color: "bg-blue-500",
   },
 ];
+
+export const categories = [
+  { id: 'planning', name: 'Planning' },
+  { id: 'meeting', name: 'Meeting' },
+  { id: 'design', name: 'Design' },
+  { id: 'development', name: 'Development' },
+  { id: 'personal', name: 'Personal' },
+  { id: 'research', name: 'Research' },
+];
+
 export const tasks = [
   // MON
   { id: 1, title: "Project Deadline", time: "5:00 PM", day: "Mon", completed: false, priority: "high" },
