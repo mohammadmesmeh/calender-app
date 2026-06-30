@@ -95,6 +95,60 @@ export default {
       fontFamily: {
         sans: ['Inter', 'ui-sans-serif', 'system-ui'],
       },
+      spacing: {
+        // ---- Base 4px (0.25rem) scale ----
+        '0': '0rem',
+        '0.5': '0.125rem',
+        '1': '0.25rem',
+        '1.5': '0.375rem',
+        '2': '0.5rem',
+        '2.5': '0.625rem',
+        '3': '0.75rem',
+        '3.5': '0.875rem',
+        '4': '1rem',
+        '5': '1.25rem',
+        '6': '1.5rem',
+        '7': '1.75rem',
+        '8': '2rem',
+        '9': '2.25rem',
+        '10': '2.5rem',
+        '11': '2.75rem',
+        '12': '3rem',
+        '14': '3.5rem',
+        '16': '4rem',
+        '18': '4.5rem',
+        '20': '5rem',
+        '24': '6rem',
+        '28': '7rem',
+        '32': '8rem',
+        '36': '9rem',
+        '40': '10rem',
+        '44': '11rem',
+        '48': '12rem',
+        '56': '14rem',
+        '64': '16rem',
+
+        // ---- Semantic spacing tokens ----
+        'section-sm': '2.5rem',
+        'section-md': '4rem',
+        'section-lg': '6rem',
+        'section-xl': '8rem',
+
+        'container-sm': '1rem',
+        'container-md': '1.5rem',
+        'container-lg': '2rem',
+        'container-xl': '2.5rem',
+
+        'gutter': '1.5rem',
+        'gutter-sm': '1rem',
+        'gutter-lg': '2rem',
+
+        'stack-xs': '0.5rem',
+        'stack-sm': '1rem',
+        'stack-md': '1.5rem',
+        'stack-lg': '2.5rem',
+        'stack-xl': '4rem',
+      },
 
       // 🎨 Colors (Calender Design System)
       colors: {
@@ -169,11 +223,6 @@ export default {
         smooth: 'all',
       },
 
-      // 📏 Spacing tweaks
-      spacing: {
-        18: '4.5rem',
-        22: '5.5rem',
-      },
       keyframes: {
         floatSlow: {
           '0%, 100%': { transform: 'translateY(0px)' },

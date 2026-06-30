@@ -36,7 +36,7 @@ export const Header = () => {
     return (
 
         <>
-            <header className="logo w-auto flex px-3 sm:px-16 py-3 bg-white/80 backdrop-blur sticky top-2 z-50  h-14 content-center items-center   justify-between  shadow-lg mx-5 md:10 my-4 rounded-full text-text ">
+            <header className="logo w-auto flex px-3 sm:px-16 py-3 bg-white/80 backdrop-blur sticky top-2 z-50  h-14 content-center items-center   justify-between  shadow-lg mx-5 md:mx-10 my-4 rounded-full text-text ">
                 <div >
                     <Logo />
                 </div>

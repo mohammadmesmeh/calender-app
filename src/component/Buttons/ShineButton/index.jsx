@@ -1,55 +1,75 @@
 import { motion, useReducedMotion } from "framer-motion";
-export const ShineButton = ({ children, className }) => {
+
+export const ShineButton = ({ children, className = "", isExpanded, icon: Icon }) => {
+  // الـ hooks لازم تنفّذ دايمًا بنفس الترتيب، لهيك هي أول شي بالكومبوننت
+  // قبل أي شرط return — حتى لو Icon مش موجود لسا.
   const shouldReduce = useReducedMotion();
-  const baseClass = `relative px-1 md:px-8 py-2 rounded-xl h-12 active:scale-95 shadow-sm ${className}`
+
+  if (!Icon) return null;
+
   const shineVariants = {
-    rest: { x: "-120%" },
-    hover: { x: "120%" },
+    rest: { x: "-130%" },
+    hover: { x: "130%" },
   };
-  if (shouldReduce) {
-    return (
-      <button className={baseClass} style={{ backgroundColor: "#3b82f6" }}>
-        <span className="relative z-10 flex items-center w-full md:gap-2 justify-center">{children}</span>
-      </button>
-    )
-  }
 
   return (
     <motion.button
-      className={`${baseClass} hover:shadow-md`}
-      style={{ backgroundColor: "#3b82f6" }}
-       initial="rest"
+      type="button"
+      className={`group relative h-12 overflow-hidden rounded-xl bg-primary px-4 text-white shadow-sm transition-shadow duration-200 hover:shadow-md active:scale-95 ${className}`}
+      initial="rest"
       animate="rest"
       whileHover="hover"
-      whileTap={{ scale: 0.92 }}
-      variants={{
-        rest: {},
-        hover: {},
-      }}
-      transition={{
-        type: "spring",
-        stiffness: 500,
-        damping: 20,
-      }}
-     
-    
+      whileTap={{ scale: 0.95 }}
     >
-      <span className="absolute inset-0 rounded-xl overflow-hidden pointer-events-none">
-        <motion.span
-          className="absolute inset-0"
-          style={{
-            background: "linear-gradient(105deg, transparent 20%, #ffffff30 50%, transparent 80%)",
-          }}
-         
-           variants={shineVariants}
-    
-          transition={{ duration: 0.6, ease: "easeInOut" }}
-        />
-      </span>
+      {/* طبقة التلميعة: غير مرئية إذا المستخدم مفعّل "تقليل الحركة" */}
+      {!shouldReduce && (
+        <span className="pointer-events-none absolute inset-0 overflow-hidden rounded-xl">
+          <motion.span
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.25) 50%, transparent 80%)",
+            }}
+            variants={shineVariants}
+            transition={{ duration: 0.7, ease: "easeInOut" }}
+          />
+        </span>
+      )}
 
-      <span className="relative z-10 flex items-center w-full md:gap-2 justify-center">{children}</span>
+      {/*
+        المحتوى الفعلي: flex بدون justify-center، لأنه لو حطينا justify-center
+        هون، الأيقونة والنص بيتمركزوا "كمجموعة" بنص الزر، يعني لما الزر يكون
+        ضيق (isExpanded = false) أو واسع، التمركز بيختلف بشكل غير متوقع.
+        بدل هيك بنخلي الأيقونة دايمًا أول عنصر، والنص يجاورها مباشرة.
+      */}
+      <span className="relative z-10 flex h-full w-full items-center">
+        <span
+          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition-all duration-200 ${
+            isExpanded ? "mr-2" : "mr-0"
+          }`}
+        >
+          {/*
+            block بدل inline (الافتراضي لأي svg): يشيل المسافة البيضاء
+            الزايدة تحت الأيقونة (ناتجة عن baseline الخط)، يلي كانت سبب
+            رئيسي إنها تبين مش متمركزة عموديًا تمام جوه الـ h-9 w-9.
+          */}
+          <Icon size={18} className="block" />
+        </span>
+
+        {/*
+          هاد span بيلف children (النص) ويتحكم بظهوره/اختفائه حسب
+          isExpanded، نفس منطق باقي عناصر السايدبار (NavigationMenuItem).
+          الفرق إن هون منطق الإخفاء/الإظهار موجود جوه الكومبوننت نفسه،
+          مش لازم تكرره يدويًا بكل مكان بتستدعي فيه الزر.
+        */}
+        <span
+          className={`overflow-hidden whitespace-nowrap text-sm font-medium transition-all duration-300 ${
+            isExpanded ? "max-w-[10rem] opacity-100" : "max-w-0 opacity-0"
+          }`}
+        >
+          {children}
+        </span>
+      </span>
     </motion.button>
   );
 };
-
-

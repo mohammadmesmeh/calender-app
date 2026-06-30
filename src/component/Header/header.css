@@ -2,7 +2,5 @@
 header nav ul {
     display: flex;
     list-style: none;
-    gap: 8px;
-    
-
+    gap: 0.5rem;
 }

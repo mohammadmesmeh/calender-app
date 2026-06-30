@@ -49,7 +49,7 @@ export const CalendarPopover = () => {
                     }
                 </div>
 
-                <div className="days-in-month grid gap-[4px] grid-cols-7 grid-rows-6 my-3 w-full  ">
+                <div className="days-in-month grid gap-1 grid-cols-7 grid-rows-6 my-3 w-full  ">
 
                     {
                         NumFirstDayInMonth !== 0 ? (
