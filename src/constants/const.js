@@ -1,3 +1,5 @@
+import { User, Shield, Bell, ShieldCheck ,CircleHelp,Palette,Languages } from "lucide-react";
+
 export const CONST = {
   DAYS__OF__WEEK: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
   MONTHS__OF__YEAR: [
@@ -25,3 +27,11 @@ export const CONST = {
   }
 
 }
+export const SETTINGS_ITEMS = [
+  { label: "Profile", icon: User },
+  { label: "Security", icon: ShieldCheck },
+  { label: "Notifications", icon: Bell },
+  { label: "Language", icon: Languages },
+  { label: "Appearance", icon: Palette },
+  { label: "Help", icon: CircleHelp },
+];

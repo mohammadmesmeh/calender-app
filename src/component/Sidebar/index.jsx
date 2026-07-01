@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { NavigationMenuItem } from "../NavigationMenuItem"
+import { SettingsMenu } from "../SettingsMenu"
 import { UserProfile } from "../UserProfile"
 import { ShineButton } from "../Buttons/ShineButton"
-import { Calendar, ChartColumn, CalendarClock, ListChecks, LayoutDashboard, Settings, CalendarPlus, Menu, X } from 'lucide-react'
+import { Calendar, ChartColumn, CalendarClock, ListChecks, LayoutDashboard, CalendarPlus, Menu, X } from 'lucide-react'
 
 const navItems = [
   { to: "/dashboard", text: "Dashboard", icon: LayoutDashboard },
@@ -11,7 +12,6 @@ const navItems = [
   { to: "/tasks", text: "Tasks", icon: ListChecks },
   { to: "/events", text: "Events", icon: CalendarClock },
   { to: "/analytics", text: "Analytics", icon: ChartColumn },
-  { to: "/settings", text: "Settings", icon: Settings },
 ]
 
 export const Sidebar = () => {
@@ -80,7 +80,7 @@ export const Sidebar = () => {
       <aside
         onMouseEnter={() => isDesktop && setHovered(true)}
         onMouseLeave={() => isDesktop && setHovered(false)}
-        className={`fixed left-0 top-0 z-50 flex min-h-dvh shrink-0 flex-col overflow-hidden border-r border-border/80 bg-white/95 text-text shadow-card backdrop-blur transition-all duration-300 ease-out ${isDesktop
+        className={`fixed left-0 top-0 z-50 flex min-h-dvh shrink-0 flex-col overflow-visible border-r border-border/80 bg-white/95 text-text shadow-card backdrop-blur transition-all duration-300 ease-out ${isDesktop
           ? expanded
             ? "w-80"
             : "w-24"
@@ -100,7 +100,7 @@ export const Sidebar = () => {
 
           {/* الكتلة العلوية: اللوجو + الـ nav */}
           <div className="flex flex-col">
-            <div className="flex min-h-12 items-center gap-3">
+            <div className="flex min-h-12 items-center px-2 gap-3">
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary-light text-primary shadow-soft">
                 <LayoutDashboard size={20} />
               </div>
@@ -123,6 +123,7 @@ export const Sidebar = () => {
                     onNavigate={() => setMobileOpen(false)}
                   />
                 ))}
+                <SettingsMenu isExpanded={expanded} />
               </ul>
             </nav>
           </div>
@@ -136,11 +137,11 @@ export const Sidebar = () => {
             >
               Add Task
             </ShineButton>
-            <div className="mt-3 border-t border-border/70 pt-3">
+            <div className="mt-1 mb-2 border-t border-border/70 pt-3 ">
               <UserProfile
               expanded={expanded}
                 classNameIcon="bg-white text-primary"
-                className="rounded-2xl bg-secondary p-1 text-white shadow-soft md:p-3"
+                className={`${expanded ? 'rounded-2xl p-2  md:p-3 gap-2 ':'rounded-full  justify-center gap-0 p-0 md:p-0' }  bg-secondary  text-white shadow-soft  `}
               />
             </div>
           </div>

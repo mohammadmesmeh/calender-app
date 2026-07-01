@@ -8,7 +8,7 @@ import { MonthCalendar } from "../component/MonthCalendar";
 import { WeekCalendar } from "../component/WeekCalendar";
 import { DayCalendar } from "../component/DayCalendar";
 import { Calendar } from "../pages/Calendar";
-import { Register } from "../pages/Login/register.jsx";
+import { RegisterPage } from "../pages/RegisterPage";
 import { ProtectedRoute } from "./ProtectedRoute/index.jsx";
 
 export const Routeing = () => {
@@ -20,7 +20,7 @@ export const Routeing = () => {
       <Routes location={location} key={location.pathname}>
 
         {/* Login route */}
-        <Route path="/register" element={<MotionPage><Register /></MotionPage>} />
+        <Route path="/register" element={<MotionPage><RegisterPage /></MotionPage>} />
 
         {/* Protected App */}
         <Route
