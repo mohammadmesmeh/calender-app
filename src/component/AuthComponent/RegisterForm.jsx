@@ -8,6 +8,7 @@ import { Mail, Lock, Eye, EyeOff, CheckCircle2, AlertCircle } from 'lucide-react
 import { useAuth } from '../../Hooks/useAuth';
 import { InputField } from './InputField';
 import { AuthButton } from '../Buttons/AuthBtn';
+import { AuthLogo } from './AuthLogo';
 
 const validationSchema = yup.object({
   email: yup.string().email('Please enter a valid email address').required('Email is required'),
@@ -74,6 +75,9 @@ export function RegisterForm() {
 
   return (
     <>
+      <div className="mb-3 flex justify-center">
+        <AuthLogo />
+      </div>
       <h1 className="text-center text-xl font-semibold tracking-tight text-slate-900">
         Create your account
       </h1>

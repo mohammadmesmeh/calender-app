@@ -11,9 +11,7 @@ export function RegisterPage() {
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-[#EDE9FE] to-[#DBEAFE] px-4 py-10 sm:px-6">
       <div className="w-full max-w-md">
-        <div className="mb-6 flex justify-center">
-          <AuthLogo />
-        </div>
+   
 
         <AuthCard>
           <RegisterForm />

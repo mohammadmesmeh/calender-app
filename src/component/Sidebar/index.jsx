@@ -150,3 +150,65 @@ export const Sidebar = () => {
     </>
   )
 }
+// import { useState } from "react";
+// import { X, Menu } from "lucide-react";
+
+// export const Sidebar = () => {
+//   const [open, setOpen] = useState(false);
+
+//   return (
+//     <>
+//       {/* زر الموبايل */}
+//       <button
+//         onClick={() => setOpen(true)}
+//         className="fixed top-3 left-3 z-50 flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow md:hidden"
+//       >
+//         <Menu size={18} />
+//       </button>
+
+//       {/* Overlay */}
+//       <div
+//         onClick={() => setOpen(false)}
+//         className={`fixed inset-0 z-40 bg-black/40 transition-opacity md:hidden ${open ? "opacity-100 visible" : "opacity-0 invisible"
+//           }`}
+//       />
+
+//       {/* Sidebar */}
+//       <aside
+//         className={`
+//     fixed top-0 left-0 z-50 w-72 min-h-svh bg-white shadow-xl
+//     transform transition-transform duration-300
+//     ${open ? "translate-x-0" : "-translate-x-full"}
+//   `}
+//       >
+//         {/* Header داخل السايدبار */}
+//         <div className="flex items-center justify-between p-4 border-b border-border">
+//           <h2 className="text-lg font-semibold">Menu</h2>
+
+//           {/* زر إغلاق (موبايل فقط) */}
+//           <button
+//             onClick={() => setOpen(false)}
+//             className="md:hidden flex h-9 w-9 items-center justify-center rounded-lg hover:bg-gray-100"
+//           >
+//             <X size={18} />
+//           </button>
+//         </div>
+
+//         {/* Content */}
+//         <nav className="p-4 space-y-2">
+//           <a className="block rounded-lg px-3 py-2 hover:bg-primary-light hover:text-primary">
+//             Dashboard
+//           </a>
+
+//           <a className="block rounded-lg px-3 py-2 hover:bg-primary-light hover:text-primary">
+//             Tasks
+//           </a>
+
+//           <a className="block rounded-lg px-3 py-2 hover:bg-primary-light hover:text-primary">
+//             Settings
+//           </a>
+//         </nav>
+//       </aside>
+//     </>
+//   );
+// };
