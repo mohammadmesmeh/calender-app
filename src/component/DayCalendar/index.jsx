@@ -27,14 +27,14 @@ export const DayCalendar = () => {
             <div className="w-full flex flex-row px-3 mt-10  ">
                 
                 <div className="w-12">
-                    {hoursOfDay.map((i) => (
-                        <p className={`w-full h-[60px] text-[8px] md:text-[12px] relative bottom-1.5 sm:bottom-2`}>{i.label}</p>
+                    {hoursOfDay.map((i, index) => (
+                        <p key={index} className={`w-full h-[60px] text-[8px] md:text-[12px] relative bottom-1.5 sm:bottom-2`}>{i.label}</p>
                     ))}
                 </div>
                 <div className="w-full relative">
                     <CurrentTimeLine />
                     {hoursOfDay.map((i, index) => (
-                        <p className={`w-full h-[60px] border-b border-border  ${index === 0 ? "border-t border-border " : ""} `}></p>
+                        <p key={index} className={`w-full h-[60px] border-b border-border  ${index === 0 ? "border-t border-border " : ""} `}></p>
                     ))}
                 </div>
 

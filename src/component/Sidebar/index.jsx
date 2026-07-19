@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react"
+
 import { AnimatePresence, motion } from "framer-motion"
 import { NavigationMenuItem } from "../NavigationMenuItem"
 import { SettingsMenu } from "../SettingsMenu"
 import { UserProfile } from "../UserProfile"
 import { ShineButton } from "../Buttons/ShineButton"
 import { Calendar, ChartColumn, CalendarClock, ListChecks, LayoutDashboard, CalendarPlus, Menu, X } from 'lucide-react'
+
 
 const navItems = [
   { to: "/dashboard", text: "Dashboard", icon: LayoutDashboard },
@@ -14,48 +15,16 @@ const navItems = [
   { to: "/analytics", text: "Analytics", icon: ChartColumn },
 ]
 
-export const Sidebar = () => {
-  const [isDesktop, setIsDesktop] = useState(() => typeof window !== "undefined" ? window.innerWidth >= 768 : true)
-  const [hovered, setHovered] = useState(false)
-  const [mobileOpen, setMobileOpen] = useState(false)
+export const Sidebar = ({mobileOpen,
+    expanded,
+    setHovered,
+    setMobileOpen,isDesktop}) => {
 
-  useEffect(() => {
-    const handleResize = () => {
-      const desktop = window.innerWidth >= 768
-      setIsDesktop(desktop)
-      if (!desktop) {
-        setHovered(false)
-      }
-    }
 
-    handleResize()
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
-
-  useEffect(() => {
-    if (!mobileOpen) return undefined
-    const originalOverflow = document.body.style.overflow
-    document.body.style.overflow = "scroll"
-    return () => {
-      document.body.style.overflow = originalOverflow
-    }
-  }, [mobileOpen])
-
-  const expanded = isDesktop ? hovered : mobileOpen
 
   return (
     <>
-      {!isDesktop && (
-        <button
-          type="button"
-          onClick={() => setMobileOpen((value) => !value)}
-          className="fixed left-3 top-3 z-50 flex h-11 w-11 items-center justify-center rounded-2xl border border-border/80 bg-white text-text shadow-soft transition-all duration-200 hover:bg-primary-light hover:text-primary md:hidden"
-          aria-label={mobileOpen ? "Close sidebar" : "Open sidebar"}
-        >
-          {mobileOpen ? <X size={18} /> : <Menu size={18} />}
-        </button>
-      )}
+     
 
       <AnimatePresence>
         {!isDesktop && mobileOpen && (
@@ -80,13 +49,13 @@ export const Sidebar = () => {
       <aside
         onMouseEnter={() => isDesktop && setHovered(true)}
         onMouseLeave={() => isDesktop && setHovered(false)}
-        className={`fixed left-0 top-0 z-50 flex min-h-dvh shrink-0 flex-col overflow-visible border-r border-border/80 bg-white/95 text-text shadow-card backdrop-blur transition-all duration-300 ease-out ${isDesktop
+        className={`fixed justify-between left-0 top-0 z-50 flex  shrink-0 flex-col overflow-visible border-r border-border/80 bg-white/95 text-text shadow-card backdrop-blur transition-all duration-300 ease-out ${isDesktop
           ? expanded
-            ? "w-80"
-            : "w-24"
+            ? "w-80 min-h-dvh"
+            : "w-24 min-h-dvh"
           : mobileOpen
-            ? "w-72 translate-x-0"
-            : "w-72 -translate-x-full"
+            ? "w-72 translate-x-0 h-screen"
+            : "w-72 -translate-x-full h-screen"
           }`}
       >
         {/*
@@ -137,14 +106,14 @@ export const Sidebar = () => {
             >
               Add Task
             </ShineButton>
-            <div className="mt-1 mb-2 border-t border-border/70 pt-3 ">
-              <UserProfile
-              expanded={expanded}
-                classNameIcon="bg-white text-primary"
-                className={`${expanded ? 'rounded-2xl p-2  md:p-3 gap-2 ':'rounded-full  justify-center gap-0 p-0 md:p-0' }  bg-secondary  text-white shadow-soft  `}
-              />
-            </div>
           </div>
+        </div>
+        <div className="mt-1 mb-2 border-t border-border/70 pt-3 ">
+          <UserProfile
+            expanded={expanded}
+            classNameIcon="bg-white text-primary"
+            className={`${expanded ? 'rounded-2xl p-2  md:p-3 gap-2 ' : 'rounded-full  justify-center gap-0 p-0 md:p-0'}  bg-secondary  text-white shadow-soft  `}
+          />
         </div>
       </aside>
     </>

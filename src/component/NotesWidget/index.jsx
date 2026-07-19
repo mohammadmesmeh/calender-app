@@ -67,7 +67,7 @@ export const NotesWidget = () => {
                     </div>
                 ) : (
                     sortedNotes.map(note => (
-                        <Note {...note} togglePin={togglePin} deleteNote={deleteNote}  />
+                        <Note key={note.id} {...note} togglePin={togglePin} deleteNote={deleteNote}  />
                         
                     ))
                 )}

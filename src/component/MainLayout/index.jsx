@@ -17,65 +17,33 @@ import { Container } from "../container";
 import { MainMenu } from "../MainMenu";
 import { useContext } from "react";
 import { VisibleContext } from "../../context/VisibleContext";
+
 export const MainLayout = () => {
   const { isVisibleMenu } = useContext(VisibleContext);
 
   return (
-    <div className="flex flex-col h-dvh flex-1  min-h-0 ">
-
-      {/* Header */}
+    <div className="flex h-dvh flex-col overflow-hidden bg-background">
       <Header className="shrink-0" />
 
-      {/* Body */}
-      <div className="flex flex-1 min-h-0">
-
-        {/* Content */}
-        <div className="flex-1 min-h-0 flex flex-col">
-          <Container>
-            <Outlet />
-          </Container>
-        </div>
-
-        {/* Sidebar/Menu */}
-        {isVisibleMenu && (
-          <div className="w-[260px] shrink-0">
-            <MainMenu />
+      <div className="flex flex-1 min-h-0 flex-col overflow-hidden lg:flex-row">
+        <main className="flex flex-1 min-h-0 flex-col overflow-hidden">
+          <div className="flex-1 overflow-y-auto">
+            <Container>
+              <Outlet />
+            </Container>
           </div>
-        )}
+        </main>
 
+        {isVisibleMenu && (
+          <aside className="w-full border-t border-border bg-surface/90 shadow-soft lg:w-64 lg:border-l lg:border-t-0">
+            <div className="h-full overflow-y-auto">
+              <MainMenu />
+            </div>
+          </aside>
+        )}
       </div>
 
-      {/* Footer */}
       <Footer className="shrink-0" />
     </div>
   );
 };
-// export const MainLayout = () => {
-//      const { isVisibleMenu } = useContext(VisibleContext)
-//   return (
-//     <div className="flex flex-col min-h-screen">
-
-//       {/* Header */}
-//       <Header />
-//       <Container>
-
-//         {/* Content */}
-//         <div
-
-//           className=" flex-1 flex flex-col min-h-0 "
-//           style={{
-//             flexDirection: isVisibleMenu ? 'row' : 'column'
-//           }}
-//         >
-
-//           <Outlet />
-//           <MainMenu />
-//         </div>
-//       </Container>
-
-//       {/* Footer */}
-//       <Footer />
-
-//     </div>
-//   );
-// };

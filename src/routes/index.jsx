@@ -7,7 +7,7 @@ import { Dashboard } from "../pages/Dashboard";
 import { MonthCalendar } from "../component/MonthCalendar";
 import { WeekCalendar } from "../component/WeekCalendar";
 import { DayCalendar } from "../component/DayCalendar";
-import { Calendar } from "../pages/Calendar";
+
 import { RegisterPage } from "../pages/RegisterPage";
 import { ProtectedRoute } from "./ProtectedRoute/index.jsx";
 

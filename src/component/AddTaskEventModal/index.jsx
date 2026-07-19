@@ -6,7 +6,7 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { Calendar, Clock, Tag, FileText, MapPin, Flag, X, Save } from 'lucide-react'
 import { Modal } from '../Modal'
-import { FieldWrapper } from '../FormField'
+import { FieldWrapper } from '../Formes/FormField'
 import { categories } from '../../Mock Data/data'
 
 const FORM_SCHEMA = yup.object().shape({

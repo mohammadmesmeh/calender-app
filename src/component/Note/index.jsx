@@ -2,7 +2,6 @@ import { Plus, Trash2, Pin, Clock } from "lucide-react";
 export const Note =({id,pinned,text,timestamp ,deleteNote ,togglePin})=>{
     return(
         <div
-                            key={id}
                             className={`p-3 rounded-lg border transition-all duration-200 group ${pinned
                                 ? "bg-yellow-50 border-yellow-200 shadow-sm"
                                 : "bg-white border-gray-100 hover:border-purple-200"

@@ -1,4 +1,4 @@
-import { User, Shield, Bell, ShieldCheck ,CircleHelp,Palette,Languages } from "lucide-react";
+import { User, Bell, ShieldCheck ,CircleHelp,Palette,Languages } from "lucide-react";
 
 export const CONST = {
   DAYS__OF__WEEK: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],

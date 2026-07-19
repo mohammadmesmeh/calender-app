@@ -94,8 +94,8 @@ export const MonthCalendar = () => {
                     {
                         NumFirstDayInMonth !== 0 ? (
 
-                            PrevMonthDaysNumsArray.slice(-NumFirstDayInMonth).map((item) => (
-                                < BaseCalendarDay Month={`${prevMonthName.slice(0, 3)}`} day={item} className="text-gray-400 " />
+                            PrevMonthDaysNumsArray.slice(-NumFirstDayInMonth).map((item, index) => (
+                                < BaseCalendarDay key={`prev-${index}`} Month={`${prevMonthName.slice(0, 3)}`} day={item} className="text-gray-400 " />
 
 
                             ))
@@ -103,8 +103,8 @@ export const MonthCalendar = () => {
 
                     }
 
-                    {ThisMonthDaysNumsArray.map((item) => (
-                        <BaseCalendarDay day={item}
+                    {ThisMonthDaysNumsArray.map((item, index) => (
+                        <BaseCalendarDay key={`curr-${index}`} day={item}
                             classNameOfContainer={`border ${item === DAY && thisMonth === MONTH && thisYear === YEAR ? "border-primary shadow-active" : ""}`}
 
 
@@ -115,8 +115,8 @@ export const MonthCalendar = () => {
 
                     ))}
                     {
-                        NextMonthDaysNumsArray.slice(0, 42 - NumFirstDayInMonth - ThisMonthDaysNumsArray.length).map((item) => (
-                            < BaseCalendarDay Month={`${nextMonthName.slice(0, 3)}`} day={item} className="text-gray-400" />
+                        NextMonthDaysNumsArray.slice(0, 42 - NumFirstDayInMonth - ThisMonthDaysNumsArray.length).map((item, index) => (
+                            < BaseCalendarDay key={`next-${index}`} Month={`${nextMonthName.slice(0, 3)}`} day={item} className="text-gray-400" />
 
                         ))
 

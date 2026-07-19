@@ -1,4 +1,4 @@
-export const AddButtonsNonBg = ({ content, children, className }) => (
+export const AddButtonsNonBg = ({ content, children, className,onClick }) => (
 
     <button type="button"
         className={`
@@ -13,7 +13,7 @@ export const AddButtonsNonBg = ({ content, children, className }) => (
       hover:shadow-md
       active:scale-95
       transition-all duration-300
-      ${className} `}>
+      ${className} `} onClick={onClick}>
         {children}
         {content}
     </button>

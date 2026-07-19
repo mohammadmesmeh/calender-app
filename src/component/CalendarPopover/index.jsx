@@ -1,5 +1,4 @@
 import { IconBtn } from '../Buttons/IconBtn';
-import '@fontsource/inter';
 import { CONST } from "../../constants/const";
 import { Day } from "../Day";
 import { DayNum } from "../DayNum";
@@ -39,9 +38,9 @@ export const CalendarPopover = () => {
                 <div className="week-days flex items-center justify-between w-full my-3 h-[36px] ">
 
                     {
-                        CONST.DAYS__OF__WEEK.map((item) => (
+                        CONST.DAYS__OF__WEEK.map((item, index) => (
 
-                            <Day day={item.slice(0, 2)} className='text-text-muted text-sm' />
+                            <Day key={index} day={item.slice(0, 2)} className='text-text-muted text-sm' />
 
 
 
@@ -54,8 +53,8 @@ export const CalendarPopover = () => {
                     {
                         NumFirstDayInMonth !== 0 ? (
 
-                            PrevMonthDaysNumsArray.slice(-NumFirstDayInMonth).map((item) => (
-                                < DayNum content={item} className="text-text-muted" />
+                            PrevMonthDaysNumsArray.slice(-NumFirstDayInMonth).map((item, index) => (
+                                < DayNum key={`prev-${index}`} content={item} className="text-text-muted" />
 
 
                             ))
@@ -65,16 +64,16 @@ export const CalendarPopover = () => {
 
 
                     {
-                        ThisMonthDaysNumsArray.map((item) => (
-                            < DayNum content={item} className={item === thisDay && thisMonth === MONTH && thisYear === YEAR ? 'bg-primary text-white hover:text-text rounded-full' : ''} />
+                        ThisMonthDaysNumsArray.map((item, index) => (
+                            < DayNum key={`curr-${index}`} content={item} className={item === thisDay && thisMonth === MONTH && thisYear === YEAR ? 'bg-primary text-white hover:text-text rounded-full' : ''} />
 
                         ))
                     }
                     {
 
 
-                        NextMonthDaysNumsArray.slice(0, 42 - NumFirstDayInMonth - ThisMonthDaysNumsArray.length).map((item) => (
-                            < DayNum content={item} className="text-text-muted " />
+                        NextMonthDaysNumsArray.slice(0, 42 - NumFirstDayInMonth - ThisMonthDaysNumsArray.length).map((item, index) => (
+                            < DayNum key={`next-${index}`} content={item} className="text-text-muted " />
 
 
                         ))

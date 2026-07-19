@@ -22,7 +22,7 @@ export const IconBtn = ({ icon: Icon, onClick, className = "" }) => {
         border
       border-border
         shadow-sm
-        :hover:shadow-md
+        hover:shadow-md
       hover:bg-gray-50
         active:scale-95
         transition-all 

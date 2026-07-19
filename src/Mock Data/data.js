@@ -103,8 +103,6 @@ const getDayProgressRate= (day) => {
 
   return Math.round((completed / dayTasks.length) * 100);
 };
-console.log(getDayProgressRate('Tue'));
-
 export const chartData = [
   {
     day: "Mon",

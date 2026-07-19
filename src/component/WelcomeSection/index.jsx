@@ -11,7 +11,7 @@ export const WelcomeSection = () => {
         <div className="mb-2">
           <span className="text-text-secondary">Welcome back,</span>
         </div>
-        <h2 className="text-3xl font-bold mb-3 text-text">{user.displayName}</h2>
+        <h2 className="text-3xl font-bold mb-3 text-text">{user?.displayName || 'User'}</h2>
         <p className="text-text-secondary text-lg w-80">
           You have tasks pending for today.
           Keep up the great work!
