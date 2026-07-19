@@ -1,8 +1,19 @@
+import { useMemo } from "react"
 import { useAuth } from '../../Hooks/useAuth'
+import { tasks } from '../../Mock Data/data'
 import { ProgressCircle } from '../ProgressCircle'
 
 export const WelcomeSection = () => {
   const { user } = useAuth()
+
+  const chartData = useMemo(() => {
+    const all = tasks.length
+    const done = tasks.filter((t) => t.completed).length
+    return [
+      { name: "Completed", value: done, color: "#437FF7" },
+      { name: "Pending", value: all - done, color: "#E5ECED" },
+    ]
+  }, [])
 
   return (
     <div className="bg-surface rounded-2xl p-8 mb-6 h-fit mt-6 flex justify-between w-full group shadow-card border border-border">
@@ -18,7 +29,7 @@ export const WelcomeSection = () => {
         </p>
       </div>
 
-      <ProgressCircle />
+      <ProgressCircle data={chartData} />
 
       <div className="w-fit hidden md:flex animate-floatSlow">
 
