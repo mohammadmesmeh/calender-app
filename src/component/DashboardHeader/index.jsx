@@ -1,35 +1,50 @@
-import { LayoutDashboard, CirclePlus, Search, Bell } from 'lucide-react'
-import { Logo } from '../Logo'
+import { Search, Bell, CirclePlus } from 'lucide-react'
 import { UserProfile } from '../UserProfile'
 import { AddButtons } from '../Buttons/AddButtons'
 import { MobileMenuButton } from '../Buttons/MobileMenuButton'
+import { useSidebarContext } from '../../context/SidebarContext'
 
-export const DashboardHeader = ({mobileOpen, setMobileOpen , isDesktop }) => {
-   
+export const DashboardHeader = () => {
+  const { isDesktop, mobileOpen, setMobileOpen } = useSidebarContext()
 
+  return (
+    <div className="flex items-center justify-between shadow-xl px-3 md:px-6 py-2 md:py-4 sticky top-0 backdrop-blur-lg bg-white/70 z-10">
+      <div className="flex items-center justify-end w-full gap-2 md:gap-4">
+        {!isDesktop && (
+          <MobileMenuButton
+            onClick={() => setMobileOpen((v) => !v)}
+            mobileOpen={mobileOpen}
+          />
+        )}
 
+        <form action="" className="relative flex-1" role="search">
+          <div className="w-full">
+            <label htmlFor="search" className="text-text-muted absolute bottom-3 left-2 z-10 pointer-events-none">
+              <Search size={20} />
+            </label>
+            <input
+              type="search"
+              id="search"
+              name="search"
+              placeholder="Search tasks, events..."
+              className="bg-white w-full text-text border-2 border-border rounded-xl py-2 px-8 placeholder:text-text-muted focus:outline-none focus:border-primary transition-colors focus:ring-2 focus:ring-primary/30"
+            />
+          </div>
+        </form>
 
-    return (
-        <div className="dashboard-header-container flex items-center justify-between  shadow-xl px-3 md:px-6 py-2 md:py-4 sticky top-0 backdrop-blur-lg bg-white/70 z-10">
-            <div className="dashboard-header-actions flex items-center justify-end  w-full gap-2 md:gap-4">
-                {!isDesktop && <MobileMenuButton onClick={() => setMobileOpen((value) => !value)} mobileOpen={mobileOpen} />}
-                <form action="" className="relative  flex-1">
-                    <div className=' w-full'>
-                        <label htmlFor="search" className="text-text-muted absolute bottom-3 left-2 z-10 pointer-events-none">
-                            <Search size={20} />
-                        </label>
-                        <input type="search" id="search" name='search' placeholder="Search tasks, events..." className="bg-white  w-full text-text border-2 border-border rounded-xl py-2 px-8 placeholder:text-text-muted focus:outline-none focus:border-primary transition-colors focus:ring-2 focus:ring-primary/30 " />
-                    </div>
-                </form>
-                <div className="notification cursor-pointer relative ">
-                    <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-500 border-2 text-[10px] text-center  z-10 text-white border-white  ">2</span>
-                    <Bell className="text-text-muted hover:text-primary hover:rotate-3 transition-colors transition-transform  " />
-                </div>
-                <AddButtons content="Quick Add" className='hidden md:flex bg-primary text-white group' >
-                    <CirclePlus className=' transition-transform duration-300  group-hover:rotate-180' />
-                </AddButtons>
-                <UserProfile classNameIcon='bg-primary text-white ' hiddenName='hidden' />
-            </div>
+        <div className="notification cursor-pointer relative">
+          <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-500 border-2 text-[10px] text-center z-10 text-white border-white">
+            2
+          </span>
+          <Bell className="text-text-muted hover:text-primary transition-colors" />
         </div>
-    )
+
+        <AddButtons content="Quick Add" className="hidden md:flex bg-primary text-white group">
+          <CirclePlus className="transition-transform duration-300 group-hover:rotate-180" />
+        </AddButtons>
+
+        <UserProfile classNameIcon="bg-primary text-white" />
+      </div>
+    </div>
+  )
 }
