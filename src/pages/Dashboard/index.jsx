@@ -6,6 +6,7 @@ import { UpcomingEvents } from "../../component/UpcomingEvents"
 import { TodaysTasks } from "../../component/Today'sTasks"
 import { NotesWidget } from '../../component/NotesWidget'
 import { ProductivityAnalytics } from '../../component/ProductivityAnalytics'
+import { AreaStepChart } from '../../component/AreaStepChart'
 import { InViewAnimation } from "../../component/Animated Freamer Motion/InViewAnimation"
 import { SidebarProvider, useSidebarContext } from "../../context/SidebarContext"
 
@@ -27,6 +28,7 @@ const DashboardContent = () => {
           <InViewAnimation><UpcomingEvents /></InViewAnimation>
           <InViewAnimation><TodaysTasks /></InViewAnimation>
           <InViewAnimation><NotesWidget /></InViewAnimation>
+          <InViewAnimation><AreaStepChart /></InViewAnimation>
           <InViewAnimation><ProductivityAnalytics /></InViewAnimation>
         </div>
       </div>
