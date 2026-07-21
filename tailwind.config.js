@@ -87,7 +87,10 @@
 // plugins: [],
 // }
 /** @type {import('tailwindcss').Config} */
+import plugin from 'tailwindcss/plugin'
+
 export default {
+  darkMode: 'class',
   content: ["./index.html", "./src/**/*.{html,js,jsx}"],
   theme: {
     extend: {
@@ -152,58 +155,46 @@ export default {
 
       // 🎨 Colors (Calender Design System)
       colors: {
-        // Backgrounds
-        background: '#f3f4f6',
-        surface: '#FFFFFF',
-
-        // Primary (blue UI)
+        background: 'hsl(var(--background))',
+        surface: 'hsl(var(--surface))',
         primary: {
-          DEFAULT: '#437FF7',
-          hover: '#2563EB',
-          light: '#DBEAFE',
+          DEFAULT: 'hsl(var(--primary))',
+          hover: 'hsl(var(--primary-hover))',
+          light: 'hsl(var(--primary-light))',
         },
-
-        // Secondary / Accent (purple cards)
         secondary: {
-          DEFAULT: '#8B5CF6',
-          light: '#EDE9FE',
+          DEFAULT: 'hsl(var(--secondary))',
+          light: 'hsl(var(--secondary-light))',
         },
-
-        // Success (green stats)
         success: {
-          DEFAULT: '#538165',
-          light: '#D1FAE5',
+          DEFAULT: 'hsl(var(--success))',
+          light: 'hsl(var(--success-light))',
         },
-
-        // Warning / Pending (yellow)
         warning: {
-          DEFAULT: '#EEFC53',
+          DEFAULT: 'hsl(var(--warning))',
         },
-
-        // Pink accent (small UI highlights)
+        danger: {
+          DEFAULT: 'hsl(var(--danger))',
+          light: 'hsl(var(--danger-light))',
+        },
         accent: {
-          DEFAULT: '#FF3270',
-          light: '#EAA9C3',
+          DEFAULT: 'hsl(var(--accent))',
+          light: 'hsl(var(--accent-light))',
         },
-
-        // Text
         text: {
-          DEFAULT: '#111827',
-          secondary: '#6B7280',
-          muted: '#9CA3AF',
+          DEFAULT: 'hsl(var(--text))',
+          secondary: 'hsl(var(--text-secondary))',
+          muted: 'hsl(var(--text-muted))',
         },
-
-        // Borders
-        border: '#E5ECED',
-      },
-
-      // 🌑 Shadows (soft dashboard style)
-      boxShadow: {
-        soft: '0 2px 8px rgba(0,0,0,0.05)',
-        card: '0 4px 12px rgba(0,0,0,0.08)',
-        active: '0 0 0 4px rgba(67,127,247,0.2)',
-        activeLg:
-          '0 0 0 4px rgba(67,127,247,0.2), 0 4px 12px rgba(0,0,0,0.1)',
+        border: 'hsl(var(--border))',
+        chart: {
+          1: 'hsl(var(--chart-1))',
+          2: 'hsl(var(--chart-2))',
+          3: 'hsl(var(--chart-3))',
+          4: 'hsl(var(--chart-4))',
+          5: 'hsl(var(--chart-5))',
+          bg: 'hsl(var(--chart-bg))',
+        },
       },
 
       // 🎨 Background gradients (dashboard cards vibe)
@@ -212,10 +203,15 @@ export default {
         softGradient: 'linear-gradient(135deg, #FCFCFC 0%, #F1F5F9 100%)',
       },
 
-      // 🔘 Border Radius
+      // 🔘 Border Radius (design tokens — driven by CSS vars)
       borderRadius: {
-        xl: '1rem',
-        '2xl': '1.5rem',
+        section: 'var(--radius-section, 1.5rem)',
+        card: 'var(--radius-card, 1.5rem)',
+        button: 'var(--radius-button, 0.75rem)',
+        input: 'var(--radius-input, 0.75rem)',
+        modal: 'var(--radius-modal, 1.5rem)',
+        icon: 'var(--radius-icon, 0.625rem)',
+        full: '9999px',
       },
 
       // 🎬 Transitions
@@ -235,5 +231,14 @@ export default {
     },
   },
 
-  plugins: [],
+  plugins: [
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+        '.shadow-subtle': { boxShadow: 'var(--shadow-subtle)' },
+        '.shadow-card': { boxShadow: 'var(--shadow-card)' },
+        '.shadow-dropdown': { boxShadow: 'var(--shadow-dropdown)' },
+        '.shadow-active': { boxShadow: '0 0 0 4px rgba(67,127,247,0.2)' },
+      })
+    }),
+  ],
 };
