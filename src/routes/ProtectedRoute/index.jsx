@@ -13,7 +13,7 @@ import { Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";//هي دالة من Firebase معناها:“راقب حالة تسجيل الدخول للمستخدم طول الوقت”
 import { auth } from "../../firebase";
-import LoadingScreen from "../../pages/Loadingscreen";
+import LoadingScreen from "../../components/feedback/LoadingScreen";
 
 export const ProtectedRoute = ({ children }) => {
   const [user, setUser] = useState(undefined);

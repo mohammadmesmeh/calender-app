@@ -1,0 +1,51 @@
+export const THEMES = [
+  {
+    id: 'light',
+    label: 'Light',
+    icon: 'Sun',
+    description: 'Clean and bright',
+    colors: ['#3B82F6', '#F8FAFC', '#8B5CF6'],
+  },
+  {
+    id: 'dark',
+    label: 'Dark',
+    icon: 'Moon',
+    description: 'Easy on the eyes',
+    colors: ['#60A5FA', '#1E293B', '#A78BFA'],
+  },
+  {
+    id: 'midnight',
+    label: 'Midnight',
+    icon: 'Moon',
+    description: 'Deep blue darkness',
+    colors: ['#818CF8', '#0F172A', '#C084FC'],
+  },
+  {
+    id: 'ocean',
+    label: 'Ocean',
+    icon: 'Droplets',
+    description: 'Cool aqua tones',
+    colors: ['#06B6D4', '#0F766E', '#2DD4BF'],
+  },
+  {
+    id: 'emerald',
+    label: 'Emerald',
+    icon: 'Leaf',
+    description: 'Natural greens',
+    colors: ['#10B981', '#064E3B', '#34D399'],
+  },
+  {
+    id: 'sunset',
+    label: 'Sunset',
+    icon: 'Sunset',
+    description: 'Warm orange glow',
+    colors: ['#F97316', '#1C1917', '#FB923C'],
+  },
+  {
+    id: 'rose',
+    label: 'Rose',
+    icon: 'Flower2',
+    description: 'Soft pink elegance',
+    colors: ['#EC4899', '#1F1B2E', '#F472B6'],
+  },
+]

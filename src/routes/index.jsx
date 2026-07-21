@@ -1,14 +1,14 @@
 
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from 'framer-motion'
-import { MotionPage } from '../animations'
-import { MainLayout } from "../component/MainLayout";
-import { Dashboard } from "../pages/Dashboard";
-import { MonthCalendar } from "../component/MonthCalendar";
-import { WeekCalendar } from "../component/WeekCalendar";
-import { DayCalendar } from "../component/DayCalendar";
+import { MotionPage } from '@/components/MotionPage'
+import { MainLayout } from "../components/layout/MainLayout";
+import { Dashboard } from "@/features/dashboard/pages/Dashboard";
+import { MonthCalendar } from "../features/calendar/components/MonthCalendar";
+import { WeekCalendar } from "../features/calendar/components/WeekCalendar";
+import { DayCalendar } from "../features/calendar/components/DayCalendar";
 
-import { RegisterPage } from "../pages/RegisterPage";
+import { RegisterPage } from "../features/auth/pages/RegisterPage";
 import { ProtectedRoute } from "./ProtectedRoute/index.jsx";
 
 export const Routeing = () => {
