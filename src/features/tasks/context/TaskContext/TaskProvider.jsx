@@ -25,11 +25,12 @@ export const TaskProvider = ({ children }) => {
       const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
       const task = {
         id,
-        title: newTask.description,
+        title: newTask.title,
         time: newTask.date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         day: dayNames[newTask.date.getDay()],
         completed: false,
         priority: newTask.priority || 'medium',
+        description: newTask.description || null,
       }
       setTasks((prev) => [task, ...prev])
     }

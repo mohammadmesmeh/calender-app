@@ -34,10 +34,10 @@ export const TaskModal = ({ isOpen, onClose, onSave }) => {
 
   const handleSubmit = () => {
     if (type === 'task') {
+      if (!title.trim()) { setError('Please enter a task title'); return }
       if (!date) { setError('Please select a task date'); return }
-      if (!description.trim()) { setError('Please enter a task description'); return }
       setError('')
-      onSave({ type: 'task', date, description: description.trim(), completed: false, priority: 'medium' })
+      onSave({ type: 'task', title: title.trim(), date, description: description.trim(), completed: false, priority: 'medium' })
     } else {
       if (!title.trim()) { setError('Please enter an event title'); return }
       if (!date) { setError('Please select an event date'); return }
@@ -65,7 +65,7 @@ export const TaskModal = ({ isOpen, onClose, onSave }) => {
         </div>
 
         {type === 'task' ? (
-          <TaskForm date={date} onDateChange={(d) => { setDate(d); clearError() }} description={description} onDescriptionChange={setDescription} error={error} />
+          <TaskForm title={title} onTitleChange={setTitle} date={date} onDateChange={(d) => { setDate(d); clearError() }} description={description} onDescriptionChange={setDescription} error={error} />
         ) : (
           <EventForm
             title={title} onTitleChange={setTitle}
