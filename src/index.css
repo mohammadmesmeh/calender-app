@@ -2,11 +2,235 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root,
+  [data-theme="light"] {
+    --background: 210 17% 98%;
+    --surface: 0 0% 100%;
+    --primary: 217 91% 60%;
+    --primary-hover: 224 76% 54%;
+    --primary-light: 214 95% 93%;
+    --secondary: 262 83% 58%;
+    --secondary-light: 255 82% 95%;
+    --success: 146 22% 40%;
+    --success-light: 156 80% 90%;
+    --warning: 64 97% 66%;
+    --accent: 343 100% 60%;
+    --accent-light: 337 61% 79%;
+    --danger: 0 84% 60%;
+    --danger-light: 0 93% 94%;
+    --text: 220 39% 11%;
+    --text-secondary: 220 10% 46%;
+    --text-muted: 218 11% 65%;
+    --border: 190 15% 91%;
+    --chart-1: 217 91% 60%;
+    --chart-2: 190 15% 85%;
+    --chart-3: 146 22% 40%;
+    --chart-4: 343 100% 60%;
+    --chart-5: 262 83% 58%;
+    --chart-bg: 210 17% 98%;
+    --shadow-subtle: 0 2px 8px rgba(0,0,0,0.05);
+    --shadow-card: 0 4px 12px rgba(0,0,0,0.08);
+    --shadow-dropdown: 0 20px 60px -20px rgba(15,23,42,0.35);
+    --shadow-active: 0 0 0 4px rgba(67,127,247,0.2);
+  }
+
+  [data-theme="dark"] {
+    --background: 220 17% 10%;
+    --surface: 220 15% 14%;
+    --primary: 217 91% 65%;
+    --primary-hover: 217 91% 55%;
+    --primary-light: 217 50% 20%;
+    --secondary: 262 83% 70%;
+    --secondary-light: 262 50% 22%;
+    --success: 146 22% 55%;
+    --success-light: 146 30% 18%;
+    --warning: 64 90% 55%;
+    --accent: 343 100% 70%;
+    --accent-light: 343 60% 22%;
+    --danger: 0 78% 58%;
+    --danger-light: 0 50% 20%;
+    --text: 220 10% 90%;
+    --text-secondary: 220 10% 65%;
+    --text-muted: 220 10% 50%;
+    --border: 220 12% 22%;
+    --chart-1: 217 91% 65%;
+    --chart-2: 190 10% 30%;
+    --chart-3: 146 22% 55%;
+    --chart-4: 343 100% 70%;
+    --chart-5: 262 83% 70%;
+    --chart-bg: 220 15% 12%;
+    --shadow-subtle: 0 2px 8px rgba(0,0,0,0.25);
+    --shadow-card: 0 4px 12px rgba(0,0,0,0.30);
+    --shadow-dropdown: 0 20px 60px -20px rgba(0,0,0,0.55);
+  }
+
+  [data-theme="midnight"] {
+    --background: 230 20% 7%;
+    --surface: 230 18% 11%;
+    --primary: 235 80% 70%;
+    --primary-hover: 235 75% 60%;
+    --primary-light: 235 40% 20%;
+    --secondary: 270 70% 65%;
+    --secondary-light: 270 35% 18%;
+    --success: 160 40% 55%;
+    --success-light: 160 30% 14%;
+    --warning: 50 90% 50%;
+    --accent: 340 80% 65%;
+    --accent-light: 340 45% 18%;
+    --danger: 0 70% 58%;
+    --danger-light: 0 40% 16%;
+    --text: 220 15% 92%;
+    --text-secondary: 220 10% 65%;
+    --text-muted: 220 10% 45%;
+    --border: 230 12% 20%;
+    --chart-1: 235 80% 70%;
+    --chart-2: 230 10% 25%;
+    --chart-3: 160 40% 55%;
+    --chart-4: 340 80% 65%;
+    --chart-5: 270 70% 65%;
+    --chart-bg: 230 20% 7%;
+    --shadow-subtle: 0 2px 8px rgba(0,0,0,0.35);
+    --shadow-card: 0 4px 12px rgba(0,0,0,0.45);
+    --shadow-dropdown: 0 20px 60px -20px rgba(0,0,0,0.65);
+  }
+
+  [data-theme="ocean"] {
+    --background: 185 40% 94%;
+    --surface: 0 0% 100%;
+    --primary: 190 80% 35%;
+    --primary-hover: 190 75% 28%;
+    --primary-light: 190 70% 90%;
+    --secondary: 170 60% 40%;
+    --secondary-light: 170 50% 88%;
+    --success: 160 50% 35%;
+    --success-light: 155 55% 88%;
+    --warning: 45 85% 55%;
+    --accent: 15 85% 55%;
+    --accent-light: 15 70% 90%;
+    --danger: 0 70% 55%;
+    --danger-light: 0 65% 92%;
+    --text: 200 30% 12%;
+    --text-secondary: 200 15% 40%;
+    --text-muted: 200 12% 60%;
+    --border: 190 20% 85%;
+    --chart-1: 190 80% 35%;
+    --chart-2: 190 20% 80%;
+    --chart-3: 160 50% 35%;
+    --chart-4: 15 85% 55%;
+    --chart-5: 170 60% 40%;
+    --chart-bg: 185 40% 94%;
+    --shadow-subtle: 0 2px 8px rgba(0,0,0,0.05);
+    --shadow-card: 0 4px 12px rgba(0,0,0,0.08);
+    --shadow-dropdown: 0 20px 60px -20px rgba(15,23,42,0.35);
+  }
+
+  [data-theme="emerald"] {
+    --background: 150 30% 95%;
+    --surface: 0 0% 100%;
+    --primary: 160 70% 35%;
+    --primary-hover: 160 65% 28%;
+    --primary-light: 155 60% 90%;
+    --secondary: 130 40% 40%;
+    --secondary-light: 130 35% 90%;
+    --success: 150 55% 35%;
+    --success-light: 150 50% 90%;
+    --warning: 45 85% 50%;
+    --accent: 350 75% 50%;
+    --accent-light: 350 60% 92%;
+    --danger: 0 70% 50%;
+    --danger-light: 0 60% 92%;
+    --text: 150 25% 12%;
+    --text-secondary: 150 15% 40%;
+    --text-muted: 150 12% 60%;
+    --border: 150 20% 85%;
+    --chart-1: 160 70% 35%;
+    --chart-2: 150 20% 80%;
+    --chart-3: 150 55% 35%;
+    --chart-4: 350 75% 50%;
+    --chart-5: 130 40% 40%;
+    --chart-bg: 150 30% 95%;
+    --shadow-subtle: 0 2px 8px rgba(0,0,0,0.05);
+    --shadow-card: 0 4px 12px rgba(0,0,0,0.08);
+    --shadow-dropdown: 0 20px 60px -20px rgba(15,23,42,0.35);
+  }
+
+  [data-theme="sunset"] {
+    --background: 35 30% 96%;
+    --surface: 0 0% 100%;
+    --primary: 25 90% 50%;
+    --primary-hover: 25 85% 42%;
+    --primary-light: 25 80% 90%;
+    --secondary: 350 65% 50%;
+    --secondary-light: 350 55% 92%;
+    --success: 160 40% 38%;
+    --success-light: 155 50% 90%;
+    --warning: 45 90% 50%;
+    --accent: 330 75% 50%;
+    --accent-light: 330 60% 92%;
+    --danger: 0 75% 50%;
+    --danger-light: 0 65% 92%;
+    --text: 30 25% 12%;
+    --text-secondary: 30 15% 40%;
+    --text-muted: 30 12% 58%;
+    --border: 30 20% 86%;
+    --chart-1: 25 90% 50%;
+    --chart-2: 30 20% 80%;
+    --chart-3: 160 40% 38%;
+    --chart-4: 330 75% 50%;
+    --chart-5: 350 65% 50%;
+    --chart-bg: 35 30% 96%;
+    --shadow-subtle: 0 2px 8px rgba(0,0,0,0.05);
+    --shadow-card: 0 4px 12px rgba(0,0,0,0.08);
+    --shadow-dropdown: 0 20px 60px -20px rgba(15,23,42,0.35);
+  }
+
+  [data-theme="rose"] {
+    --background: 330 25% 96%;
+    --surface: 0 0% 100%;
+    --primary: 340 80% 50%;
+    --primary-hover: 340 75% 42%;
+    --primary-light: 340 70% 92%;
+    --secondary: 290 55% 50%;
+    --secondary-light: 290 45% 92%;
+    --success: 150 40% 38%;
+    --success-light: 150 45% 90%;
+    --warning: 45 85% 50%;
+    --accent: 10 80% 55%;
+    --accent-light: 10 65% 92%;
+    --danger: 350 80% 50%;
+    --danger-light: 350 70% 92%;
+    --text: 340 20% 14%;
+    --text-secondary: 340 12% 42%;
+    --text-muted: 340 10% 60%;
+    --border: 340 18% 86%;
+    --chart-1: 340 80% 50%;
+    --chart-2: 340 18% 80%;
+    --chart-3: 150 40% 38%;
+    --chart-4: 10 80% 55%;
+    --chart-5: 290 55% 50%;
+    --chart-bg: 330 25% 96%;
+    --shadow-subtle: 0 2px 8px rgba(0,0,0,0.05);
+    --shadow-card: 0 4px 12px rgba(0,0,0,0.08);
+    --shadow-dropdown: 0 20px 60px -20px rgba(15,23,42,0.35);
+  }
+
+  :root {
+    --radius-section: 1.5rem;
+    --radius-card: 1.5rem;
+    --radius-button: 0.75rem;
+    --radius-input: 0.75rem;
+    --radius-modal: 1.5rem;
+    --radius-icon: 0.625rem;
+  }
+}
+
+/* ===== Custom Cursor ===== */
+
 body {
   font-family: 'Inter', ui-sans-serif, system-ui;
- 
-
 }
+
 .recharts-wrapper *:focus,
 .recharts-surface:focus,
 .recharts-layer:focus,
@@ -14,16 +238,27 @@ body {
   outline: none !important;
   box-shadow: none !important;
 }
- /* ===== Scrollbar Global Style ===== */
 
-/* ==========================================================================
-   Premium Custom Scrollbar
-   Gradient theme: soft purple -> soft blue
-   ========================================================================== */
+:root,
+[data-theme="light"],
+[data-theme="ocean"],
+[data-theme="emerald"],
+[data-theme="sunset"],
+[data-theme="rose"] {
+  --scrollbar: hsl(var(--secondary) / 0.35);
+  --scrollbar-hover: hsl(var(--secondary) / 0.55);
+  --scrollbar-active: hsl(var(--secondary) / 0.7);
+}
+[data-theme="dark"],
+[data-theme="midnight"] {
+  --scrollbar: hsl(var(--secondary) / 0.25);
+  --scrollbar-hover: hsl(var(--secondary) / 0.4);
+  --scrollbar-active: hsl(var(--secondary) / 0.55);
+}
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #C4B5FD transparent;
+  scrollbar-color: var(--scrollbar) transparent;
 }
 
 *::-webkit-scrollbar {
@@ -36,22 +271,22 @@ body {
 }
 
 *::-webkit-scrollbar-thumb {
-  background-image: linear-gradient(135deg, #EDE9FE 0%, #DBEAFE 100%);
+  background: var(--scrollbar);
   background-clip: padding-box;
   border: 3px solid transparent;
   border-radius: 999px;
-  transition: background-image 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.06) inset;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 0 1px hsl(var(--secondary) / 0.1) inset;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background-image: linear-gradient(135deg, #DDD6FE 0%, #BFDBFE 100%);
-  box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.12) inset,
-              0 2px 6px rgba(99, 102, 241, 0.15);
+  background: var(--scrollbar-hover);
+  box-shadow: 0 0 0 1px hsl(var(--secondary) / 0.2) inset,
+              0 2px 6px hsl(var(--secondary) / 0.15);
 }
 
 *::-webkit-scrollbar-thumb:active {
-  background-image: linear-gradient(135deg, #C4B5FD 0%, #93C5FD 100%);
+  background: var(--scrollbar-active);
 }
 
 *::-webkit-scrollbar-corner {
@@ -64,10 +299,9 @@ body {
   height: 0;
 }
 
-/* Optional: thinner, more minimal variant for sidebars / inner panels */
 .scrollbar-minimal {
   scrollbar-width: thin;
-  scrollbar-color: #DDD6FE transparent;
+  scrollbar-color: var(--scrollbar) transparent;
 }
 
 .scrollbar-minimal::-webkit-scrollbar {
@@ -76,12 +310,97 @@ body {
 }
 
 .scrollbar-minimal::-webkit-scrollbar-thumb {
-  background-image: linear-gradient(135deg, #EDE9FE 0%, #DBEAFE 100%);
+  background: var(--scrollbar);
   border: 2px solid transparent;
   border-radius: 999px;
-  transition: background-image 0.3s ease;
+  transition: background 0.3s ease;
 }
 
 .scrollbar-minimal::-webkit-scrollbar-thumb:hover {
-  background-image: linear-gradient(135deg, #DDD6FE 0%, #BFDBFE 100%);
+  background: var(--scrollbar-hover);
+}
+
+/* ── Reusable design-system component classes ── */
+@layer components {
+  .ui-section {
+    @apply rounded-section shadow-card bg-surface;
+  }
+  .ui-card {
+    @apply rounded-card shadow-card bg-surface;
+  }
+  .ui-button {
+    @apply rounded-button shadow-subtle transition-all duration-200;
+  }
+  .ui-input {
+    @apply rounded-input border border-border bg-surface px-4 py-3 text-text placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition;
+  }
+
+  /* ── Calendar Grid ── */
+  .calendar-grid {
+    @apply grid grid-cols-7 gap-px;
+  }
+
+  /* ── Calendar Day Cell ── */
+  .calendar-day {
+    @apply bg-surface flex flex-col transition-all duration-150 cursor-pointer select-none;
+  }
+  .calendar-day--today {
+    @apply ring-2 ring-primary ring-inset z-10;
+  }
+  .calendar-day--selected {
+    @apply ring-2 ring-primary/40 ring-inset;
+  }
+  .calendar-day--outside {
+    @apply bg-background/40;
+  }
+  .calendar-day--weekend {
+    @apply bg-background/30;
+  }
+  .calendar-day:hover {
+    @apply bg-primary-light/20;
+  }
+
+  /* ── Calendar Day Number ── */
+  .calendar-day-number {
+    @apply inline-flex items-center justify-center text-xs font-semibold rounded-full;
+  }
+  .calendar-day-number--today {
+    @apply bg-primary text-white;
+  }
+  .calendar-day-number--outside {
+    @apply text-text-muted;
+  }
+
+  /* ── Event Card ── */
+  .calendar-event {
+    @apply flex items-start gap-1.5 px-1.5 py-1 rounded-[4px] cursor-pointer transition-colors duration-150;
+  }
+  .calendar-event:hover {
+    @apply bg-primary-light/30;
+  }
+  .calendar-event:active {
+    @apply bg-primary-light/50;
+  }
+
+  /* ── Calendar Navigation ── */
+  .calendar-nav {
+    @apply flex items-center gap-1;
+  }
+  .calendar-today-btn {
+    @apply flex items-center gap-1.5 px-3 py-2 rounded-button bg-background border border-border shadow-subtle text-xs md:text-sm font-medium text-text hover:bg-border/70 hover:shadow-card active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50;
+  }
+
+  /* ── Empty State ── */
+  .calendar-empty {
+    @apply flex flex-col items-center justify-center py-12 text-text-muted;
+  }
+  .calendar-empty-icon {
+    @apply w-12 h-12 mb-3 text-text-muted/40;
+  }
+  .calendar-empty-title {
+    @apply text-sm font-medium text-text-muted mb-1;
+  }
+  .calendar-empty-description {
+    @apply text-xs text-text-muted/60;
+  }
 }
