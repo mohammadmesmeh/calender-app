@@ -4,16 +4,12 @@ import { useTask } from "@/features/tasks/context/TaskContext/TaskContext"
 import { useEvents } from "@/features/calendar/context/EventContext/EventContext"
 import { AnimatedCounter } from "@/components/animations/AnimatedFramerMotion/AnimatedCounter"
 import { Card, CardContent } from "@/components/ui/card"
+import { getCompletionStats } from "@/features/dashboard/utils/analytics"
 
 export const GridStatus = () => {
   const { tasks } = useTask()
   const { events } = useEvents()
-  const stats = useMemo(() => {
-    const total = tasks.length
-    const completed = tasks.filter((t) => t.completed).length
-    const pending = total - completed
-    return { total, completed, pending }
-  }, [tasks])
+  const stats = useMemo(() => getCompletionStats(tasks), [tasks])
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-gutter w-full">

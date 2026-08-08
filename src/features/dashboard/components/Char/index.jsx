@@ -1,6 +1,7 @@
-// #region Sample data
+import { useMemo } from 'react'
 import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis , ResponsiveContainer } from 'recharts';
-import {chartData} from '@/Mock Data/data'
+import { useTask } from "@/features/tasks/context/TaskContext/TaskContext"
+import { getDailyProgressData } from "@/features/dashboard/utils/analytics"
 
 
 const margin = {
@@ -9,9 +10,11 @@ const margin = {
   left: 0,
   bottom: 0,
 };
-// #endregion
 
 export  function CustomizeLegendAndTooltipStyle() {
+  const { tasks } = useTask()
+  const chartData = useMemo(() => getDailyProgressData(tasks), [tasks])
+
   return (
     // <ResponsiveContainer width='100%' >
      <div className="w-full h-[350px] focus:outline-none">

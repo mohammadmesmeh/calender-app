@@ -10,16 +10,9 @@ import {
 } from "recharts"
 import { TrendingUp, TrendingDown } from "lucide-react"
 import { AnimatedCounter } from "@/components/animations/AnimatedFramerMotion/AnimatedCounter"
-
-const data = [
-  { label: "Mon", tasks: 4, events: 2 },
-  { label: "Tue", tasks: 6, events: 3 },
-  { label: "Wed", tasks: 3, events: 1 },
-  { label: "Thu", tasks: 7, events: 4 },
-  { label: "Fri", tasks: 5, events: 2 },
-  { label: "Sat", tasks: 2, events: 0 },
-  { label: "Sun", tasks: 3, events: 1 },
-]
+import { useTask } from "@/features/tasks/context/TaskContext/TaskContext"
+import { useEvents } from "@/features/calendar/context/EventContext/EventContext"
+import { getWeeklyActivity } from "@/features/dashboard/utils/analytics"
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null
@@ -45,18 +38,13 @@ const CustomTooltip = ({ active, payload, label }) => {
 }
 
 export const AreaStepChart = ({ className }) => {
-  const stats = useMemo(() => {
-    const totalTasks = data.reduce((sum, d) => sum + d.tasks, 0)
-    const totalEvents = data.reduce((sum, d) => sum + d.events, 0)
-    const total = totalTasks + totalEvents
-    const weekCount = data.length
-    const avgPerDay = weekCount ? (total / weekCount) : 0
-    const prevTotal = 28
-    const trend = total >= prevTotal ? "up" : "down"
-    const change = prevTotal ? Math.round(((total - prevTotal) / prevTotal) * 100) : 0
+  const { tasks } = useTask()
+  const { events } = useEvents()
 
-    return { totalTasks, totalEvents, avgPerDay, trend, change }
-  }, [])
+  const { data, totalTasks, totalEvents, avgPerDay, trend, change } = useMemo(
+    () => getWeeklyActivity(tasks, events),
+    [tasks, events]
+  )
 
   return (
     <div className={`w-full rounded-card bg-surface p-container-md shadow-card ${className || ""}`}>
@@ -68,13 +56,13 @@ export const AreaStepChart = ({ className }) => {
           </p>
         </div>
         <div className="flex items-center gap-2 rounded-button border border-border bg-background px-3 py-2">
-          {stats.trend === "up" ? (
+          {trend === "up" ? (
             <TrendingUp size={18} className="text-success" />
           ) : (
             <TrendingDown size={18} className="text-danger" />
           )}
-          <span className={`text-sm font-semibold tabular-nums ${stats.trend === "up" ? "text-success" : "text-danger"}`}>
-            {stats.change > 0 ? "+" : ""}<AnimatedCounter value={stats.change} duration={1} suffix="%" />
+          <span className={`text-sm font-semibold tabular-nums ${trend === "up" ? "text-success" : "text-danger"}`}>
+            {change > 0 ? "+" : ""}<AnimatedCounter value={change} duration={1} suffix="%" />
           </span>
         </div>
       </div>
@@ -83,19 +71,19 @@ export const AreaStepChart = ({ className }) => {
         <div className="rounded-button bg-background p-3">
           <p className="text-xs text-text-muted">Tasks</p>
           <p className="mt-1 text-lg font-bold text-text tabular-nums">
-            <AnimatedCounter value={stats.totalTasks} duration={1.2} />
+            <AnimatedCounter value={totalTasks} duration={1.2} />
           </p>
         </div>
         <div className="rounded-button bg-background p-3">
           <p className="text-xs text-text-muted">Events</p>
           <p className="mt-1 text-lg font-bold text-text tabular-nums">
-            <AnimatedCounter value={stats.totalEvents} duration={1.2} />
+            <AnimatedCounter value={totalEvents} duration={1.2} />
           </p>
         </div>
         <div className="rounded-button bg-background p-3">
           <p className="text-xs text-text-muted">Avg / Day</p>
           <p className="mt-1 text-lg font-bold text-text tabular-nums">
-            <AnimatedCounter value={stats.avgPerDay} duration={1.2} decimals={1} />
+            <AnimatedCounter value={avgPerDay} duration={1.2} decimals={1} />
           </p>
         </div>
       </div>

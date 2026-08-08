@@ -3,19 +3,18 @@ import { useAuth } from "@/features/auth/hooks/useAuth"
 import { useTask } from "@/features/tasks/context/TaskContext/TaskContext"
 import { ChartPieInteractive } from "../ProgressCircle"
 import { Card, CardContent } from "@/components/ui/card"
+import { getCompletionStats } from "@/features/dashboard/utils/analytics"
 
 export const WelcomeSection = () => {
   const { user } = useAuth()
   const { tasks } = useTask()
 
-  const chartData = useMemo(() => {
-    const all = tasks.length
-    const done = tasks.filter((t) => t.completed).length
-    return [
-      { name: "Completed", value: done, fill: "var(--color-Completed)" },
-      { name: "Pending", value: all - done, fill: "var(--color-Pending)" },
-    ]
-  }, [tasks])
+  const stats = useMemo(() => getCompletionStats(tasks), [tasks])
+
+  const chartData = useMemo(() => [
+      { name: "Completed", value: stats.completed, fill: "var(--color-Completed)" },
+      { name: "Pending", value: stats.pending, fill: "var(--color-Pending)" },
+    ], [stats])
 
   const chartConfig = useMemo(() => ({
     Completed: { color: "hsl(var(--success))" },

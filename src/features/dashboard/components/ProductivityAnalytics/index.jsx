@@ -4,16 +4,11 @@ import { useTask } from "@/features/tasks/context/TaskContext/TaskContext"
 import { AreaStepChart } from "../AreaStepChart"
 import { AnimatedCounter } from "@/components/animations/AnimatedFramerMotion/AnimatedCounter"
 import { AnimatedProgressBar } from "@/components/animations/AnimatedFramerMotion/AnimatedProgressBar"
+import { getCompletionStats } from "@/features/dashboard/utils/analytics"
 
 export const ProductivityAnalytics = () => {
   const { tasks } = useTask()
-  const completionStats = useMemo(() => {
-    const total = tasks.length
-    const completed = tasks.filter((task) => task.completed).length
-    const pending = total - completed
-    const completion = total ? Math.round((completed / total) * 100) : 0
-    return { total, completed, pending, completion }
-  }, [tasks])
+  const completionStats = useMemo(() => getCompletionStats(tasks), [tasks])
 
   return (
     <div className="w-full rounded-card bg-surface p-container-md shadow-card">
