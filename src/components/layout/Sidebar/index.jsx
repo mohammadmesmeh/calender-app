@@ -7,6 +7,7 @@ import { ShineButton } from "@/components/buttons/ShineButton"
 import { Calendar, ChartColumn, CalendarClock, ListChecks, LayoutDashboard, CalendarPlus } from 'lucide-react'
 import { useSidebarContext } from "@/features/sidebar/context/SidebarContext/SidebarContext"
 import { useTask } from "@/features/tasks/context/TaskContext/TaskContext"
+import { useEvents } from "@/features/calendar/context/EventContext/EventContext"
 import { TaskModal } from "@/features/tasks/components/task-modal"
 
 const navItems = [
@@ -21,6 +22,7 @@ export const Sidebar = () => {
   const { isDesktop, mobileOpen, expanded, setHovered, setMobileOpen } = useSidebarContext()
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
   const { addTask } = useTask()
+  const { addEvent } = useEvents()
 
   const closeMobile = useCallback(() => setMobileOpen(false), [setMobileOpen])
 
@@ -103,7 +105,7 @@ export const Sidebar = () => {
         <TaskModal
           isOpen={isTaskModalOpen}
           onClose={() => setIsTaskModalOpen(false)}
-          onSave={addTask}
+          onSave={(data) => (data.type === "event" ? addEvent(data) : addTask(data))}
         />
 
         <footer className="shrink-0 border-t border-border/70 px-4 py-3">

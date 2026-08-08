@@ -3,10 +3,12 @@ import { Plus, ClipboardList } from 'lucide-react'
 import { Task } from "../Task";
 import { AddButtonsNonBg } from '@/components/buttons/AddButtonsNonBg'
 import { useTask } from '../../context/TaskContext/TaskContext'
+import { useEvents } from "@/features/calendar/context/EventContext/EventContext"
 import { TaskModal } from '../task-modal'
 
 export const TodaysTasks = () => {
     const { tasks, addTask, toggleTask } = useTask()
+    const { addEvent } = useEvents()
     const [isModalOpen, setIsModalOpen] = useState(false)
 
     return (
@@ -39,7 +41,7 @@ export const TodaysTasks = () => {
             <TaskModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
-                onSave={addTask}
+                onSave={(data) => (data.type === "event" ? addEvent(data) : addTask(data))}
             />
         </div>
     )

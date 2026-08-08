@@ -7,12 +7,14 @@ import { ThemeToggle } from "@/features/settings/components/ThemeToggle"
 import { NotificationBell } from "@/features/notifications/components/NotificationBell"
 import { useSidebarContext } from "@/features/sidebar/context/SidebarContext/SidebarContext"
 import { useTask } from "@/features/tasks/context/TaskContext/TaskContext"
+import { useEvents } from "@/features/calendar/context/EventContext/EventContext"
 import { TaskModal } from "@/features/tasks/components/task-modal"
 
 export const DashboardHeader = () => {
   const { isDesktop, mobileOpen, setMobileOpen } = useSidebarContext()
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
   const { addTask } = useTask()
+  const { addEvent } = useEvents()
 
   return (
     <div className="flex items-center justify-between shadow-card px-container-sm md:px-container-md py-2 md:py-4 sticky top-0 backdrop-blur-lg bg-surface/70 z-10">
@@ -49,7 +51,7 @@ export const DashboardHeader = () => {
         <TaskModal
           isOpen={isTaskModalOpen}
           onClose={() => setIsTaskModalOpen(false)}
-          onSave={addTask}
+          onSave={(data) => (data.type === "event" ? addEvent(data) : addTask(data))}
         />
 
         <UserProfile classNameIcon="bg-primary text-white" />
