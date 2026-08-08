@@ -1,37 +1,16 @@
-// import { Navigate } from "react-router-dom";
-
-//  export const ProtectedRoute = ({ children }) => {
-//   const isLoggedIn = localStorage.getItem("token");
-
-//   if (!isLoggedIn) {
-//     return <Navigate to="/register" />;
-//   }
-
-//   return children;
-// };
 import { Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";//هي دالة من Firebase معناها:“راقب حالة تسجيل الدخول للمستخدم طول الوقت”
-import { auth } from "../../firebase";
+import { useAuth } from "../../features/auth/hooks/useAuth";
 import LoadingScreen from "../../components/feedback/LoadingScreen";
 
 export const ProtectedRoute = ({ children }) => {
-  const [user, setUser] = useState(undefined);
+  const { user, isInitializing } = useAuth();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (u) => {
-      setUser(u);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  if (user === undefined) {
+  if (isInitializing) {
     return <LoadingScreen/>;
   }
 
   if (!user) {
-    return <Navigate to="/register" />;
+    return <Navigate to="/login" />;
   }
 
   return children;

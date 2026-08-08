@@ -1,12 +1,10 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import { signOut } from "firebase/auth";
-import { auth } from "@/firebase";
 import { SettingItem } from '../SettingItem'
 import { SETTINGS_ITEMS } from '@/constants/const'
 import { useTheme } from '../../context/ThemeContext/ThemeContext'
 import { ThemePicker } from '../ThemePicker'
+import { useAuth } from '../../../auth/hooks/useAuth'
 import {
     ChevronRight,
     ChevronLeft,
@@ -18,13 +16,14 @@ export const SettingsMenu = ({ isExpanded }) => {
     const [showThemePicker, setShowThemePicker] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const menuRef = useRef(null)
-    const navigate = useNavigate();
     const { theme, themes } = useTheme()
+    const { signOut } = useAuth()
     const currentThemeLabel = themes.find((t) => t.id === theme)?.label
 
     const closeMenu = useCallback(() => {
         setIsOpen(false)
         setShowThemePicker(false)
+        setErrorMessage("")
     }, [])
 
     useEffect(() => {
@@ -57,9 +56,8 @@ export const SettingsMenu = ({ isExpanded }) => {
 
     const handleLogout = async () => {
         try {
-            await signOut(auth);
+            await signOut();
             setIsOpen(false);
-            navigate("/register");
         } catch (error) {
             console.error("Logout failed:", error);
             setErrorMessage("Unable to log out right now.");

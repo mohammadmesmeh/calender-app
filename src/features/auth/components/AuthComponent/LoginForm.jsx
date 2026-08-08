@@ -8,30 +8,27 @@ import { InputField } from './InputField';
 import { PasswordInput } from './PasswordInput';
 import { AuthButton } from "@/components/buttons/AuthBtn";
 import { AuthLogo } from './AuthLogo';
-import { AuthSuccessMessage, AuthErrorMessage } from './AuthFeedback';
-import { registerSchema } from '../../validation/authSchemas';
+import { AuthErrorMessage } from './AuthFeedback';
+import { loginSchema } from '../../validation/authSchemas';
 import { getFirebaseErrorMessage } from '../../utils/firebaseErrors';
 
-export function RegisterForm() {
+export function LoginForm() {
   const navigate = useNavigate();
-  const [successMessage, setSuccessMessage] = useState('');
   const [firebaseError, setFirebaseError] = useState('');
 
-  const { isLoading, isLoadingGoogle, signUpWithEmail, signUpWithGoogle } = useAuth();
+  const { isLoading, isLoadingGoogle, signInWithEmail, signInWithGoogle } = useAuth();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm({ resolver: yupResolver(registerSchema) });
+  } = useForm({ resolver: yupResolver(loginSchema) });
 
   const onSubmitEmail = async (data) => {
     setFirebaseError('');
-    setSuccessMessage('');
     try {
-      await signUpWithEmail(data);
-      setSuccessMessage('Account created successfully! Redirecting...');
+      await signInWithEmail(data);
       reset();
       navigate('/dashboard');
     } catch (error) {
@@ -41,10 +38,8 @@ export function RegisterForm() {
 
   const onSubmitGoogle = async () => {
     setFirebaseError('');
-    setSuccessMessage('');
     try {
-      await signUpWithGoogle();
-      setSuccessMessage('Account created successfully! Redirecting...');
+      await signInWithGoogle();
       reset();
       navigate('/dashboard');
     } catch (error) {
@@ -60,13 +55,12 @@ export function RegisterForm() {
         <AuthLogo />
       </div>
       <h1 className="text-center text-xl font-semibold tracking-tight text-text">
-        Create your account
+        Welcome back
       </h1>
       <p className="mt-1.5 text-center text-sm text-text-secondary">
-        Start organizing your schedule in seconds
+        Sign in to your account to continue
       </p>
 
-      <AuthSuccessMessage message={successMessage} />
       <AuthErrorMessage message={firebaseError} />
 
       <form onSubmit={handleSubmit(onSubmitEmail)} className="mt-6 space-y-4">
@@ -89,16 +83,17 @@ export function RegisterForm() {
           disabled={busy}
         />
 
-        <PasswordInput
-          label="Confirm password"
-          id="confirmPassword"
-          error={errors.confirmPassword}
-          registration={register('confirmPassword')}
-          disabled={busy}
-        />
+        <div className="flex justify-end">
+          <Link
+            to="/forgot-password"
+            className="text-sm font-medium text-primary transition-colors hover:text-primary-hover"
+          >
+            Forgot password?
+          </Link>
+        </div>
 
-        <AuthButton type="submit" variant="primary" disabled={busy} loading={isLoading} loadingText="Creating account...">
-          Create account
+        <AuthButton type="submit" variant="primary" disabled={busy} loading={isLoading} loadingText="Signing in...">
+          Sign in
         </AuthButton>
 
         <div className="relative flex items-center py-1">
@@ -115,16 +110,16 @@ export function RegisterForm() {
           onClick={onSubmitGoogle}
           disabled={busy}
           loading={isLoadingGoogle}
-          loadingText="Signing up..."
+          loadingText="Signing in..."
         >
-          Sign up with Google
+          Sign in with Google
         </AuthButton>
       </form>
 
       <p className="mt-6 text-center text-sm text-text-secondary">
-        Already have an account?{' '}
-        <Link to="/login" className="font-semibold text-primary transition-colors hover:text-primary-hover">
-          Sign in
+        Don&apos;t have an account?{' '}
+        <Link to="/register" className="font-semibold text-primary transition-colors hover:text-primary-hover">
+          Create one
         </Link>
       </p>
     </>

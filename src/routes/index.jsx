@@ -1,4 +1,3 @@
-
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from 'framer-motion'
 import { MotionPage } from '@/components/MotionPage'
@@ -8,7 +7,9 @@ import { MonthCalendar } from "../features/calendar/components/MonthCalendar";
 import { WeekCalendar } from "../features/calendar/components/WeekCalendar";
 import { DayCalendar } from "../features/calendar/components/DayCalendar";
 
+import { LoginPage } from "../features/auth/pages/LoginPage";
 import { RegisterPage } from "../features/auth/pages/RegisterPage";
+import { ForgotPasswordPage } from "../features/auth/pages/ForgotPasswordPage";
 import { ProtectedRoute } from "./ProtectedRoute/index.jsx";
 
 export const Routeing = () => {
@@ -19,8 +20,10 @@ export const Routeing = () => {
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
 
-        {/* Login route */}
+        {/* Public auth routes */}
+        <Route path="/login" element={<MotionPage><LoginPage /></MotionPage>} />
         <Route path="/register" element={<MotionPage><RegisterPage /></MotionPage>} />
+        <Route path="/forgot-password" element={<MotionPage><ForgotPasswordPage /></MotionPage>} />
 
         {/* Protected App */}
         <Route
