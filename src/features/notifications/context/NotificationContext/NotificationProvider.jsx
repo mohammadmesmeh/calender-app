@@ -1,38 +1,126 @@
 import { useState, useCallback, useMemo } from 'react'
+import { useEffect } from 'react'
+import { useAuth } from '@/features/auth/hooks/useAuth'
+import {
+  getNotifications,
+  markNotificationAsRead,
+  markAllNotificationsAsRead,
+  deleteNotification,
+} from '../../services/notificationService'
 import { NotificationContext } from './NotificationContext'
 
-const SAMPLE_NOTIFICATIONS = [
-  { id: 'n1', type: 'task_reminder', title: 'Task due soon', description: 'Design review meeting prep is due in 2 hours', time: new Date(Date.now() - 1000 * 60 * 30), read: false },
-  { id: 'n2', type: 'event_reminder', title: 'Event starting soon', description: 'Weekly team sync starts in 15 minutes', time: new Date(Date.now() - 1000 * 60 * 60 * 2), read: false },
-  { id: 'n3', type: 'update', title: 'Project milestone updated', description: 'Q3 planning document has been shared with you', time: new Date(Date.now() - 1000 * 60 * 60 * 24), read: true },
-  { id: 'n4', type: 'system', title: 'Calendar synced', description: 'Your Google Calendar was successfully synced', time: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2), read: true },
-]
-
 export const NotificationProvider = ({ children }) => {
-  const [notifications, setNotifications] = useState(SAMPLE_NOTIFICATIONS)
+  const { user } = useAuth()
+  const uid = user?.uid
+
+  const [notifications, setNotifications] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    let isCancelled = false
+
+    queueMicrotask(() => {
+      if (isCancelled) return
+
+      if (!uid) {
+        setNotifications([])
+        setIsLoading(false)
+        return
+      }
+
+      setIsLoading(true)
+      setError(null)
+
+      getNotifications(uid)
+        .then((fetchedNotifications) => {
+          if (!isCancelled) setNotifications(fetchedNotifications)
+        })
+        .catch((loadError) => {
+          if (isCancelled) return
+          console.error('Failed to load notifications:', loadError)
+          setError('Failed to load notifications')
+        })
+        .finally(() => {
+          if (!isCancelled) setIsLoading(false)
+        })
+    })
+
+    return () => {
+      isCancelled = true
+    }
+  }, [uid])
 
   const unreadCount = useMemo(
     () => notifications.filter((n) => !n.read).length,
     [notifications]
   )
 
-  const markAsRead = useCallback((id) => {
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
-    )
-  }, [])
+  const markAsRead = useCallback(
+    (id) => {
+      const target = notifications.find((n) => n.id === id)
+      if (!uid || !target || target.read) return
+
+      setNotifications((prev) =>
+        prev.map((n) => (n.id === id ? { ...n, read: true } : n))
+      )
+
+      markNotificationAsRead(uid, id).catch((operationError) => {
+        console.error('Failed to mark notification as read:', operationError)
+        setNotifications((prev) =>
+          prev.map((n) => (n.id === id ? { ...n, read: false } : n))
+        )
+        setError('Failed to mark notification as read')
+      })
+    },
+    [uid, notifications]
+  )
 
   const markAllAsRead = useCallback(() => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })))
-  }, [])
+    if (!uid) return
 
-  const dismiss = useCallback((id) => {
-    setNotifications((prev) => prev.filter((n) => n.id !== id))
-  }, [])
+    const unreadIds = notifications.filter((n) => !n.read).map((n) => n.id)
+    if (unreadIds.length === 0) return
+
+    const previousNotifications = notifications
+
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })))
+
+    markAllNotificationsAsRead(uid, unreadIds).catch((operationError) => {
+      console.error('Failed to mark all notifications as read:', operationError)
+      setNotifications(previousNotifications)
+      setError('Failed to mark all notifications as read')
+    })
+  }, [uid, notifications])
+
+  const dismiss = useCallback(
+    (id) => {
+      if (!uid) return
+
+      const previousNotifications = notifications
+
+      setNotifications((prev) => prev.filter((n) => n.id !== id))
+
+      deleteNotification(uid, id).catch((operationError) => {
+        console.error('Failed to dismiss notification:', operationError)
+        setNotifications(previousNotifications)
+        setError('Failed to dismiss notification')
+      })
+    },
+    [uid, notifications]
+  )
 
   const value = useMemo(
-    () => ({ notifications, unreadCount, markAsRead, markAllAsRead, dismiss }),
-    [notifications, unreadCount, markAsRead, markAllAsRead, dismiss]
+    () => ({
+      notifications,
+      unreadCount,
+      markAsRead,
+      markAllAsRead,
+      dismiss,
+      isLoading,
+      error,
+    }),
+    [notifications, unreadCount, markAsRead, markAllAsRead, dismiss, isLoading, error]
   )
 
   return (
