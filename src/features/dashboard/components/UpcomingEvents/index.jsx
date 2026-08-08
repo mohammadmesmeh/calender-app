@@ -1,8 +1,10 @@
 import { CalendarX } from "lucide-react";
 import { EventCard } from "@/features/calendar/components/EventCard";
-import { events } from "@/Mock Data/data";
+import { useEvents } from "@/features/calendar/context/EventContext/EventContext";
 
 export const UpcomingEvents = () => {
+  const { events } = useEvents();
+
   return (
     <div className="w-full bg-surface rounded-card shadow-card p-container-md">
       <h2 className="text-lg font-semibold text-text mb-4">Upcoming Events</h2>

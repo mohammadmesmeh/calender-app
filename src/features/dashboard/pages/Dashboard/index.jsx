@@ -10,6 +10,7 @@ import { InViewAnimation } from "@/components/animations/AnimatedFramerMotion/In
 import { useSidebarContext } from "@/features/sidebar/context/SidebarContext/SidebarContext"
 import { SidebarProvider } from "@/features/sidebar/context/SidebarContext"
 import { TaskProvider } from "@/features/tasks/context/TaskContext"
+import { EventProvider } from "@/features/calendar/context/EventContext"
 
 const DashboardContent = () => {
   const { expanded, isDesktop } = useSidebarContext()
@@ -39,7 +40,9 @@ const DashboardContent = () => {
 export const Dashboard = () => (
   <SidebarProvider>
     <TaskProvider>
-      <DashboardContent />
+      <EventProvider>
+        <DashboardContent />
+      </EventProvider>
     </TaskProvider>
   </SidebarProvider>
 )

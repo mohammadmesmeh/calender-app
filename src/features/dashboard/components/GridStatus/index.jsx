@@ -1,12 +1,13 @@
 import { useMemo } from "react"
 import { CircleCheckBig, Clock2, ClipboardList, CalendarClock } from "lucide-react"
 import { useTask } from "@/features/tasks/context/TaskContext/TaskContext"
+import { useEvents } from "@/features/calendar/context/EventContext/EventContext"
 import { AnimatedCounter } from "@/components/animations/AnimatedFramerMotion/AnimatedCounter"
 import { Card, CardContent } from "@/components/ui/card"
-import { events } from "@/Mock Data/data"
 
 export const GridStatus = () => {
   const { tasks } = useTask()
+  const { events } = useEvents()
   const stats = useMemo(() => {
     const total = tasks.length
     const completed = tasks.filter((t) => t.completed).length
