@@ -335,59 +335,59 @@ body {
     @apply rounded-input border border-border bg-surface px-4 py-3 text-text placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition;
   }
 
-  /* ── Calendar Grid ── */
+  /* ── Calendar Grid (month view) ── */
   .calendar-grid {
-    @apply grid grid-cols-7 gap-px;
+    @apply grid grid-cols-7;
   }
 
-  /* ── Calendar Day Cell ── */
+  /* ── Calendar Cell (month view day cell) ── */
   .calendar-day {
-    @apply bg-surface flex flex-col transition-all duration-150 cursor-pointer select-none;
+    @apply flex flex-col transition-colors duration-100 cursor-pointer select-none;
   }
   .calendar-day--today {
-    @apply ring-2 ring-primary ring-inset z-10;
-  }
-  .calendar-day--selected {
-    @apply ring-2 ring-primary/40 ring-inset;
+    @apply z-10;
   }
   .calendar-day--outside {
-    @apply bg-background/40;
-  }
-  .calendar-day--weekend {
     @apply bg-background/30;
   }
+  .calendar-day--weekend {
+    @apply bg-background/20;
+  }
   .calendar-day:hover {
-    @apply bg-primary-light/20;
+    @apply bg-primary-light/[0.07];
   }
 
   /* ── Calendar Day Number ── */
   .calendar-day-number {
-    @apply inline-flex items-center justify-center text-xs font-semibold rounded-full;
+    @apply inline-flex items-center justify-center text-[11px] md:text-sm font-medium min-w-[22px] md:min-w-[26px] h-[22px] md:h-[26px];
   }
   .calendar-day-number--today {
-    @apply bg-primary text-white;
+    @apply bg-primary text-white rounded-full;
+  }
+  .calendar-day-number--selected {
+    @apply border-2 border-primary text-primary rounded-full;
   }
   .calendar-day-number--outside {
     @apply text-text-muted;
   }
 
-  /* ── Event Card ── */
+  /* ── Event Chip ── */
   .calendar-event {
-    @apply flex items-start gap-1.5 px-1.5 py-1 rounded-[4px] cursor-pointer transition-colors duration-150;
+    @apply flex items-center gap-1 px-1.5 py-0.5 rounded-[3px] bg-primary/[0.12] cursor-pointer transition-colors duration-100 overflow-hidden;
   }
   .calendar-event:hover {
-    @apply bg-primary-light/30;
+    @apply bg-primary/[0.18];
   }
   .calendar-event:active {
-    @apply bg-primary-light/50;
+    @apply bg-primary/[0.22];
   }
 
   /* ── Calendar Navigation ── */
   .calendar-nav {
-    @apply flex items-center gap-1;
+    @apply flex items-center gap-0.5;
   }
   .calendar-today-btn {
-    @apply flex items-center gap-1.5 px-3 py-2 rounded-button bg-background border border-border shadow-subtle text-xs md:text-sm font-medium text-text hover:bg-border/70 hover:shadow-card active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50;
+    @apply flex items-center gap-1.5 px-2.5 py-1.5 md:px-3 md:py-2 rounded-button bg-background border border-border shadow-subtle text-xs md:text-sm font-medium text-text hover:bg-border/70 hover:shadow-card active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50;
   }
 
   /* ── Empty State ── */

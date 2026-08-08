@@ -21,16 +21,16 @@ export const DayCalendar = () => {
     }
 
     return (
-        <div className="flex flex-col flex-1 bg-surface rounded-section shadow-subtle overflow-hidden">
+        <div className="flex flex-col flex-1 bg-surface overflow-hidden">
 
-            {/* Header */}
-            <div className="flex items-center justify-between px-3 md:px-6 pt-3 pb-3 border-b border-border bg-surface/60">
-                <div className="flex items-center gap-1">
+            {/* Navigation */}
+            <div className="flex items-center justify-between px-3 md:px-5 pt-2 md:pt-3 pb-1.5 border-b border-border bg-surface">
+                <div className="flex items-center gap-0.5">
                     <IconBtn icon={ChevronLeft} onClick={handleClickPrevDay} aria-label="Previous day" />
                     <button
                         type="button"
                         onClick={handleTodayClick}
-                        className="flex items-center gap-1.5 px-3 py-2 rounded-button bg-background border border-border shadow-subtle text-xs md:text-sm font-medium text-text hover:bg-border/70 hover:shadow-card active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+                        className="flex items-center gap-1.5 px-2.5 py-1.5 md:px-3 md:py-2 rounded-button bg-background border border-border shadow-subtle text-xs md:text-sm font-medium text-text hover:bg-border/70 hover:shadow-card active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
                         aria-label="Go to today"
                     >
                         <Calendar size={14} />
@@ -40,10 +40,10 @@ export const DayCalendar = () => {
                 </div>
 
                 <div className="text-center">
-                    <h3 className="text-sm md:text-lg font-bold text-text">
+                    <h3 className="text-sm md:text-lg font-semibold text-text">
                         {CONST.DAYS__OF__WEEK[dayInWeek]}
                     </h3>
-                    <p className="text-xs md:text-sm text-text-secondary">
+                    <p className="text-[11px] md:text-sm text-text-secondary">
                         {CONST.MONTHS__OF__YEAR[MONTH]} {DAY}, {YEAR}
                     </p>
                 </div>
@@ -51,13 +51,13 @@ export const DayCalendar = () => {
                 <div className="w-20 md:w-28" />
             </div>
 
-            {/* Time Grid */}
+            {/* Scrollable time grid */}
             <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-minimal">
-                <div className="flex px-3 md:px-6 pt-4">
-                    <div className="w-12 md:w-16 shrink-0">
+                <div className="flex px-3 md:px-5 pt-3 relative">
+                    <div className="w-14 md:w-16 shrink-0">
                         {hoursOfDay.map((i, index) => (
-                            <div key={index} className="h-[52px] md:h-[60px] flex items-start justify-end pr-2 md:pr-3 pt-0">
-                                <span className="text-[9px] md:text-xs text-text-muted font-medium leading-none -mt-1.5">
+                            <div key={index} className="h-14 flex items-start justify-end pr-2 md:pr-3 pt-0">
+                                <span className="text-[10px] md:text-xs text-text-muted font-medium leading-none -mt-2">
                                     {i.label}
                                 </span>
                             </div>
@@ -69,7 +69,7 @@ export const DayCalendar = () => {
                         {hoursOfDay.map((i, index) => (
                             <div
                                 key={index}
-                                className={`h-[52px] md:h-[60px] border-b border-border/50 hover:bg-primary-light/10 transition-colors duration-100 ${index === 0 ? "border-t border-border/50" : ""}`}
+                                className="h-14 border-b border-border/40 hover:bg-primary-light/[0.04] transition-colors duration-100"
                             />
                         ))}
                     </div>

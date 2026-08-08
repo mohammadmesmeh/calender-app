@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-const HOUR_HEIGHT = 60 
+const HOUR_HEIGHT = 56
 export const CurrentTimeLine = () => {
     const [top, setTop] = useState(0)
 
@@ -26,10 +26,8 @@ export const CurrentTimeLine = () => {
 
     return (
         <div
-            className="absolute  w-full   left-0 h-[1.3px] bg-danger z-10  before:content-[''] before:absolute before:w-2 before:h-2  md:before:w-3 md:before:h-3  before:top-1/2
-      before:-translate-y-1/2 before:-left-1 before:rounded-full before:bg-danger"
+            className="absolute left-0 w-full h-px bg-danger z-20 pointer-events-none before:content-[''] before:absolute before:w-2.5 before:h-2.5 before:-top-1 before:-left-1 before:rounded-full before:bg-danger"
             style={{ top: `${top}px` }}
         />
-
     )
 }
