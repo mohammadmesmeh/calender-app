@@ -11,6 +11,7 @@ import { useSidebarContext } from "@/features/sidebar/context/SidebarContext/Sid
 import { SidebarProvider } from "@/features/sidebar/context/SidebarContext"
 import { TaskProvider } from "@/features/tasks/context/TaskContext"
 import { EventProvider } from "@/features/calendar/context/EventContext"
+import { NotesProvider } from "@/features/dashboard/context/NotesContext"
 
 const DashboardContent = () => {
   const { expanded, isDesktop } = useSidebarContext()
@@ -41,7 +42,9 @@ export const Dashboard = () => (
   <SidebarProvider>
     <TaskProvider>
       <EventProvider>
-        <DashboardContent />
+        <NotesProvider>
+          <DashboardContent />
+        </NotesProvider>
       </EventProvider>
     </TaskProvider>
   </SidebarProvider>

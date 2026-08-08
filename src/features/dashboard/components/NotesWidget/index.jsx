@@ -1,38 +1,21 @@
 import { useState } from "react";
-import { Plus, Trash2, Pin, Clock } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useDate } from "@/features/calendar/hooks/useDate";
 import { CONST } from "@/constants/const";
-import {Note} from '../Note'
+import { Note } from '../Note'
 import { IconBtn } from "@/components/buttons/IconBtn";
+import { useNotes } from "../../context/NotesContext/NotesContext";
 
 export const NotesWidget = () => {
-    const [notes, setNotes] = useState([
-        { id: 1, text: "Review project proposal", pinned: true, timestamp: "Today" },
-        { id: 2, text: "Call with stakeholders", pinned: false, timestamp: "Yesterday" }
-    ]);
+    const { notes, addNote, togglePinNote, deleteNote } = useNotes();
     const [input, setInput] = useState("");
-    const {thisDayInWeek} = useDate()
-  
-    
+    const { thisDayInWeek } = useDate()
 
-    const addNote = () => {
+    const handleAddNote = () => {
         if (input.trim()) {
-            setNotes([
-                { id: Date.now(), text: input, pinned: false, timestamp: CONST.DAYS__OF__WEEK[thisDayInWeek+2]  },
-                ...notes
-            ]);
+            addNote({ text: input, pinned: false, timestamp: CONST.DAYS__OF__WEEK[thisDayInWeek + 2] });
             setInput("");
         }
-    };
-
-    const deleteNote = (id) => {
-        setNotes(notes.filter(note => note.id !== id));
-    };
-
-    const togglePin = (id) => {
-        setNotes(notes.map(note =>
-            note.id === id ? { ...note, pinned: !note.pinned } : note
-        ));
     };
 
     const sortedNotes = [...notes].sort((a, b) => b.pinned - a.pinned);
@@ -51,11 +34,11 @@ export const NotesWidget = () => {
                     type="text"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    onKeyPress={(e) => e.key === "Enter" && addNote()}
+                    onKeyPress={(e) => e.key === "Enter" && handleAddNote()}
                     placeholder="Add a note..."
                     className="flex-1 px-3 py-2 bg-surface border border-accent-light/50 rounded-input text-sm focus:outline-none focus:ring-2 focus:ring-accent/30 placeholder-text-muted"
                 />
-                <IconBtn onClick={addNote} icon={Plus} className="bg-gradient-to-r from-secondary to-primary hover:from-secondary hover:to-primary-hover text-white" />
+                <IconBtn onClick={handleAddNote} icon={Plus} className="bg-gradient-to-r from-secondary to-primary hover:from-secondary hover:to-primary-hover text-white" />
             </div>
 
             {/* Notes List */}
@@ -67,11 +50,10 @@ export const NotesWidget = () => {
                     </div>
                 ) : (
                     sortedNotes.map(note => (
-                        <Note key={note.id} {...note} togglePin={togglePin} deleteNote={deleteNote}  />
-                        
+                        <Note key={note.id} {...note} togglePin={togglePinNote} deleteNote={deleteNote}  />
                     ))
                 )}
             </div>
         </div>
     );
-}   
+}
