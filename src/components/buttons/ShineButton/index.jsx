@@ -45,7 +45,7 @@ export const ShineButton = ({ children, className = "", isExpanded, icon: Icon, 
       <span className="relative z-10 flex h-full w-full items-center">
         <span
           className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-icon transition-all duration-200 ${
-            isExpanded ? "mr-2" : "mr-0"
+            isExpanded ? "me-2" : "me-0"
           }`}
         >
           {/*
