@@ -1,29 +1,34 @@
 import * as yup from 'yup';
 
-export const emailSchema = yup
-  .string()
-  .email('Please enter a valid email address')
-  .required('Email is required');
-
-export const passwordSchema = yup
-  .string()
-  .min(6, 'Password must be at least 6 characters')
-  .required('Password is required');
-
-export const loginSchema = yup.object({
-  email: emailSchema,
-  password: passwordSchema,
-});
-
-export const registerSchema = yup.object({
-  email: emailSchema,
-  password: passwordSchema,
-  confirmPassword: yup
+export const makeEmailSchema = (t) =>
+  yup
     .string()
-    .oneOf([yup.ref('password')], 'Passwords must match')
-    .required('Please confirm your password'),
-});
+    .email(t('authValidation.validEmail'))
+    .required(t('authValidation.emailRequired'));
 
-export const forgotPasswordSchema = yup.object({
-  email: emailSchema,
-});
+export const makePasswordSchema = (t) =>
+  yup
+    .string()
+    .min(6, t('authValidation.passwordMin'))
+    .required(t('authValidation.passwordRequired'));
+
+export const makeLoginSchema = (t) =>
+  yup.object({
+    email: makeEmailSchema(t),
+    password: makePasswordSchema(t),
+  });
+
+export const makeRegisterSchema = (t) =>
+  yup.object({
+    email: makeEmailSchema(t),
+    password: makePasswordSchema(t),
+    confirmPassword: yup
+      .string()
+      .oneOf([yup.ref('password')], t('authValidation.passwordsMatch'))
+      .required(t('authValidation.confirmPasswordRequired')),
+  });
+
+export const makeForgotPasswordSchema = (t) =>
+  yup.object({
+    email: makeEmailSchema(t),
+  });
