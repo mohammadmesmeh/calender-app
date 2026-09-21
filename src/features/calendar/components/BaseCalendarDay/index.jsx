@@ -6,6 +6,7 @@ export const BaseCalendarDay = ({
     isSelected,
     isOutsideMonth,
     isWeekend,
+    action,
 }) => {
     return (
         <div
@@ -16,7 +17,7 @@ export const BaseCalendarDay = ({
                 p-1 md:p-1.5
                 flex flex-col
                 transition-colors duration-100
-                cursor-pointer
+                cursor-default
                 select-none
                 group
                 ${isToday ? 'z-10' : ''}
@@ -25,7 +26,10 @@ export const BaseCalendarDay = ({
                 hover:bg-primary-light/[0.07]
             `}
         >
-            <div className="flex items-center justify-between mb-0.5 px-0.5">
+            <div
+                role="presentation"
+                className="flex items-center justify-between mb-0.5 px-0.5"
+            >
                 <span
                     className={`
                         inline-flex items-center justify-center
@@ -45,6 +49,7 @@ export const BaseCalendarDay = ({
                 >
                     {day}
                 </span>
+                {action}
                 {Month && (
                     <span className="text-[8px] md:text-[10px] text-text-muted font-medium leading-none">
                         {Month}

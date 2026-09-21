@@ -390,10 +390,20 @@ body {
     @apply flex items-center gap-1.5 px-2.5 py-1.5 md:px-3 md:py-2 rounded-button bg-background border border-border shadow-subtle text-xs md:text-sm font-medium text-text hover:bg-border/70 hover:shadow-card active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50;
   }
 
-  /* ── Empty State ── */
-  .calendar-empty {
-    @apply flex flex-col items-center justify-center py-12 text-text-muted;
-  }
+/* ── Calendar Drag & Drop ── */
+/* While an item is being dragged we keep text selection/cursor off globally.
+   Drop feedback is per-slot: the grid slot hover styles below light up the exact
+   destination instead of an entire column or the whole page. */
+body.cal-dragging {
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grabbing;
+}
+
+/* ── Empty State ── */
+.calendar-empty {
+  @apply flex flex-col items-center justify-center py-12 text-text-muted;
+}
   .calendar-empty-icon {
     @apply w-12 h-12 mb-3 text-text-muted/40;
   }

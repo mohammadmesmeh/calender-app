@@ -6,20 +6,8 @@ import {
   updateEvent as updateEventDocument,
   deleteEvent as deleteEventDocument,
 } from "../../services/eventService";
+import { buildEventDocument } from "../../utils/calendarUtils";
 import { EventContext } from "./EventContext";
-
-const CATEGORY_COLORS = {
-  planning: "bg-primary",
-  meeting: "bg-secondary",
-  design: "bg-accent",
-  development: "bg-warning",
-  personal: "bg-success",
-  research: "bg-danger",
-};
-
-const getCategoryColor = (category) => CATEGORY_COLORS[category] || "bg-primary";
-
-const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 export const EventProvider = ({ children }) => {
   const { user } = useAuth();
@@ -70,15 +58,14 @@ export const EventProvider = ({ children }) => {
         return;
       }
 
-      const eventData = {
+      const eventData = buildEventDocument({
         title: newEvent.title || "Untitled Event",
-        time: newEvent.time || newEvent.date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-        day: DAY_NAMES[newEvent.date.getDay()],
-        note: newEvent.description || null,
-        type: newEvent.category || "meeting",
-        color: getCategoryColor(newEvent.category),
-        location: newEvent.location || "",
-      };
+        date: newEvent.date,
+        time: newEvent.time,
+        description: newEvent.description,
+        category: newEvent.category,
+        location: newEvent.location,
+      });
 
       try {
         const createdEvent = await createEvent(uid, eventData);
@@ -97,6 +84,7 @@ export const EventProvider = ({ children }) => {
       const targetEvent = events.find((event) => event.id === id);
       if (!targetEvent) return;
 
+      const previousEvent = targetEvent;
       setEvents((prev) => prev.map((event) => (event.id === id ? { ...event, ...updates } : event)));
 
       if (!targetEvent.createdAt || !uid) return;
@@ -105,6 +93,7 @@ export const EventProvider = ({ children }) => {
         await updateEventDocument(uid, id, updates);
       } catch (updateError) {
         console.error("Failed to update event:", updateError);
+        setEvents((prev) => prev.map((event) => (event.id === id ? previousEvent : event)));
         setError("Failed to update event");
       }
     },
