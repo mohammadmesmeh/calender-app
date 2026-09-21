@@ -4,25 +4,31 @@ import { SettingItem } from '../SettingItem'
 import { SETTINGS_ITEMS } from '@/constants/const'
 import { useTheme } from '../../context/ThemeContext/ThemeContext'
 import { ThemePicker } from '../ThemePicker'
+import { LanguageSettings } from '../LanguageSettings'
 import { useAuth } from '../../../auth/hooks/useAuth'
+import { useLocalization } from '@/i18n/LocalizationProvider'
 import {
     ChevronRight,
     ChevronLeft,
     LogOut,
     Settings,
 } from "lucide-react";
+
 export const SettingsMenu = ({ isExpanded }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [showThemePicker, setShowThemePicker] = useState(false);
+    const [panel, setPanel] = useState(null); // null | 'themes' | 'language'
     const [errorMessage, setErrorMessage] = useState("");
     const menuRef = useRef(null)
-    const { theme, themes } = useTheme()
+    const { theme } = useTheme()
     const { signOut } = useAuth()
-    const currentThemeLabel = themes.find((t) => t.id === theme)?.label
+    const { t, dir } = useLocalization()
+    const Chevron = dir === 'rtl' ? ChevronLeft : ChevronRight
+    const BackChevron = dir === 'rtl' ? ChevronRight : ChevronLeft
+    const currentThemeLabel = t(`settings.themeLabels.${theme}`)
 
     const closeMenu = useCallback(() => {
         setIsOpen(false)
-        setShowThemePicker(false)
+        setPanel(null)
         setErrorMessage("")
     }, [])
 
@@ -42,16 +48,18 @@ export const SettingsMenu = ({ isExpanded }) => {
         }
     }, [isOpen, closeMenu])
 
-    const handleItemClick = (label) => {
-        if (label === 'Appearance') {
-            setShowThemePicker(true)
+    const handleItemClick = (item) => {
+        if (item.key === 'appearance') {
+            setPanel('themes')
+        } else if (item.key === 'language') {
+            setPanel('language')
         } else {
             setIsOpen(false)
         }
     }
 
     const handleBack = () => {
-        setShowThemePicker(false)
+        setPanel(null)
     }
 
     const handleLogout = async () => {
@@ -60,7 +68,7 @@ export const SettingsMenu = ({ isExpanded }) => {
             setIsOpen(false);
         } catch (error) {
             console.error("Logout failed:", error);
-            setErrorMessage("Unable to log out right now.");
+            setErrorMessage(t('settings.unableToLogout'));
         }
     };
 
@@ -69,11 +77,11 @@ export const SettingsMenu = ({ isExpanded }) => {
             ref={menuRef}
             className="relative w-full"
             onMouseEnter={() => setIsOpen(true)}
+            onFocus={() => setIsOpen(true)}
             onMouseLeave={() => {
                 setIsOpen(false)
-                setShowThemePicker(false)
+                setPanel(null)
             }}
-            onFocus={() => setIsOpen(true)}
         >
             <button
                 type="button"
@@ -87,48 +95,60 @@ export const SettingsMenu = ({ isExpanded }) => {
                     <Settings size={18} />
                 </span>
                 <span
-                    className={`overflow-hidden whitespace-nowrap transition-all duration-300 ${isExpanded ? "ml-3 max-w-[10rem] opacity-100" : "ml-0 max-w-0 opacity-0"
+                    className={`overflow-hidden whitespace-nowrap transition-all duration-300 ${isExpanded ? "ms-3 max-w-[10rem] opacity-100" : "ms-0 max-w-0 opacity-0"
                         }`}
                 >
-                    Settings
+                    {t('nav.settings')}
                 </span>
-                <span className="ml-auto flex h-6 w-6 items-center justify-center rounded-full text-text-muted transition-all duration-200">
-                    <ChevronRight size={16} />
+                <span className="ms-auto flex h-6 w-6 items-center justify-center rounded-full text-text-muted transition-all duration-200">
+                    <Chevron size={16} />
                 </span>
             </button>
 
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
-                        initial={{ opacity: 0, x: -8, y: -4 }}
+                        initial={{ opacity: 0, x: dir === 'rtl' ? 8 : -8, y: -4 }}
                         animate={{ opacity: 1, x: 0, y: 0 }}
-                        exit={{ opacity: 0, x: -8, y: -4 }}
+                        exit={{ opacity: 0, x: dir === 'rtl' ? 8 : -8, y: -4 }}
                         transition={{ duration: 0.18, ease: "easeOut" }}
                         role="menu"
-                        aria-label={showThemePicker ? "Theme selection" : "Settings submenu"}
-                        className="max-md:fixed max-md:left-4 max-md:right-4 max-md:top-16 md:absolute md:left-full md:bottom-0 md:ml-3 z-50 max-md:w-[calc(100vw-2rem)] md:w-64 overflow-hidden rounded-card border border-border/70 bg-surface p-2 shadow-dropdown"
+                        aria-label={panel === 'themes' ? t('settings.themeSelection') : t('settings.settingsSubmenu')}
+                        className="max-md:fixed max-md:start-4 max-md:end-4 max-md:top-16 md:absolute md:start-full md:bottom-0 md:ms-3 z-50 max-md:w-[calc(100vw-2rem)] md:w-72 overflow-hidden rounded-card border border-border/70 bg-surface p-2 shadow-dropdown"
                     >
-                        {showThemePicker ? (
+                        {panel === 'themes' ? (
                             <div className="space-y-2">
                                 <button
                                     type="button"
                                     onClick={handleBack}
                                     className="flex items-center gap-1.5 text-xs font-medium text-text-muted hover:text-text transition-colors px-1 py-1"
                                 >
-                                    <ChevronLeft size={14} />
-                                    Back to Settings
+                                    <BackChevron size={14} />
+                                    {t('settings.backToSettings')}
                                 </button>
                                 <ThemePicker />
+                            </div>
+                        ) : panel === 'language' ? (
+                            <div className="space-y-2">
+                                <button
+                                    type="button"
+                                    onClick={handleBack}
+                                    className="flex items-center gap-1.5 text-xs font-medium text-text-muted hover:text-text transition-colors px-1 py-1"
+                                >
+                                    <BackChevron size={14} />
+                                    {t('settings.backToSettings')}
+                                </button>
+                                <LanguageSettings />
                             </div>
                         ) : (
                             <ul className="space-y-1">
                                 {SETTINGS_ITEMS.map((item) => (
                                     <SettingItem
-                                        key={item.label}
+                                        key={item.key}
                                         item={item}
                                         Icon={item.icon}
-                                        handleItemClick={() => handleItemClick(item.label)}
-                                        hint={item.label === 'Appearance' ? currentThemeLabel : undefined}
+                                        handleItemClick={() => handleItemClick(item)}
+                                        hint={item.key === 'appearance' ? currentThemeLabel : undefined}
                                     />
                                 ))}
                                 <li role="none">
@@ -136,12 +156,12 @@ export const SettingsMenu = ({ isExpanded }) => {
                                         type="button"
                                         role="menuitem"
                                         onClick={handleLogout}
-                                        className="mt-1 flex w-full items-center gap-3 rounded-button px-3 py-2 text-left text-sm text-danger transition-colors duration-200 hover:bg-danger-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger/50"
+                                        className="mt-1 flex w-full items-center gap-3 rounded-button px-3 py-2 text-start text-sm text-danger transition-colors duration-200 hover:bg-danger-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger/50"
                                     >
                                         <span className="flex h-8 w-8 items-center justify-center rounded-button bg-danger-light text-danger">
                                             <LogOut size={16} />
                                         </span>
-                                        <span className="flex-1">Log Out</span>
+                                        <span className="flex-1">{t('nav.logout')}</span>
                                     </button>
                                 </li>
                             </ul>
