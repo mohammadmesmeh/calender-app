@@ -265,6 +265,8 @@ export default {
     selectTheme: 'Select theme',
     switchToLight: 'Switch to light mode',
     switchToDark: 'Switch to dark mode',
+    switchToArabic: 'Switch to Arabic',
+    switchToEnglish: 'Switch to English',
     english: 'English',
     arabic: 'العربية',
     weekStart: 'Week starts on',
