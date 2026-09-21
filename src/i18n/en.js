@@ -149,6 +149,11 @@ export default {
     noTasks: 'No tasks yet',
     addTaskToStart: 'Add a task to start tracking',
   },
+  priority: {
+    high: 'High',
+    medium: 'Medium',
+    low: 'Low',
+  },
   taskForm: {
     taskTitle: 'Task Title',
     taskDate: 'Task Date',
@@ -157,6 +162,9 @@ export default {
     time: 'Time',
     start: 'Start',
     end: 'End',
+    hours: 'hours',
+    minutes: 'minutes',
+    period: 'period',
     description: 'Description',
     enterTaskTitle: 'Enter task title...',
     addNotes: 'Add notes or details...',
