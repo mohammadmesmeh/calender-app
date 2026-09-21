@@ -3,26 +3,26 @@ import { AnimatePresence, motion } from "framer-motion"
 import { NavigationMenuItem } from "@/components/navigation/NavigationMenuItem"
 import { SettingsMenu } from "@/features/settings/components/SettingsMenu"
 import { UserProfile } from "@/components/navigation/UserProfile"
+import { LanguageToggle } from "@/features/settings/components/LanguageToggle"
 import { ShineButton } from "@/components/buttons/ShineButton"
-import { Calendar, ChartColumn, CalendarClock, ListChecks, LayoutDashboard, CalendarPlus } from 'lucide-react'
+import { Calendar, LayoutDashboard, CalendarPlus } from 'lucide-react'
 import { useSidebarContext } from "@/features/sidebar/context/SidebarContext/SidebarContext"
 import { useTask } from "@/features/tasks/context/TaskContext/TaskContext"
 import { useEvents } from "@/features/calendar/context/EventContext/EventContext"
 import { TaskModal } from "@/features/tasks/components/task-modal"
-
-const navItems = [
-  { to: "/dashboard", text: "Dashboard", icon: LayoutDashboard },
-  { to: "/", text: "Calendar", icon: Calendar },
-  { to: "/tasks", text: "Tasks", icon: ListChecks },
-  { to: "/events", text: "Events", icon: CalendarClock },
-  { to: "/analytics", text: "Analytics", icon: ChartColumn },
-]
+import { useLocalization } from "@/i18n/LocalizationProvider"
 
 export const Sidebar = () => {
   const { isDesktop, mobileOpen, expanded, setHovered, setMobileOpen } = useSidebarContext()
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
   const { addTask } = useTask()
   const { addEvent } = useEvents()
+  const { t } = useLocalization()
+
+  const navItems = [
+    { to: "/dashboard", text: t('nav.dashboard'), icon: LayoutDashboard },
+    { to: "/", text: t('nav.calendar'), icon: Calendar },
+  ]
 
   const closeMobile = useCallback(() => setMobileOpen(false), [setMobileOpen])
 
@@ -56,15 +56,15 @@ export const Sidebar = () => {
       <aside
         onMouseEnter={() => isDesktop && setHovered(true)}
         onMouseLeave={() => isDesktop && setHovered(false)}
-        aria-label="Main navigation sidebar"
-        className={`fixed left-0 top-0 z-50 flex shrink-0 flex-col border-r border-border/80 bg-surface/95 text-text shadow-card backdrop-blur transition-all duration-300 ease-out ${
+        aria-label={t('nav.sidebar')}
+        className={`fixed start-0 top-0 z-50 flex shrink-0 flex-col border-e border-border/80 bg-surface/95 text-text shadow-card backdrop-blur transition-all duration-300 ease-out ${
           isDesktop
             ? expanded
               ? "w-80 h-screen"
               : "w-24 h-screen"
             : mobileOpen
               ? "w-72 translate-x-0 h-screen"
-              : "w-72 -translate-x-full h-screen"
+              : "w-72 -translate-x-full rtl:translate-x-full h-screen"
         }`}
       >
         <div className="flex min-h-0 flex-1 flex-col px-4 py-5">
@@ -73,13 +73,13 @@ export const Sidebar = () => {
               <LayoutDashboard size={20} />
             </div>
             <div className={`overflow-hidden transition-all duration-300 ${expanded ? "max-w-[12rem] opacity-100" : "max-w-0 opacity-0"}`}>
-              <p className="whitespace-nowrap text-sm font-semibold uppercase tracking-[0.24em] text-text-muted">
-                Dashboard
+              <p className="whitespace-nowrap text-sm font-semibold text-text-muted">
+                {t('nav.dashboard')}
               </p>
             </div>
           </header>
 
-          <nav className="mt-5 flex-1" aria-label="Sidebar navigation">
+          <nav className="mt-5 flex-1" aria-label={t('nav.sidebarNav')}>
             <ul className="flex flex-col gap-1">
               {navItems.map((item) => (
                 <NavigationMenuItem
@@ -97,7 +97,7 @@ export const Sidebar = () => {
 
           <div className="mt-3 shrink-0">
             <ShineButton className="w-full" icon={CalendarPlus} isExpanded={expanded} onClick={() => setIsTaskModalOpen(true)}>
-              Add Task
+              {t('nav.addTask')}
             </ShineButton>
           </div>
         </div>
@@ -108,7 +108,8 @@ export const Sidebar = () => {
           onSave={(data) => (data.type === "event" ? addEvent(data) : addTask(data))}
         />
 
-        <footer className="shrink-0 border-t border-border/70 px-4 py-3">
+        <footer className="shrink-0 border-t border-border/70 px-4 py-3 space-y-2">
+          <LanguageToggle showLabel={expanded} className="w-full justify-center" />
           <UserProfile
             expanded={expanded}
             classNameIcon="bg-surface text-primary"
