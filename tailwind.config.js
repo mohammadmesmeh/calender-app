@@ -96,7 +96,8 @@ export default {
     extend: {
       // 🔤 Fonts
       fontFamily: {
-        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+        sans: ['Inter', 'IBM Plex Sans Arabic', 'ui-sans-serif', 'system-ui'],
+        arabic: ['IBM Plex Sans Arabic', 'Inter', 'ui-sans-serif', 'system-ui'],
       },
       spacing: {
         // ---- Base 4px (0.25rem) scale ----
