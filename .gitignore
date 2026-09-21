@@ -7,11 +7,14 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 .env
-*.md
 node_modules
 dist
 dist-ssr
 *.local
+
+# Stale root docs kept out of the repo (README.md is tracked)
+ARCHITECTURE_REPORT.md
+MIGRATION_LOG.md
 
 # Editor directories and files
 .vscode/*
