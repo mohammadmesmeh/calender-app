@@ -82,15 +82,16 @@ export const addMonths = (date, months) => {
   return d;
 };
 
-export const startOfWeek = (date) => {
+export const startOfWeek = (date, startDay = 0) => {
   const d = new Date(date);
-  d.setDate(d.getDate() - d.getDay());
+  const diff = (d.getDay() - startDay + 7) % 7;
+  d.setDate(d.getDate() - diff);
   d.setHours(0, 0, 0, 0);
   return d;
 };
 
-export const getWeekDays = (date) =>
-  Array.from({ length: 7 }, (_, i) => addDays(startOfWeek(date), i));
+export const getWeekDays = (date, startDay = 0) =>
+  Array.from({ length: 7 }, (_, i) => addDays(startOfWeek(date, startDay), i));
 
 export const parseTimeString = (time) => {
   if (!time) return { hours: 0, minutes: 0 };
