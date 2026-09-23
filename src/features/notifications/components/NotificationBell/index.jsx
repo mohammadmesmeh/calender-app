@@ -4,12 +4,14 @@ import { Bell } from 'lucide-react'
 import { useNotifications } from '../../context/NotificationContext/NotificationContext'
 import { NotificationPreview } from '../NotificationPreview'
 import { NotificationBadge } from '../NotificationBadge'
+import { useLocalization } from "@/i18n/LocalizationProvider"
 
 export const NotificationBell = ({ className = '' }) => {
   const [openState, setOpenState] = useState('closed')
   const [isDesktop, setIsDesktop] = useState(() => window.matchMedia('(min-width: 768px)').matches)
   const ref = useRef(null)
   const { unreadCount } = useNotifications()
+  const { t } = useLocalization()
 
   const isOpen = openState !== 'closed'
 
@@ -64,7 +66,7 @@ export const NotificationBell = ({ className = '' }) => {
         type="button"
         onClick={handleClick}
         className="relative flex items-center justify-center rounded-button p-1.5 text-text-muted hover:text-primary hover:bg-primary-light/50 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 min-h-[44px] min-w-[44px]"
-        aria-label={`Notifications${showUnreadBadge ? ` (${unreadCount} unread)` : ''}`}
+        aria-label={showUnreadBadge ? t('notifications.unread', { count: unreadCount }) : t('notifications.notifications')}
         aria-expanded={isOpen}
         aria-haspopup="dialog"
       >
@@ -75,7 +77,7 @@ export const NotificationBell = ({ className = '' }) => {
       <AnimatePresence>
         {isOpen && (
           <div
-            className="max-sm:fixed max-sm:left-4 max-sm:right-4 max-sm:top-16 max-sm:origin-top sm:absolute sm:right-0 sm:origin-top-right mt-2 z-50"
+            className="max-sm:fixed max-sm:inset-x-4 max-sm:top-16 max-sm:origin-top sm:absolute sm:end-0 sm:origin-top-right sm:rtl:origin-top-left mt-2 z-50"
           >
             <NotificationPreview />
           </div>

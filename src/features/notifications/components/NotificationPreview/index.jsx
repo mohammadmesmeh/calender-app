@@ -3,10 +3,12 @@ import { CheckCheck } from 'lucide-react'
 import { useNotifications } from '../../context/NotificationContext/NotificationContext'
 import { NotificationItem } from '../NotificationItem'
 import { NotificationEmpty } from '../NotificationEmpty'
+import { useLocalization } from "@/i18n/LocalizationProvider"
 
 export const NotificationPreview = () => {
   const { notifications, unreadCount, markAsRead, markAllAsRead, dismiss } =
     useNotifications()
+  const { t } = useLocalization()
 
   const hasUnread = unreadCount > 0
 
@@ -18,11 +20,11 @@ export const NotificationPreview = () => {
       transition={{ duration: 0.15, ease: 'easeOut' }}
       className="w-[calc(100vw-2rem)] sm:w-[360px] rounded-card border border-border/70 bg-surface shadow-dropdown overflow-hidden"
       role="dialog"
-      aria-label="Notifications"
+      aria-label={t('notifications.notifications')}
     >
       <div className="flex items-center justify-between px-4 py-3 border-b border-border/50">
         <h2 className="text-sm font-semibold text-text">
-          Notifications
+          {t('notifications.notifications')}
         </h2>
         {hasUnread && (
           <button
@@ -31,7 +33,7 @@ export const NotificationPreview = () => {
             className="flex items-center gap-1 text-xs font-medium text-primary hover:text-primary-hover transition-colors min-h-[36px]"
           >
             <CheckCheck size={14} />
-            Mark all read
+            {t('notifications.markAllRead')}
           </button>
         )}
       </div>
