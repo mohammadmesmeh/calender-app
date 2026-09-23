@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { CONST } from "@/constants/const";
+import { useLocalization } from "@/i18n/LocalizationProvider";
 
 export const useDate = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const { month } = useLocalization();
 
   const YEAR = currentDate.getFullYear();
   const MONTH = currentDate.getMonth();
@@ -13,9 +14,9 @@ export const useDate = () => {
   const thisDay = new Date().getDate();
   const thisDayInWeek = new Date().getDay();
 
-  const monthName = CONST.MONTHS__OF__YEAR[MONTH];
-  const nextMonthName = CONST.MONTHS__OF__YEAR[(MONTH + 1) % 12];
-  const prevMonthName = CONST.MONTHS__OF__YEAR[(MONTH - 1 + 12) % 12];
+  const monthName = month(currentDate, "long");
+  const nextMonthName = month(new Date(YEAR, MONTH + 1, 1), "long");
+  const prevMonthName = month(new Date(YEAR, MONTH - 1, 1), "long");
 
   const NumLastDayInMonth = new Date(YEAR, MONTH + 1, 0).getDate();
   const NumFirstDayInMonth = new Date(YEAR, MONTH, 1).getDay();
