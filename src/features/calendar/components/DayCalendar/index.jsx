@@ -17,7 +17,7 @@ import { CalendarDragPreview } from "../CalendarDragPreview";
 // highlight on hover and the primary click-to-create surface.
 const SLOT_CLASS =
   "group relative border-b border-border/40 cursor-pointer transition-colors duration-100 hover:bg-primary/[0.06] hover:ring-1 hover:ring-inset hover:ring-primary/40 focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-primary/40";
-const SLOT_ADD_CLASS = "absolute left-0.5 top-0.5 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-150";
+const SLOT_ADD_CLASS = "absolute start-0.5 top-0.5 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-150";
 
 // Gap between side-by-side items in an overlap lane.
 const LANE_GAP_PX = 3;
@@ -67,7 +67,7 @@ export const DayCalendar = () => {
                 <div className="flex px-container-sm md:px-container-md lg:px-container-lg pt-3 pb-3">
                     <TimeGutter className="w-14 md:w-16" />
 
-                    <div className="relative flex-1 border-l border-border" role="gridcell"
+                    <div className="relative flex-1 border-s border-border" role="gridcell"
                         {...getDropTargetProps({ date: viewDate, kind: "time" })}
                     >
                         {Array.from({ length: 24 }, (_, i) => (
@@ -91,7 +91,7 @@ export const DayCalendar = () => {
 
                         <div className="pointer-events-none absolute inset-0 z-10">
                             {dayItems.map((item, itemIndex) => {
-                                const lanes = dayLayout[itemIndex] || { leftPct: 0, widthPct: 100 };
+                                const lanes = dayLayout[itemIndex] || { inlineStartPct: 0, widthPct: 100 };
                                 return (
                                     <div
                                         key={`${item.source}-${item.id}`}
@@ -99,7 +99,7 @@ export const DayCalendar = () => {
                                         style={{
                                             top: itemBlockTop(item),
                                             height: itemBlockHeight(item),
-                                            left: `calc(${lanes.leftPct}% + ${LANE_GAP_PX}px)`,
+                                            insetInlineStart: `calc(${lanes.inlineStartPct}% + ${LANE_GAP_PX}px)`,
                                             width: `calc(${lanes.widthPct}% - ${2 * LANE_GAP_PX}px)`,
                                             zIndex: 11,
                                         }}

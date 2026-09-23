@@ -20,16 +20,13 @@ const DAY_GRID_CLASS = "grid grid-cols-[3.5rem_repeat(7,minmax(0,1fr))] md:grid-
 // highlight on hover AND the primary click-to-create surface.
 const SLOT_CLASS =
   "group relative border-b border-border/40 cursor-pointer transition-colors duration-100 hover:bg-primary/[0.06] hover:ring-1 hover:ring-inset hover:ring-primary/40 focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-primary/40";
-const SLOT_ADD_CLASS = "absolute left-0.5 top-0.5 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-150";
+const SLOT_ADD_CLASS = "absolute start-0.5 top-0.5 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-150";
 
 // Gap between side-by-side items in an overlap lane.
 const LANE_GAP_PX = 3;
 
 const englishLabel = (date) =>
   `${CONST.MONTHS__OF__YEAR[date.getMonth()].slice(0, 3)} ${date.getDate()}`;
-
-// Snaps the pointer Y inside a slot row to the nearest 30-min time and opens
-// the "add" overlay for that exact date+time (shared basis as drag & drop).
 const useCreateAtSlot = () => {
   const { openAdd } = useCalendarOverlay();
   return useCallback(
@@ -81,7 +78,7 @@ export const WeekCalendar = () => {
                     return (
                         <div
                             key={day.toISOString()}
-                            className="group relative flex flex-col items-center justify-center py-2 px-1 border-l border-border"
+                            className="group relative flex flex-col items-center justify-center py-2 px-1 border-s border-border"
                             {...getDropTargetProps({ date: day })}
                         >
                             <span className={`text-[11px] md:text-xs font-medium uppercase tracking-wide ${isToday ? "text-primary" : "text-text-muted/70"}`}>
@@ -93,7 +90,7 @@ export const WeekCalendar = () => {
                             <CalendarAddButton
                                 onClick={() => openAdd(day)}
                                 label={`Add item on ${englishLabel(day)}`}
-                                className="absolute right-1 top-1.5 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-150"
+                                className="absolute end-1 top-1.5 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-150"
                             />
                         </div>
                     );
@@ -103,11 +100,11 @@ export const WeekCalendar = () => {
             {/* Scrollable time grid */}
             <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-minimal">
                 <div className="flex px-container-sm md:px-container-md lg:px-container-lg pt-3 pb-3">
-                    <div className="sticky left-0 z-10 flex bg-surface">
+                    <div className="sticky start-0 z-10 flex bg-surface">
                         <TimeGutter className="w-14 md:w-16" />
                     </div>
 
-                    <div className="flex-1 grid grid-cols-7 border-l border-border">
+                    <div className="flex-1 grid grid-cols-7 border-s border-border">
                         {weekDays.map((day, dayIndex) => {
                             const isToday = isSameDay(day, today);
                             const dayItems = weekItems[dayIndex];
@@ -140,7 +137,7 @@ export const WeekCalendar = () => {
 
                                     <div className="pointer-events-none absolute inset-0 z-10">
                                         {dayItems.map((item, itemIndex) => {
-                                            const lanes = dayLayout[itemIndex] || { leftPct: 0, widthPct: 100 };
+                                            const lanes = dayLayout[itemIndex] || { inlineStartPct: 0, widthPct: 100 };
                                             return (
                                                 <div
                                                     key={`${item.source}-${item.id}`}
@@ -148,7 +145,7 @@ export const WeekCalendar = () => {
                                                     style={{
                                                         top: itemBlockTop(item),
                                                         height: itemBlockHeight(item),
-                                                        left: `calc(${lanes.leftPct}% + ${LANE_GAP_PX}px)`,
+                                                        insetInlineStart: `calc(${lanes.inlineStartPct}% + ${LANE_GAP_PX}px)`,
                                                         width: `calc(${lanes.widthPct}% - ${2 * LANE_GAP_PX}px)`,
                                                         zIndex: 11,
                                                     }}

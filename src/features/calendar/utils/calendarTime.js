@@ -79,12 +79,16 @@ export const itemBlockHeight = (item) => {
  *
  * Non-overlapping items each get the full column width. Returns an array whose
  * nth entry corresponds to items[n] (same order):
- *   { leftPct, widthPct }
+ *   { inlineStartPct, widthPct }
+ *
+ * The lane offsets are direction-agnostic: consumers position the block with
+ * the logical property `insetInlineStart`, so lane 0 sits at the start edge in
+ * both LTR and RTL calendars.
  */
 export const layoutDayBlocks = (items) => {
   const count = items.length;
   const result = new Array(count);
-  for (let i = 0; i < count; i += 1) result[i] = { leftPct: 0, widthPct: 100 };
+  for (let i = 0; i < count; i += 1) result[i] = { inlineStartPct: 0, widthPct: 100 };
   if (count === 0) return result;
 
   const indexed = items
@@ -125,7 +129,7 @@ export const layoutDayBlocks = (items) => {
     const laneCount = Math.max(lanes.length, 1);
     const width = 100 / laneCount;
     cluster.blocks.forEach((block) => {
-      result[block.i] = { leftPct: laneByIndex.get(block.i) * width, widthPct: width };
+      result[block.i] = { inlineStartPct: laneByIndex.get(block.i) * width, widthPct: width };
     });
   }
 

@@ -88,7 +88,7 @@ export const MonthCalendar = () => {
                         return (
                             <div
                                 key={`${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`}
-                                className={`border-r border-border ${!isLastRow ? 'border-b' : ''} ${isOutsideMonth ? 'bg-background/40' : ''}`}
+                                className={`border-e border-border ${!isLastRow ? 'border-b' : ''} ${isOutsideMonth ? 'bg-background/40' : ''}`}
                                 {...getDropTargetProps({ date })}
                             >
                                 <BaseCalendarDay
@@ -119,7 +119,7 @@ export const MonthCalendar = () => {
                                         <button
                                             type="button"
                                             onClick={() => openDay(date)}
-                                            className="text-left text-[10px] md:text-[11px] font-medium text-text-secondary hover:text-primary transition-colors"
+                                            className="text-start text-[10px] md:text-[11px] font-medium text-text-secondary hover:text-primary transition-colors"
                                         >
                                             +{overflow} more
                                         </button>
