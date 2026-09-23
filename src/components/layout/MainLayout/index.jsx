@@ -25,7 +25,7 @@ export const MainLayout = () => {
                 </main>
 
                 {isVisibleMenu && (
-                  <aside className="hidden lg:flex w-64 border-l border-border bg-surface/90 shadow-subtle">
+                  <aside className="hidden lg:flex w-64 border-s border-border bg-surface/90 shadow-subtle">
                     <div className="h-full overflow-y-auto">
                       <MainMenu />
                     </div>
