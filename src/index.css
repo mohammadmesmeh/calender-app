@@ -231,12 +231,14 @@ body {
   font-family: 'Inter', 'IBM Plex Sans Arabic', ui-sans-serif, system-ui;
 }
 
-/* Arabic (RTL) typography: swap to the Arabic family and give it more leading.
-   IBM Plex Sans Arabic has deeper ascenders/descenders, so it needs slightly
-   looser line-height than Inter. */
+/* Arabic (RTL) typography: swap to the Arabic family, size it up slightly
+   (IBM Plex Sans Arabic reads smaller than Inter at the same font-size).
+   and give it more leading. It has deeper ascenders/descenders, so it needs
+   slightly looser line-height than Inter. */
 html[lang="ar"] body,
 html[lang="ar"] {
   font-family: 'IBM Plex Sans Arabic', 'Inter', ui-sans-serif, system-ui;
+  font-size: 106.25%; /* ~17px base instead of 16px */
 }
 html[lang="ar"] body {
   line-height: 1.6;
@@ -245,6 +247,16 @@ html[lang="ar"] input,
 html[lang="ar"] textarea,
 html[lang="ar"] select {
   line-height: 1.55;
+}
+
+/* Tracked-out uppercase labels (a Latin-typography convention) break Arabic
+   letter joining, so both are neutralized for every element in Arabic,
+   regardless of which Tailwind utility applied them. */
+html[lang="ar"] .uppercase {
+  text-transform: none;
+}
+html[lang="ar"] [class*="tracking-"] {
+  letter-spacing: normal;
 }
 
 /* Number alignment inside the calendar grid cells is fully right when the
