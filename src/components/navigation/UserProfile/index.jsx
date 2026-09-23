@@ -16,8 +16,8 @@ export const UserProfile = ({ className, classNameIcon, expanded }) => {
       )}
 
       <div className={`flex flex-col transition-all duration-300 overflow-hidden ${expanded ? "opacity-100 max-w-[200px]" : "opacity-0 max-w-0"}`}>
-        <span className="text-md font-medium">{user?.displayName}</span>
-        <span className="text-xs text-text-muted">{user?.email}</span>
+        <span className="text-md font-medium" dir="auto">{user?.displayName}</span>
+        <span className="text-xs text-text-muted" dir="ltr">{user?.email}</span>
       </div>
     </div>
   )

@@ -43,7 +43,7 @@ export const CalendarEventBar = ({
     >
       {completed && <Check size={11} className="shrink-0 text-success" strokeWidth={3} />}
       <span className={`shrink-0 w-[3px] h-3 rounded-full ${dotClass}`} />
-      <span className={`min-w-0 flex-1 truncate text-[10px] md:text-[11px] font-medium leading-tight ${completed ? "text-text-muted line-through" : "text-text"}`}>
+      <span className={`min-w-0 flex-1 truncate text-[10px] md:text-[11px] font-medium leading-tight ${completed ? "text-text-muted line-through" : "text-text"}`} dir="auto">
         {event.title}
       </span>
       {timeLabel && (

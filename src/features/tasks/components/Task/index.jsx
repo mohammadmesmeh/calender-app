@@ -26,7 +26,7 @@ export const Task = ({ title, time, completed, onToggle, priority }) => {
                 </div>
 
                 <div>
-                    <p className={`text-sm font-medium text-text transition-all duration-200 ${completed ? 'line-through text-text-muted' : ''}`}>
+                    <p className={`text-sm font-medium text-text transition-all duration-200 ${completed ? 'line-through text-text-muted' : ''}`} dir="auto">
                         {title}
                     </p>
                     <p className="text-xs text-text-secondary">{time}</p>

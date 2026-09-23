@@ -56,7 +56,7 @@ export const CalendarDragPreview = ({ item, startPoint }) => {
     >
       <div className="flex items-center gap-1.5 rounded-[3px] border border-primary/40 bg-surface px-2 py-1.5 shadow-dropdown">
         <span className={`shrink-0 w-[3px] h-3 rounded-full ${dotClass}`} />
-        <span className="max-w-[160px] truncate text-[11px] font-medium text-text">
+        <span className="max-w-[160px] truncate text-[11px] font-medium text-text" dir="auto">
           {item.title}
         </span>
         {timeLabel && (

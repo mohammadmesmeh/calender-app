@@ -33,7 +33,7 @@ export const Note = ({ id, pinned, text, timestamp, deleteNote, togglePin }) => 
     >
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1 min-w-0">
-          <p className="text-sm text-text break-words">{text}</p>
+          <p className="text-sm text-text break-words" dir="auto">{text}</p>
           <div className="flex items-center gap-1 mt-2">
             <Clock size={12} className="text-text-muted" />
             <span className="text-xs text-text-muted">{displayTime}</span>
