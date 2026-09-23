@@ -109,6 +109,7 @@ export default {
     closeSideMenu: 'Close side menu',
     openSidebar: 'Open sidebar',
     closeSidebar: 'Close sidebar',
+    userAvatar: 'User avatar',
     footerTagline: 'Plan your day smarter',
     privacy: 'Privacy',
     terms: 'Terms',

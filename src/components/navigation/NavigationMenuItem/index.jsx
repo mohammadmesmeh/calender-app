@@ -1,10 +1,14 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, ChevronLeft } from "lucide-react";
+import { useLocalization } from "@/i18n/LocalizationProvider";
 
 export const NavigationMenuItem = ({ to, text, icon: Icon, isExpanded, onNavigate, submenuItems = [] }) => {
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+  const { dir } = useLocalization();
+  const SubChevron = dir === 'rtl' ? ChevronLeft : ChevronRight;
+  const slideFrom = dir === 'rtl' ? 8 : -8;
 
   if (!Icon) return null;
   const hasSubmenu = submenuItems.length > 0;
@@ -39,7 +43,7 @@ export const NavigationMenuItem = ({ to, text, icon: Icon, isExpanded, onNavigat
           <>
             <span
               className={`flex h-10 w-10 items-center justify-center rounded-button transition-all duration-200 ${
-                isExpanded ? "mr-3" : "mr-0"
+                isExpanded ? "ms-3" : "ms-0"
               } ${isActive ? "bg-background/15" : "bg-transparent group-hover:bg-surface/70"}`}
             >
               <Icon size={18} />
@@ -53,11 +57,11 @@ export const NavigationMenuItem = ({ to, text, icon: Icon, isExpanded, onNavigat
             </span>
             {hasSubmenu && (
               <span
-                className={`ml-auto flex h-6 w-6 items-center justify-center rounded-full text-text-muted transition-all duration-200 ${
-                  isSubmenuOpen ? "translate-x-0 text-primary" : ""
+                className={`ms-auto flex h-6 w-6 items-center justify-center rounded-full text-text-muted transition-all duration-200 ${
+                  isSubmenuOpen ? "text-primary rotate-90" : ""
                 }`}
               >
-                <ChevronRight size={16} />
+                <SubChevron size={16} />
               </span>
             )}
           </>
@@ -67,13 +71,13 @@ export const NavigationMenuItem = ({ to, text, icon: Icon, isExpanded, onNavigat
       <AnimatePresence>
         {hasSubmenu && isSubmenuOpen && (
           <motion.div
-            initial={{ opacity: 0, x: -8, y: -4 }}
+            initial={{ opacity: 0, x: slideFrom, y: -4 }}
             animate={{ opacity: 1, x: 0, y: 0 }}
-            exit={{ opacity: 0, x: -8, y: -4 }}
+            exit={{ opacity: 0, x: slideFrom, y: -4 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
             role="menu"
             aria-label={`${text} submenu`}
-            className="absolute left-0 top-full md:left-full md:top-auto md:bottom-0 md:ml-3 z-50 w-56 overflow-hidden rounded-card border border-border/70 bg-surface p-2 shadow-dropdown"
+            className="absolute start-0 top-full md:start-full md:top-auto md:bottom-0 md:ms-3 z-50 w-56 overflow-hidden rounded-card border border-border/70 bg-surface p-2 shadow-dropdown"
           >
             <ul className="space-y-1">
               {submenuItems.map((item) => {
@@ -84,7 +88,7 @@ export const NavigationMenuItem = ({ to, text, icon: Icon, isExpanded, onNavigat
                     <button
                       type="button"
                       role="menuitem"
-                      className="flex w-full items-center gap-3 rounded-button px-3 py-2 text-left text-sm text-text-secondary transition-colors duration-200 hover:bg-primary-light hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+                      className="flex w-full items-center gap-3 rounded-button px-3 py-2 text-start text-sm text-text-secondary transition-colors duration-200 hover:bg-primary-light hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
                     >
                       <span className="flex h-8 w-8 items-center justify-center rounded-button bg-secondary/10 text-primary">
                         <ItemIcon size={16} />

@@ -109,6 +109,7 @@ export default {
     closeSideMenu: 'إغلاق القائمة الجانبية',
     openSidebar: 'فتح الشريط الجانبي',
     closeSidebar: 'إغلاق الشريط الجانبي',
+    userAvatar: 'الصورة الرمزية للمستخدم',
     footerTagline: 'نظّم يومك بذكاء',
     privacy: 'الخصوصية',
     terms: 'الشروط',

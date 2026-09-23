@@ -1,34 +1,34 @@
 import { Logo } from "@/components/navigation/Logo";
-export const  Footer =()=>(
-    
+import { useLocalization } from "@/i18n/LocalizationProvider";
+
+export const Footer = () => {
+  const { t } = useLocalization();
+
+  return (
     <footer className="w-full mt-4 border-t border-border bg-surface px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-3 text-text-secondary text-sm">
-      
-      {/* Left side */}
+
       <div className="flex items-center gap-2">
         <Logo />
-        <span className="text-text-muted">•</span>
-        <span>Plan your day smarter</span>
+        <span className="hidden h-4 w-px bg-border sm:block" aria-hidden="true" />
+        <span>{t('nav.footerTagline')}</span>
       </div>
 
-      {/* Middle */}
       <div className="flex items-center gap-4 text-text-muted">
         <span className="hover:text-text cursor-pointer transition">
-          Privacy
+          {t('nav.privacy')}
         </span>
         <span className="hover:text-text cursor-pointer transition">
-          Terms
+          {t('nav.terms')}
         </span>
         <span className="hover:text-text cursor-pointer transition">
-          Support
+          {t('nav.support')}
         </span>
       </div>
 
-      {/* Right side */}
       <div className="text-text-muted">
-        © {new Date().getFullYear()} All rights reserved
+        © {new Date().getFullYear()} {t('nav.rights')}
       </div>
 
     </footer>
   );
-
- 
+};
