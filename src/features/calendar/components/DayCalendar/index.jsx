@@ -3,7 +3,7 @@ import { useCalendarData } from "../../hooks/useCalendarData";
 import { useCalendarDataDrop } from "../../hooks/useCalendarDataDrop";
 import { useCalendarDate } from "../../context/CalendarDateContext/useCalendarDate";
 import { useCalendarOverlay } from "../../context/CalendarOverlayContext";
-import { isSameDay, formatHourTime, HOUR_HEIGHT } from "../../utils/calendarUtils";
+import { isSameDay, HOUR_HEIGHT } from "../../utils/calendarUtils";
 import { buildCalendarItems } from "../../utils/calendarItems";
 import { minutesToCalendarTime, timeFromDropOffset } from "../../utils/dragDrop";
 import { itemBlockHeight, itemBlockTop, layoutDayBlocks } from "../../utils/calendarTime";
@@ -12,6 +12,7 @@ import { CurrentTimeLine } from "../CurrentTimeLine";
 import { TimeGutter } from "../TimeGutter";
 import { CalendarAddButton } from "../CalendarAddButton";
 import { CalendarDragPreview } from "../CalendarDragPreview";
+import { useLocalization } from "@/i18n/LocalizationProvider";
 
 // Each day column is a stack of 24 slot rows. A slot is both a drop-candidate
 // highlight on hover and the primary click-to-create surface.
@@ -50,6 +51,7 @@ export const DayCalendar = () => {
 
     const { draggingItem, dragPoint, getDragSourceProps, getDropTargetProps } = useCalendarDataDrop();
     const createAtSlot = useCreateAtSlot(viewDate);
+    const { t, time } = useLocalization();
 
     const isToday = isSameDay(viewDate, new Date());
 
@@ -83,7 +85,7 @@ export const DayCalendar = () => {
                             >
                                 <CalendarAddButton
                                     onClick={createAtSlot(i)}
-                                    label={`Add item at ${formatHourTime(i)}`}
+                                    label={`${t('calendar.addItemAt')} ${time(new Date(2024, 0, 1, i, 0, 0, 0))}`}
                                     className={SLOT_ADD_CLASS}
                                 />
                             </div>
