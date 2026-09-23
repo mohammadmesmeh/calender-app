@@ -4,10 +4,12 @@ import { useTask } from "@/features/tasks/context/TaskContext/TaskContext"
 import { ChartPieInteractive } from "../ProgressCircle"
 import { Card, CardContent } from "@/components/ui/card"
 import { getCompletionStats } from "@/features/dashboard/utils/analytics"
+import { useLocalization } from "@/i18n/LocalizationProvider"
 
 export const WelcomeSection = () => {
   const { user } = useAuth()
   const { tasks } = useTask()
+  const { t } = useLocalization()
 
   const stats = useMemo(() => getCompletionStats(tasks), [tasks])
 
@@ -26,12 +28,12 @@ export const WelcomeSection = () => {
       <Card className="lg:col-span-2">
         <CardContent className="p-container-md flex flex-col sm:flex-row items-start sm:items-center gap-stack-sm sm:gap-stack-lg">
           <div className="flex-1 min-w-0 space-y-1.5">
-            <div className="text-sm text-text-secondary">Welcome back,</div>
+            <div className="text-sm text-text-secondary">{t('dashboard.welcomeBack')}</div>
             <h2 className="text-2xl sm:text-3xl font-bold text-text truncate">
-              {user?.displayName || "User"}
+              {user?.displayName || t('dashboard.userFallback')}
             </h2>
             <p className="text-sm sm:text-base text-text-secondary max-w-xs">
-              You have tasks pending for today. Keep up the great work!
+              {t('dashboard.tasksPending')}
             </p>
           </div>
 
@@ -42,6 +44,7 @@ export const WelcomeSection = () => {
               height="200.399"
               viewBox="0 0 960 510.399"
               role="img"
+              aria-hidden="true"
             >
               <g transform="translate(-648.556 -502.546)">
                 <path
