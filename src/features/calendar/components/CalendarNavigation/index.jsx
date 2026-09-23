@@ -10,12 +10,12 @@ import {
   Loader2,
   CloudAlert,
 } from "lucide-react";
-import { CONST } from "@/constants/const";
 import { useCalendarDate } from "../../context/CalendarDateContext/useCalendarDate";
 import { useCalendarOverlay } from "../../context/CalendarOverlayContext";
 import { useCalendarData } from "../../hooks/useCalendarData";
 import { getWeekDays, isSameDay } from "../../utils/calendarUtils";
 import { CalendarViewSwitcher } from "../CalendarViewSwitcher";
+import { useLocalization } from "@/i18n/LocalizationProvider";
 
 const VIEW_ICONS = {
   month: CalendarDays,
@@ -29,26 +29,28 @@ const viewKeyFor = (pathname) => {
   return "month";
 };
 
-const titleFor = (viewKey, viewDate) => {
+const titleFor = (viewKey, viewDate, { month, weekday, dateFull }) => {
   if (viewKey === "week") {
     const days = getWeekDays(viewDate);
     const start = days[0];
     const end = days[6];
-    const startMonth = CONST.MONTHS__OF__YEAR[start.getMonth()];
-    const endMonth = CONST.MONTHS__OF__YEAR[end.getMonth()];
+    const startMonth = month(start, "long");
     return start.getMonth() === end.getMonth()
       ? `${startMonth} ${start.getDate()} - ${end.getDate()}, ${end.getFullYear()}`
-      : `${startMonth.slice(0, 3)} ${start.getDate()} - ${endMonth.slice(0, 3)} ${end.getDate()}, ${end.getFullYear()}`;
+      : `${month(start, "short")} ${start.getDate()} - ${month(end, "short")} ${end.getDate()}, ${end.getFullYear()}`;
   }
   if (viewKey === "day") {
-    return `${CONST.DAYS__OF__WEEK[viewDate.getDay()]}, ${CONST.MONTHS__OF__YEAR[viewDate.getMonth()]} ${viewDate.getDate()}, ${viewDate.getFullYear()}`;
+    return `${weekday(viewDate, "long")}, ${dateFull(viewDate)}`;
   }
-  return `${CONST.MONTHS__OF__YEAR[viewDate.getMonth()]} ${viewDate.getFullYear()}`;
+  return `${month(viewDate, "long")} ${viewDate.getFullYear()}`;
 };
 
 export const CalendarNavigation = () => {
   const { pathname } = useLocation();
   const viewKey = viewKeyFor(pathname);
+  const { t, dir, month, weekday, dateFull } = useLocalization();
+  const PrevIcon = dir === "rtl" ? ChevronRight : ChevronLeft;
+  const NextIcon = dir === "rtl" ? ChevronLeft : ChevronRight;
 
   const {
     viewDate,
@@ -70,7 +72,7 @@ export const CalendarNavigation = () => {
     return { prev: goPrevMonth, next: goNextMonth };
   }, [viewKey, goNextMonth, goPrevMonth, goNextWeek, goPrevWeek, goNextDay, goPrevDay]);
 
-  const title = titleFor(viewKey, viewDate);
+  const title = titleFor(viewKey, viewDate, { month, weekday, dateFull });
   const today = new Date();
   let isToday;
   if (viewKey === "week") {
@@ -84,23 +86,23 @@ export const CalendarNavigation = () => {
   const Icon = VIEW_ICONS[viewKey];
 
   return (
-    <div className="flex flex-wrap items-center gap-x-3 gap-y-2" aria-label="Calendar navigation">
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-2" aria-label={t('calendar.calendarView')}>
       <CalendarViewSwitcher />
 
       <h2 className="hidden md:flex items-center gap-2 text-sm lg:text-base font-semibold text-text select-none truncate" aria-hidden="true">
         <Icon size={16} className="text-primary" aria-hidden="true" />
-        <span className="sr-only">{`${viewKey} view: `}</span>
+        <span className="sr-only">{`${t(`calendar.${viewKey}`)}: `}</span>
         <span className="truncate">{title}</span>
       </h2>
 
-      <div className="flex items-center gap-1.5" role="group" aria-label="Change calendar period">
+      <div className="flex items-center gap-1.5" role="group" aria-label={t('calendar.calendarView')}>
         <button
           type="button"
           onClick={prev}
           className="rounded-button bg-background p-2 shadow-subtle transition-all duration-200 ease-out hover:bg-border/70 hover:shadow-subtle active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
-          aria-label={`Previous ${viewKey}`}
+          aria-label={`${t('calendar.previous')} ${t(`calendar.${viewKey}`)}`}
         >
-          <ChevronLeft size={18} className="text-text" />
+          <PrevIcon size={18} className="text-text" />
         </button>
 
         <button
@@ -108,18 +110,18 @@ export const CalendarNavigation = () => {
           onClick={goToday}
           disabled={isToday}
           className="rounded-button bg-background px-3 py-2 text-xs md:text-sm font-medium text-text shadow-subtle transition-all duration-200 ease-out hover:bg-border/70 hover:shadow-subtle active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 disabled:opacity-40 disabled:pointer-events-none"
-          aria-label="Go to today"
+          aria-label={t('calendar.goToToday')}
         >
-          Today
+          {t('calendar.today')}
         </button>
 
         <button
           type="button"
           onClick={next}
           className="rounded-button bg-background p-2 shadow-subtle transition-all duration-200 ease-out hover:bg-border/70 hover:shadow-subtle active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
-          aria-label={`Next ${viewKey}`}
+          aria-label={`${t('calendar.next')} ${t(`calendar.${viewKey}`)}`}
         >
-          <ChevronRight size={18} className="text-text" />
+          <NextIcon size={18} className="text-text" />
         </button>
       </div>
 
@@ -129,25 +131,25 @@ export const CalendarNavigation = () => {
         type="button"
         onClick={() => openAdd(viewDate)}
         className="flex items-center gap-1.5 rounded-button bg-primary px-3 py-2 text-xs md:text-sm font-medium text-white shadow-subtle transition-all duration-200 ease-out hover:bg-primary/90 hover:shadow-card active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
-        aria-label="Add new item"
+        aria-label={t('calendar.addNewItem')}
       >
         <CirclePlus size={16} className="hidden sm:block" />
-        <span className="sm:hidden">Add</span>
-        <span className="hidden sm:inline">Add</span>
+        <span className="sm:hidden">{t('calendar.add')}</span>
+        <span className="hidden sm:inline">{t('calendar.add')}</span>
       </button>
 
       {isLoading && (
-        <span className="inline-flex items-center gap-1.5 text-text-muted" title="Loading calendar items" role="status">
-          <Loader2 size={14} className="animate-spin" aria-label="Loading calendar items" />
+        <span className="inline-flex items-center gap-1.5 text-text-muted" title={t('calendar.loadingItems')} role="status">
+          <Loader2 size={14} className="animate-spin" aria-label={t('calendar.loadingItems')} />
         </span>
       )}
 
       {!isLoading && error && (
         <span
           className="inline-flex items-center gap-1.5 text-text-muted"
-          title="Some items could not be loaded. Your changes are saved locally."
+          title={t('calendar.loadError')}
         >
-          <CloudAlert size={14} className="text-warning" aria-label="Sync issue" />
+          <CloudAlert size={14} className="text-warning" aria-label={t('calendar.loadError')} />
         </span>
       )}
     </div>
