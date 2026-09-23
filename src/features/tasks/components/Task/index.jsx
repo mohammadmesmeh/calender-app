@@ -1,13 +1,20 @@
 import { Check } from "lucide-react";
+import { useLocalization } from "@/i18n/LocalizationProvider";
+
+const PRIORITY_KEYS = { high: 'priority.high', medium: 'priority.medium', low: 'priority.low' };
 
 export const Task = ({ title, time, completed, onToggle, priority }) => {
+    const { t } = useLocalization();
+    const statusLabel = completed ? t('dashboard.completed') : t('dashboard.pending');
+    const priorityLabel = t(PRIORITY_KEYS[priority] || priority);
+
     return (
         <li
             className="flex items-center justify-between group cursor-pointer rounded-button px-2 py-1.5 hover:bg-background transition-colors duration-150"
             onClick={onToggle}
             role="button"
             tabIndex={0}
-            aria-label={`${title} - ${completed ? 'completed' : 'pending'} - ${priority} priority`}
+            aria-label={`${title} - ${statusLabel} - ${priorityLabel}`}
             onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onToggle(); } }}
         >
             <div className="flex gap-3 items-center">
@@ -31,7 +38,7 @@ export const Task = ({ title, time, completed, onToggle, priority }) => {
                 priority === "medium" ? "bg-warning/20 text-text" :
                 "bg-success/10 text-success"
             }`}>
-                {priority}
+                {priorityLabel}
             </span>
         </li>
     )
