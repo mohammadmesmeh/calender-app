@@ -1,5 +1,7 @@
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import { useLocalization } from "@/i18n/LocalizationProvider";
+import { formatStoredTime } from "@/i18n/time";
 
 const OFFSET_X = 12;
 const OFFSET_Y = 16;
@@ -39,9 +41,11 @@ export const CalendarDragPreview = ({ item, startPoint }) => {
     return () => window.removeEventListener("pointermove", onPointerMove);
   }, [item, startPoint]);
 
+  const { locale } = useLocalization();
   if (!item) return null;
 
   const dotClass = DROP_ICON_STYLES[item.color] || "bg-primary";
+  const timeLabel = item.time ? formatStoredTime(item.time, locale) : "";
 
   return createPortal(
     <div
@@ -55,8 +59,8 @@ export const CalendarDragPreview = ({ item, startPoint }) => {
         <span className="max-w-[160px] truncate text-[11px] font-medium text-text">
           {item.title}
         </span>
-        {item.time && (
-          <span className="shrink-0 text-[10px] text-text-secondary">{item.time}</span>
+        {timeLabel && (
+          <span className="shrink-0 text-[10px] text-text-secondary">{timeLabel}</span>
         )}
       </div>
     </div>,

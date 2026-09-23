@@ -26,7 +26,7 @@ export const CurrentTimeLine = () => {
 
     return (
         <div
-            className="absolute left-0 w-full h-px bg-danger z-20 pointer-events-none before:content-[''] before:absolute before:w-2.5 before:h-2.5 before:-top-1 before:-left-1 before:rounded-full before:bg-danger"
+            className="absolute start-0 w-full h-px bg-danger z-20 pointer-events-none before:content-[''] before:absolute before:w-2.5 before:h-2.5 before:-top-1 before:-start-1 before:rounded-full before:bg-danger"
             style={{ top: `${top}px` }}
         />
     )
