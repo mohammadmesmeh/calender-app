@@ -1,10 +1,14 @@
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+import { ar as arLocale } from 'date-fns/locale'
 import { Tag, MapPin, Clock, FileText } from 'lucide-react'
 import { FieldWrapper } from "@/features/auth/components/Formes/FormField"
 import { RequiredMark } from "@/components/ui/RequiredMark"
 import { FORM_CLASSES, TIME_OPTIONS } from "@/constants/form"
 import { categories } from '../../data'
+import { useLocalization } from "@/i18n/LocalizationProvider"
+
+const WEEK_START_TO_RDP = { sun: 0, mon: 1, sat: 6 }
 
 export const EventForm = ({
   title,
@@ -26,6 +30,8 @@ export const EventForm = ({
   error,
   onErrorClear,
 }) => {
+  const { t, lang, weekStart } = useLocalization()
+
   const handleChange = (setter) => (e) => {
     setter(e.target.value)
     if (error) onErrorClear()
@@ -33,11 +39,11 @@ export const EventForm = ({
 
   return (
     <div className="space-y-5">
-      <FieldWrapper label="Title" htmlFor="ev-title" icon={<FileText size={16} />} required>
+      <FieldWrapper label={t('taskForm.title')} htmlFor="ev-title" icon={<FileText size={16} />} required>
         <input
           id="ev-title"
           type="text"
-          placeholder="Enter event title"
+          placeholder={t('taskForm.enterEventTitle')}
           className={FORM_CLASSES.input}
           value={title}
           onChange={handleChange(onTitleChange)}
@@ -46,23 +52,23 @@ export const EventForm = ({
       </FieldWrapper>
 
       <div className="grid gap-5 sm:grid-cols-2">
-        <FieldWrapper label="Category" htmlFor="ev-category" icon={<Tag size={16} />} required>
+        <FieldWrapper label={t('taskForm.category')} htmlFor="ev-category" icon={<Tag size={16} />} required>
           <select
             id="ev-category"
             className={FORM_CLASSES.input}
             value={category}
             onChange={handleChange(onCategoryChange)}
           >
-            <option value="">Select category</option>
+            <option value="">{t('taskForm.selectCategory')}</option>
             {categories.map((c) => (
               <option key={c.id} value={c.id}>
-                {c.name}
+                {t(`calendar.slots.${c.id}`)}
               </option>
             ))}
           </select>
         </FieldWrapper>
 
-        <FieldWrapper label="Date" htmlFor="ev-date" icon={<Clock size={16} />} required>
+        <FieldWrapper label={t('taskForm.taskDate')} htmlFor="ev-date" icon={<Clock size={16} />} required>
           <DatePicker
             id="ev-date"
             selected={date}
@@ -71,13 +77,15 @@ export const EventForm = ({
               if (error) onErrorClear()
             }}
             className={FORM_CLASSES.input}
-            placeholderText="Select date"
+            placeholderText={t('taskForm.selectDateShort')}
             dateFormat="MMMM d, yyyy"
+            locale={lang === 'ar' ? arLocale : undefined}
+            calendarStartDay={WEEK_START_TO_RDP[weekStart] ?? 0}
           />
         </FieldWrapper>
       </div>
 
-      <FieldWrapper label="Time" icon={<Clock size={16} />}>
+      <FieldWrapper label={t('taskForm.time')} icon={<Clock size={16} />}>
         <div className="grid gap-3 grid-cols-3">
           <select className={FORM_CLASSES.input} value={hour} onChange={handleChange(onHourChange)}>
             {TIME_OPTIONS.hours.map((o) => (
@@ -91,28 +99,28 @@ export const EventForm = ({
           </select>
           <select className={FORM_CLASSES.input} value={period} onChange={handleChange(onPeriodChange)}>
             {TIME_OPTIONS.periods.map((o) => (
-              <option key={o.value} value={o.value}>{o.label}</option>
+              <option key={o.value} value={o.value}>{o.value === 'AM' ? t('time.am') : t('time.pm')}</option>
             ))}
           </select>
         </div>
       </FieldWrapper>
 
-      <FieldWrapper label="Location" htmlFor="ev-location" icon={<MapPin size={16} />}>
+      <FieldWrapper label={t('taskForm.location')} htmlFor="ev-location" icon={<MapPin size={16} />}>
         <input
           id="ev-location"
           type="text"
-          placeholder="Enter location"
+          placeholder={t('taskForm.enterLocation')}
           className={FORM_CLASSES.input}
           value={location}
           onChange={handleChange(onLocationChange)}
         />
       </FieldWrapper>
 
-      <FieldWrapper label="Description" htmlFor="ev-description" icon={<FileText size={16} />}>
+      <FieldWrapper label={t('taskForm.description')} htmlFor="ev-description" icon={<FileText size={16} />}>
         <textarea
           id="ev-description"
           rows={3}
-          placeholder="Add a description"
+          placeholder={t('taskForm.addDescription')}
           className={`${FORM_CLASSES.input} min-h-[80px] resize-none`}
           value={description}
           onChange={handleChange(onDescriptionChange)}
