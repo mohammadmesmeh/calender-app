@@ -1,10 +1,9 @@
 import { useCallback, useMemo } from "react";
-import { CONST } from "@/constants/const";
 import { useCalendarData } from "../../hooks/useCalendarData";
 import { useCalendarDataDrop } from "../../hooks/useCalendarDataDrop";
 import { useCalendarDate } from "../../context/CalendarDateContext/useCalendarDate";
 import { useCalendarOverlay } from "../../context/CalendarOverlayContext";
-import { getWeekDays, isSameDay, formatHourTime, HOUR_HEIGHT } from "../../utils/calendarUtils";
+import { getWeekDays, isSameDay, HOUR_HEIGHT } from "../../utils/calendarUtils";
 import { buildCalendarItems } from "../../utils/calendarItems";
 import { minutesToCalendarTime, timeFromDropOffset } from "../../utils/dragDrop";
 import { itemBlockHeight, itemBlockTop, layoutDayBlocks } from "../../utils/calendarTime";
@@ -13,6 +12,7 @@ import { CurrentTimeLine } from "../CurrentTimeLine";
 import { TimeGutter } from "../TimeGutter";
 import { CalendarAddButton } from "../CalendarAddButton";
 import { CalendarDragPreview } from "../CalendarDragPreview";
+import { useLocalization } from "@/i18n/LocalizationProvider";
 
 const DAY_GRID_CLASS = "grid grid-cols-[3.5rem_repeat(7,minmax(0,1fr))] md:grid-cols-[4rem_repeat(7,minmax(0,1fr))]";
 
@@ -25,8 +25,6 @@ const SLOT_ADD_CLASS = "absolute start-0.5 top-0.5 opacity-0 group-hover:opacity
 // Gap between side-by-side items in an overlap lane.
 const LANE_GAP_PX = 3;
 
-const englishLabel = (date) =>
-  `${CONST.MONTHS__OF__YEAR[date.getMonth()].slice(0, 3)} ${date.getDate()}`;
 const useCreateAtSlot = () => {
   const { openAdd } = useCalendarOverlay();
   return useCallback(
@@ -53,6 +51,7 @@ export const WeekCalendar = () => {
 
     const { draggingItem, dragPoint, getDragSourceProps, getDropTargetProps } = useCalendarDataDrop();
     const createAtSlot = useCreateAtSlot();
+    const { t, month, weekday, time } = useLocalization();
 
     const weekDays = useMemo(() => getWeekDays(viewDate), [viewDate]);
 
@@ -82,14 +81,14 @@ export const WeekCalendar = () => {
                             {...getDropTargetProps({ date: day })}
                         >
                             <span className={`text-[11px] md:text-xs font-medium uppercase tracking-wide ${isToday ? "text-primary" : "text-text-muted/70"}`}>
-                                {CONST.DAYS__OF__WEEK[day.getDay()].slice(0, 3)}
+                                {weekday(day, "short")}
                             </span>
                             <span className={`mt-0.5 inline-flex h-7 w-7 md:h-8 md:w-8 items-center justify-center rounded-full text-sm md:text-base font-medium ${isToday ? "bg-primary text-white" : "text-text"}`}>
                                 {day.getDate()}
                             </span>
                             <CalendarAddButton
                                 onClick={() => openAdd(day)}
-                                label={`Add item on ${englishLabel(day)}`}
+                                label={`${t('calendar.addItemOn')} ${month(day, "short")} ${day.getDate()}`}
                                 className="absolute end-1 top-1.5 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-150"
                             />
                         </div>
@@ -129,7 +128,7 @@ export const WeekCalendar = () => {
                                         >
                                             <CalendarAddButton
                                                 onClick={createAtSlot(day, i)}
-                                                label={`Add item at ${formatHourTime(i)}`}
+                                                label={`${t('calendar.addItemAt')} ${time(new Date(2024, 0, 1, i, 0, 0, 0))}`}
                                                 className={SLOT_ADD_CLASS}
                                             />
                                         </div>
