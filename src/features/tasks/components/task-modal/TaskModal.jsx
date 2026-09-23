@@ -5,6 +5,7 @@ import { TaskActions } from './TaskActions'
 import { EventForm } from '../EventForm'
 import { FORM_CLASSES, buildTimeValue } from '@/constants/form'
 import { parseTimeString, combineDateAndTime, DEFAULT_DURATION_MINUTES } from "@/features/calendar/utils/calendarUtils"
+import { useLocalization } from "@/i18n/LocalizationProvider"
 
 const toParts = (minutesOfDay) => {
   const m24 = ((Math.round(minutesOfDay) % 1440) + 1440) % 1440
@@ -17,6 +18,7 @@ const toParts = (minutesOfDay) => {
 }
 
 export const TaskModal = ({ isOpen, onClose, onSave, initialValues = null, editing = false }) => {
+  const { t } = useLocalization()
   const seed = initialValues || {}
   const seedTime = parseTimeString(seed.time)
   const hasTime = Boolean(seed.time)
@@ -75,20 +77,20 @@ export const TaskModal = ({ isOpen, onClose, onSave, initialValues = null, editi
 
   const handleSubmit = () => {
     if (type === 'task') {
-      if (!title.trim()) { setError('Please enter a task title'); return }
-      if (!date) { setError('Please select a task date'); return }
+      if (!title.trim()) { setError(t('taskForm.taskTitleRequired')); return }
+      if (!date) { setError(t('taskForm.taskDateRequired')); return }
       const startMinutes = parseTimeString(combinedTime).hours * 60 + parseTimeString(combinedTime).minutes
       const endMinutes = parseTimeString(combinedEndTime).hours * 60 + parseTimeString(combinedEndTime).minutes
       if (!combinedTime || !combinedEndTime || endMinutes <= startMinutes) {
-        setError('End time must be after the start time')
+        setError(t('taskForm.endAfterStart'))
         return
       }
       setError('')
       onSave({ type: 'task', title: title.trim(), date, time: combinedTime, endTime: combinedEndTime, description: description.trim(), completed: false, priority: 'medium' })
     } else {
-      if (!title.trim()) { setError('Please enter an event title'); return }
-      if (!date) { setError('Please select an event date'); return }
-      if (!category) { setError('Please select a category'); return }
+      if (!title.trim()) { setError(t('taskForm.eventTitleRequired')); return }
+      if (!date) { setError(t('taskForm.eventDateRequired')); return }
+      if (!category) { setError(t('taskForm.categoryRequired')); return }
       setError('')
       onSave({ type: 'event', title: title.trim(), date, time: combinedTime, description: description.trim(), location: location.trim(), category })
     }
@@ -100,18 +102,18 @@ export const TaskModal = ({ isOpen, onClose, onSave, initialValues = null, editi
   const clearError = () => { if (error) setError('') }
 
   const modalTitle = editing
-    ? type === 'task' ? 'Edit Task' : 'Edit Event'
-    : type === 'task' ? 'Add New Task' : 'Add New Event'
+    ? type === 'task' ? t('taskForm.editTask') : t('taskForm.editEvent')
+    : type === 'task' ? t('taskForm.addNewTask') : t('taskForm.addNewEvent')
 
   return (
     <Modal title={modalTitle} isOpen={isOpen} onClose={handleClose}>
       <div className="space-y-6">
         <div className="grid gap-3 sm:grid-cols-2">
           <button type="button" className={`${FORM_CLASSES.segmented} ${type === 'task' ? FORM_CLASSES.selected : FORM_CLASSES.unselected}`} onClick={() => { setType('task'); setError('') }}>
-            Task
+            {t('taskForm.task')}
           </button>
           <button type="button" className={`${FORM_CLASSES.segmented} ${type === 'event' ? FORM_CLASSES.selected : FORM_CLASSES.unselected}`} onClick={() => { setType('event'); setError('') }}>
-            Event
+            {t('taskForm.event')}
           </button>
         </div>
 
