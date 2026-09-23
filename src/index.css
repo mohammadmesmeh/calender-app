@@ -228,7 +228,29 @@
 /* ===== Custom Cursor ===== */
 
 body {
-  font-family: 'Inter', ui-sans-serif, system-ui;
+  font-family: 'Inter', 'IBM Plex Sans Arabic', ui-sans-serif, system-ui;
+}
+
+/* Arabic (RTL) typography: swap to the Arabic family and give it more leading.
+   IBM Plex Sans Arabic has deeper ascenders/descenders, so it needs slightly
+   looser line-height than Inter. */
+html[lang="ar"] body,
+html[lang="ar"] {
+  font-family: 'IBM Plex Sans Arabic', 'Inter', ui-sans-serif, system-ui;
+}
+html[lang="ar"] body {
+  line-height: 1.6;
+}
+html[lang="ar"] input,
+html[lang="ar"] textarea,
+html[lang="ar"] select {
+  line-height: 1.55;
+}
+
+/* Number alignment inside the calendar grid cells is fully right when the
+   language is Arabic; keep separators & borders logical elsewhere. */
+html[dir="rtl"] .cal-drag-handle {
+  touch-action: none;
 }
 
 .recharts-wrapper *:focus,
