@@ -22,7 +22,7 @@ const DashboardContent = () => {
       <Sidebar />
       <div
         className="flex-1 flex flex-col gap-stack-xs md:gap-gutter border border-border rounded-card transition-all duration-300"
-        style={{ paddingLeft: isDesktop ? `${parseInt(sidebarWidth) * 0.25}rem` : undefined }}
+        style={{ paddingInlineStart: isDesktop ? `${parseInt(sidebarWidth) * 0.25}rem` : undefined }}
       >
         <DashboardHeader />
         <div className="flex-1 flex flex-col gap-gutter w-full items-center justify-start px-container-sm md:px-container-md">
