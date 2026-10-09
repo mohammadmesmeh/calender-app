@@ -15,7 +15,7 @@ export const ShineButton = ({ children, className = "", isExpanded, icon: Icon, 
   return (
     <motion.button
       type="button" onClick={onClick}
-      className={`group relative h-12 overflow-hidden rounded-button bg-primary px-4 text-white shadow-subtle transition-shadow duration-200 hover:shadow-card active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${className}`}
+      className={`group relative h-12 overflow-hidden rounded-card bg-primary text-white shadow-subtle transition-all duration-200 hover:shadow-card active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${isExpanded ? "px-4" : "px-0 justify-center"} ${className}`}
       initial="rest"
       animate="rest"
       whileHover="hover"
@@ -42,7 +42,7 @@ export const ShineButton = ({ children, className = "", isExpanded, icon: Icon, 
         ضيق (isExpanded = false) أو واسع، التمركز بيختلف بشكل غير متوقع.
         بدل هيك بنخلي الأيقونة دايمًا أول عنصر، والنص يجاورها مباشرة.
       */}
-      <span className="relative z-10 flex h-full w-full items-center">
+      <span className={`relative z-10 flex h-full w-full items-center ${isExpanded ? "justify-start" : "justify-center"}`}>
         <span
           className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-icon transition-all duration-200 ${
             isExpanded ? "me-2" : "me-0"
