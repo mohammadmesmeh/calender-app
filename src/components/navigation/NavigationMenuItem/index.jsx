@@ -30,8 +30,8 @@ export const NavigationMenuItem = ({ to, text, icon: Icon, isExpanded, onNavigat
         onClick={onNavigate}
         aria-expanded={hasSubmenu ? isSubmenuOpen : undefined}
          className={({ isActive }) =>
-           `group flex items-center rounded-card px-2 py-2 text-sm font-medium transition-all duration-200 ease-out ${
-             isExpanded ? "justify-start" : "justify-center"
+           `group flex items-center rounded-card text-sm font-medium transition-all duration-200 ease-out ${
+             isExpanded ? "px-3 py-2.5 justify-start gap-3" : "p-2 justify-center gap-0"
            } ${
              isActive
                 ? "bg-primary text-white shadow-subtle"
@@ -42,9 +42,9 @@ export const NavigationMenuItem = ({ to, text, icon: Icon, isExpanded, onNavigat
         {({ isActive }) => (
           <>
             <span
-              className={`flex h-10 w-10 items-center justify-center rounded-button transition-all duration-200 ${
-                isExpanded ? "ms-3" : "ms-0"
-              } ${isActive ? "bg-background/15" : "bg-transparent group-hover:bg-surface/70"}`}
+              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-button transition-all duration-200 ${
+                isActive ? "bg-white/20 text-white" : "bg-transparent group-hover:bg-surface/70"
+              }`}
             >
               <Icon size={18} />
             </span>
@@ -57,8 +57,8 @@ export const NavigationMenuItem = ({ to, text, icon: Icon, isExpanded, onNavigat
             </span>
             {hasSubmenu && (
               <span
-                className={`ms-auto flex h-6 w-6 items-center justify-center rounded-full text-text-muted transition-all duration-200 ${
-                  isSubmenuOpen ? "text-primary rotate-90" : ""
+                className={`ms-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-text-muted transition-all duration-200 ${
+                  isSubmenuOpen ? (dir === 'rtl' ? "-rotate-90 text-primary" : "rotate-90 text-primary") : ""
                 }`}
               >
                 <SubChevron size={16} />
@@ -77,7 +77,7 @@ export const NavigationMenuItem = ({ to, text, icon: Icon, isExpanded, onNavigat
             transition={{ duration: 0.18, ease: "easeOut" }}
             role="menu"
             aria-label={`${text} submenu`}
-            className="absolute start-0 top-full md:start-full md:top-auto md:bottom-0 md:ms-3 z-50 w-56 overflow-hidden rounded-card border border-border/70 bg-surface p-2 shadow-dropdown"
+            className="absolute start-0 top-full md:start-full md:top-0 md:ms-3 z-50 w-56 max-h-[calc(100vh-2rem)] overflow-y-auto rounded-card border border-border/70 bg-surface p-2 shadow-dropdown"
           >
             <ul className="space-y-1">
               {submenuItems.map((item) => {
