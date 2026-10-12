@@ -1,8 +1,14 @@
+import { useMemo } from 'react';
 import { IconBtn } from '@/components/buttons/IconBtn';
-import { CONST } from "@/constants/const";
 import { AddButtons } from "@/components/buttons/AddButtons";
 import { ChevronLeft, ChevronRight, CalendarPlus } from 'lucide-react';
 import { useDate } from '../../hooks/useDate';
+import { useLocalization } from '@/i18n/LocalizationProvider';
+
+// A known Sunday, used only to read locale weekday names in a fixed
+// Sun..Sat order that matches the grid below (which always starts the
+// week on Sunday regardless of the user's week-start preference).
+const REFERENCE_SUNDAY = new Date(2024, 0, 7);
 
 export const CalendarPopover = () => {
     const {
@@ -19,21 +25,33 @@ export const CalendarPopover = () => {
         NextMonthDaysNumsArray,
         thisYear
     } = useDate()
+    const { t, dir, weekday } = useLocalization();
+    const PrevIcon = dir === 'rtl' ? ChevronRight : ChevronLeft;
+    const NextIcon = dir === 'rtl' ? ChevronLeft : ChevronRight;
+
+    const weekdayHeaders = useMemo(
+        () => Array.from({ length: 7 }, (_, i) => {
+            const date = new Date(REFERENCE_SUNDAY);
+            date.setDate(REFERENCE_SUNDAY.getDate() + i);
+            return weekday(date, "short");
+        }),
+        [weekday]
+    );
 
     return (
         <div className="w-[280px] p-4 bg-surface rounded-card border border-border shadow-dropdown select-none">
             <div className="flex items-center justify-between mb-3">
-                <IconBtn icon={ChevronLeft} onClick={handleClickPrevMonth} className="p-1.5" aria-label="Previous month" />
+                <IconBtn icon={PrevIcon} onClick={handleClickPrevMonth} className="p-1.5" aria-label={`${t('calendar.previous')} ${t('calendar.month')}`} />
                 <p className="text-sm font-bold text-text text-center">
                     {monthName} <span className="font-normal text-text-secondary">{YEAR}</span>
                 </p>
-                <IconBtn icon={ChevronRight} onClick={handleClickNextMonth} className="p-1.5" aria-label="Next month" />
+                <IconBtn icon={NextIcon} onClick={handleClickNextMonth} className="p-1.5" aria-label={`${t('calendar.next')} ${t('calendar.month')}`} />
             </div>
 
             <div className="grid grid-cols-7 mb-2">
-                {CONST.DAYS__OF__WEEK.map((item, index) => (
+                {weekdayHeaders.map((label, index) => (
                     <div key={index} className="text-center text-[10px] font-semibold text-text-muted uppercase tracking-wider py-1">
-                        {item.slice(0, 2)}
+                        {label.slice(0, 2)}
                     </div>
                 ))}
             </div>
@@ -67,7 +85,7 @@ export const CalendarPopover = () => {
             <hr className="border-border mb-3" />
 
             <div className="flex justify-end">
-                <AddButtons content="Add Event">
+                <AddButtons content={t('calendar.addEvent')}>
                     <CalendarPlus size={14} />
                 </AddButtons>
             </div>

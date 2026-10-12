@@ -4,17 +4,20 @@ import { UserProfile } from "@/components/navigation/UserProfile"
 import { AddButtons } from "@/components/buttons/AddButtons"
 import { MobileMenuButton } from "@/components/buttons/MobileMenuButton"
 import { ThemeToggle } from "@/features/settings/components/ThemeToggle"
+import { LanguageToggle } from "@/features/settings/components/LanguageToggle"
 import { NotificationBell } from "@/features/notifications/components/NotificationBell"
 import { useSidebarContext } from "@/features/sidebar/context/SidebarContext/SidebarContext"
 import { useTask } from "@/features/tasks/context/TaskContext/TaskContext"
 import { useEvents } from "@/features/calendar/context/EventContext/EventContext"
 import { TaskModal } from "@/features/tasks/components/task-modal"
+import { useLocalization } from "@/i18n/LocalizationProvider"
 
 export const DashboardHeader = () => {
   const { isDesktop, mobileOpen, setMobileOpen } = useSidebarContext()
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
   const { addTask } = useTask()
   const { addEvent } = useEvents()
+  const { t } = useLocalization()
 
   return (
     <div className="flex items-center justify-between shadow-card px-container-sm md:px-container-md py-2 md:py-4 sticky top-0 backdrop-blur-lg bg-surface/70 z-10">
@@ -27,25 +30,27 @@ export const DashboardHeader = () => {
         )}
 
         <form action="" className="relative flex-1" role="search">
-          <div className="w-full">
-            <label htmlFor="search" className="text-text-muted absolute bottom-3 left-2 z-10 pointer-events-none">
+          <div className="w-full relative">
+            <label htmlFor="search" className="text-text-muted absolute bottom-3 start-2 z-10 pointer-events-none" aria-hidden="true">
               <Search size={20} />
             </label>
             <input
               type="search"
               id="search"
               name="search"
-              placeholder="Search tasks, events..."
-              className="ui-input w-full py-2 px-8 border-2 focus:border-primary focus:ring-primary/30"
+              placeholder={t('dashboard.searchPlaceholder')}
+              className="ui-input w-full py-2 ps-8 pe-3 border-2 focus:border-primary focus:ring-primary/30"
             />
           </div>
         </form>
 
         <NotificationBell />
 
+        <LanguageToggle className="hidden sm:inline-flex" />
+
         <ThemeToggle />
 
-        <AddButtons content="Quick Add" className="hidden md:flex bg-primary text-white group" onClick={() => setIsTaskModalOpen(true)}>
+        <AddButtons content={t('dashboard.quickAdd')} className="hidden md:flex bg-primary text-white group" onClick={() => setIsTaskModalOpen(true)}>
           <CirclePlus className="transition-transform duration-300 group-hover:rotate-180" />
         </AddButtons>
         <TaskModal

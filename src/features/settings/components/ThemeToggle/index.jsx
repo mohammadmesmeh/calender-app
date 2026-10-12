@@ -1,8 +1,10 @@
 import { Sun, Moon } from 'lucide-react'
 import { useTheme } from '../../context/ThemeContext/ThemeContext'
+import { useLocalization } from '@/i18n/LocalizationProvider'
 
 export const ThemeToggle = ({ className = '' }) => {
   const { setTheme, isDark } = useTheme()
+  const { t } = useLocalization()
 
   const toggle = () => setTheme(isDark ? 'light' : 'dark')
 
@@ -22,7 +24,7 @@ export const ThemeToggle = ({ className = '' }) => {
         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50
         ${className}
       `}
-      aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+      aria-label={isDark ? t('settings.switchToLight') : t('settings.switchToDark')}
     >
       <span className="relative flex items-center justify-center w-5 h-5">
         <Sun

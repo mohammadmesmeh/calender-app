@@ -228,7 +228,41 @@
 /* ===== Custom Cursor ===== */
 
 body {
-  font-family: 'Inter', ui-sans-serif, system-ui;
+  font-family: 'Inter', 'IBM Plex Sans Arabic', ui-sans-serif, system-ui;
+}
+
+/* Arabic (RTL) typography: swap to the Arabic family, size it up slightly
+   (IBM Plex Sans Arabic reads smaller than Inter at the same font-size).
+   and give it more leading. It has deeper ascenders/descenders, so it needs
+   slightly looser line-height than Inter. */
+html[lang="ar"] body,
+html[lang="ar"] {
+  font-family: 'IBM Plex Sans Arabic', 'Inter', ui-sans-serif, system-ui;
+  font-size: 106.25%; /* ~17px base instead of 16px */
+}
+html[lang="ar"] body {
+  line-height: 1.6;
+}
+html[lang="ar"] input,
+html[lang="ar"] textarea,
+html[lang="ar"] select {
+  line-height: 1.55;
+}
+
+/* Tracked-out uppercase labels (a Latin-typography convention) break Arabic
+   letter joining, so both are neutralized for every element in Arabic,
+   regardless of which Tailwind utility applied them. */
+html[lang="ar"] .uppercase {
+  text-transform: none;
+}
+html[lang="ar"] [class*="tracking-"] {
+  letter-spacing: normal;
+}
+
+/* Number alignment inside the calendar grid cells is fully right when the
+   language is Arabic; keep separators & borders logical elsewhere. */
+html[dir="rtl"] .cal-drag-handle {
+  touch-action: none;
 }
 
 .recharts-wrapper *:focus,
@@ -390,10 +424,20 @@ body {
     @apply flex items-center gap-1.5 px-2.5 py-1.5 md:px-3 md:py-2 rounded-button bg-background border border-border shadow-subtle text-xs md:text-sm font-medium text-text hover:bg-border/70 hover:shadow-card active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50;
   }
 
-  /* ── Empty State ── */
-  .calendar-empty {
-    @apply flex flex-col items-center justify-center py-12 text-text-muted;
-  }
+/* ── Calendar Drag & Drop ── */
+/* While an item is being dragged we keep text selection/cursor off globally.
+   Drop feedback is per-slot: the grid slot hover styles below light up the exact
+   destination instead of an entire column or the whole page. */
+body.cal-dragging {
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grabbing;
+}
+
+/* ── Empty State ── */
+.calendar-empty {
+  @apply flex flex-col items-center justify-center py-12 text-text-muted;
+}
   .calendar-empty-icon {
     @apply w-12 h-12 mb-3 text-text-muted/40;
   }

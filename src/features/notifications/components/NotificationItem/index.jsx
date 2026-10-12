@@ -1,4 +1,5 @@
 import { Clock, Check, X, ListTodo, Calendar, Info, AlertCircle } from 'lucide-react'
+import { useLocalization } from "@/i18n/LocalizationProvider"
 
 const TYPE_ICON = {
   task_reminder: ListTodo,
@@ -14,21 +15,28 @@ const TYPE_COLOR = {
   system: 'text-secondary bg-secondary-light',
 }
 
-const formatTime = (date) => {
-  const now = Date.now()
-  const diff = now - date.getTime()
-  const mins = Math.floor(diff / 60000)
-  const hours = Math.floor(diff / 3600000)
-  const days = Math.floor(diff / 86400000)
+const useRelativeTime = () => {
+  const { t, locale } = useLocalization()
 
-  if (mins < 1) return 'Just now'
-  if (mins < 60) return `${mins}m ago`
-  if (hours < 24) return `${hours}h ago`
-  if (days < 7) return `${days}d ago`
-  return date.toLocaleDateString()
+  return (date) => {
+    const now = Date.now()
+    const diff = now - date.getTime()
+    const mins = Math.floor(diff / 60000)
+    const hours = Math.floor(diff / 3600000)
+    const days = Math.floor(diff / 86400000)
+    const num = new Intl.NumberFormat(locale)
+
+    if (mins < 1) return t('notifications.justNow')
+    if (mins < 60) return t('notifications.minutesAgo', { count: num.format(mins) })
+    if (hours < 24) return t('notifications.hoursAgo', { count: num.format(hours) })
+    if (days < 7) return t('notifications.daysAgo', { count: num.format(days) })
+    return date.toLocaleDateString(locale)
+  }
 }
 
 export const NotificationItem = ({ notification, onMarkRead, onDismiss }) => {
+  const { t } = useLocalization()
+  const relativeTime = useRelativeTime()
   const Icon = TYPE_ICON[notification.type] || Info
   const colorClass = TYPE_COLOR[notification.type] || 'text-text-muted bg-border/50'
 
@@ -64,17 +72,17 @@ export const NotificationItem = ({ notification, onMarkRead, onDismiss }) => {
         </p>
         <div className="flex items-center gap-1 mt-1.5">
           <Clock size={11} className="text-text-muted" />
-          <span className="text-[11px] text-text-muted">{formatTime(notification.time)}</span>
+          <span className="text-[11px] text-text-muted">{relativeTime(notification.time)}</span>
         </div>
       </div>
 
-      <div className="absolute right-2 top-2 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+      <div className="absolute end-2 top-2 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
         {!notification.read && (
           <button
             type="button"
             onClick={() => onMarkRead(notification.id)}
             className="flex h-6 w-6 items-center justify-center rounded-button text-text-muted hover:text-primary hover:bg-primary-light transition-colors"
-            aria-label="Mark as read"
+            aria-label={t('notifications.markAsRead')}
           >
             <Check size={13} />
           </button>
@@ -83,7 +91,7 @@ export const NotificationItem = ({ notification, onMarkRead, onDismiss }) => {
           type="button"
           onClick={() => onDismiss(notification.id)}
           className="flex h-6 w-6 items-center justify-center rounded-button text-text-muted hover:text-danger hover:bg-danger-light transition-colors"
-          aria-label="Dismiss notification"
+          aria-label={t('notifications.dismiss')}
         >
           <X size={13} />
         </button>

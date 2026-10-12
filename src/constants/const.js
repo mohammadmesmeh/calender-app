@@ -28,10 +28,10 @@ export const CONST = {
 
 }
 export const SETTINGS_ITEMS = [
-  { label: "Profile", icon: User },
-  { label: "Security", icon: ShieldCheck },
-  { label: "Notifications", icon: Bell },
-  { label: "Language", icon: Languages },
-  { label: "Appearance", icon: Palette },
-  { label: "Help", icon: CircleHelp },
+  { key: "profile", label: "Profile", icon: User },
+  { key: "security", label: "Security", icon: ShieldCheck },
+  { key: "notifications", label: "Notifications", icon: Bell },
+  { key: "language", label: "Language", icon: Languages },
+  { key: "appearance", label: "Appearance", icon: Palette },
+  { key: "help", label: "Help", icon: CircleHelp },
 ];

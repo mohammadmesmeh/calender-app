@@ -7,6 +7,7 @@ import {
   toggleTask as toggleTaskDocument,
   deleteTask as deleteTaskDocument,
 } from "../../services/taskService";
+import { buildTaskDocument } from "@/features/calendar/utils/calendarUtils";
 import { TaskContext } from "./TaskContext";
 
 export const TaskProvider = ({ children }) => {
@@ -62,7 +63,7 @@ export const TaskProvider = ({ children }) => {
         const event = {
           id: `event-${Date.now()}`,
           title: newTask.title || "Untitled Event",
-          time: newTask.time || newTask.date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+          time: newTask.time || newTask.date.toLocaleTimeString("en", { hour: "2-digit", minute: "2-digit" }),
           day: dayNames[newTask.date.getDay()],
           note: newTask.description || null,
           type: newTask.category || "event",
@@ -78,10 +79,15 @@ export const TaskProvider = ({ children }) => {
         return;
       }
 
+      const schedule = buildTaskDocument({
+        date: newTask.date,
+        time: newTask.time,
+        endTime: newTask.endTime,
+      });
+
       const taskData = {
         title: newTask.title,
-        time: newTask.date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-        day: dayNames[newTask.date.getDay()],
+        ...schedule,
         completed: false,
         priority: newTask.priority || "medium",
         description: newTask.description || null,
@@ -127,6 +133,7 @@ export const TaskProvider = ({ children }) => {
       const targetTask = tasks.find((task) => task.id === id);
       if (!targetTask) return;
 
+      const previousTask = targetTask;
       setTasks((prev) => prev.map((task) => (task.id === id ? { ...task, ...updates } : task)));
 
       if (!isPersistedTask(targetTask) || !uid) return;
@@ -135,6 +142,7 @@ export const TaskProvider = ({ children }) => {
         await updateTaskDocument(uid, id, updates);
       } catch (updateError) {
         console.error("Failed to update task:", updateError);
+        setTasks((prev) => prev.map((task) => (task.id === id ? previousTask : task)));
         setError("Failed to update task");
       }
     },

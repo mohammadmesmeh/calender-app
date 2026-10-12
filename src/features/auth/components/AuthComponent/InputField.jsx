@@ -24,7 +24,7 @@ export function InputField({
       </label>
 
       <div className="relative">
-        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-text-muted">
+        <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3.5 text-text-muted">
           <Icon className="h-[18px] w-[18px]" strokeWidth={2} />
         </div>
 
@@ -43,8 +43,8 @@ export function InputField({
           disabled={disabled}
           aria-invalid={!!error}
           aria-describedby={error ? `${id}-error` : undefined}
-          className={`w-full rounded-input border bg-surface py-2.5 pl-10 ${
-            rightSlot ? 'pr-10' : 'pr-3.5'
+          className={`w-full rounded-input border bg-surface py-2.5 ps-10 ${
+            rightSlot ? 'pe-10' : 'pe-3.5'
           } text-[15px] text-text placeholder:text-text-muted transition-all duration-150 focus:outline-none focus:ring-4 disabled:cursor-not-allowed disabled:bg-background disabled:text-text-muted ${
             error
               ? 'border-danger focus:border-danger focus:ring-danger/20'
@@ -53,7 +53,7 @@ export function InputField({
         />
 
         {rightSlot && (
-          <div className="absolute inset-y-0 right-0 flex items-center pr-3.5">
+          <div className="absolute inset-y-0 end-0 flex items-center pe-3.5">
             {rightSlot}
           </div>
         )}

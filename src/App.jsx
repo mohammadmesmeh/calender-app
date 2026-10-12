@@ -5,20 +5,23 @@ import { VisibleContextProvider } from './features/sidebar/context/VisibleContex
 import { AuthContextProvider } from './features/auth/context/authContext'
 import { ThemeProvider } from './features/settings/context/ThemeContext'
 import { NotificationProvider } from './features/notifications/context/NotificationContext'
+import { LocalizationProvider } from './i18n/LocalizationProvider'
 
 function App() {
   return (
-    <AuthContextProvider>
-      <VisibleContextProvider>
-        <ThemeProvider>
-          <BrowserRouter>
-            <NotificationProvider>
-              <Routeing />
-            </NotificationProvider>
-          </BrowserRouter>
-        </ThemeProvider>
-      </VisibleContextProvider>
-    </AuthContextProvider>
+    <LocalizationProvider>
+      <AuthContextProvider>
+        <VisibleContextProvider>
+          <ThemeProvider>
+            <BrowserRouter>
+              <NotificationProvider>
+                <Routeing />
+              </NotificationProvider>
+            </BrowserRouter>
+          </ThemeProvider>
+        </VisibleContextProvider>
+      </AuthContextProvider>
+    </LocalizationProvider>
   )
 }
 

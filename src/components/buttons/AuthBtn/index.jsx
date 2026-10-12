@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { Loader2, ArrowRight } from 'lucide-react';
+import { Loader2, ArrowRight, ArrowLeft } from 'lucide-react';
+import { useLocalization } from '@/i18n/LocalizationProvider';
 
 // Official Google "G" mark, inlined so it never depends on an external asset.
 function GoogleIcon({ className = 'h-5 w-5' }) {
@@ -44,6 +45,8 @@ export function AuthButton({
   ...props
 }) {
   const isPrimary = variant === 'primary';
+  const { dir } = useLocalization();
+  const ForwardIcon = dir === 'rtl' ? ArrowLeft : ArrowRight;
 
   return (
     <motion.button
@@ -71,7 +74,7 @@ export function AuthButton({
       ) : isPrimary ? (
         <>
           {children}
-          <ArrowRight className="h-[18px] w-[18px]" />
+          <ForwardIcon className="h-[18px] w-[18px]" />
         </>
       ) : (
         <>

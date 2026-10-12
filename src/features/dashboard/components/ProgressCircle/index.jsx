@@ -1,10 +1,18 @@
 import { useState, useMemo, useCallback } from "react"
 import { PieChart, Pie, Cell, Sector } from "recharts"
-import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart"
+import { ChartContainer } from "@/components/ui/chart"
 import { AnimatedCounter } from "@/components/animations/AnimatedFramerMotion/AnimatedCounter"
+import { useLocalization } from "@/i18n/LocalizationProvider"
+
+const LABEL_KEYS = {
+  Completed: "dashboard.completed",
+  Remaining: "dashboard.remaining",
+  Pending: "dashboard.pending",
+}
 
 export function ChartPieInteractive({ value = 0, size, data: externalData, config: externalConfig, onClick }) {
   const [selected, setSelected] = useState(null)
+  const { t } = useLocalization()
 
   const chartData = useMemo(() => {
     if (externalData) return externalData
@@ -95,7 +103,7 @@ export function ChartPieInteractive({ value = 0, size, data: externalData, confi
                 style={{ opacity: isActive ? 1 : 0.3 }}
               >
                 <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: entry.fill || entry.color }} />
-                <span className="text-text-secondary">{entry.name}</span>
+                <span className="text-text-secondary">{t(LABEL_KEYS[entry.name] || entry.name)}</span>
                 <span className="font-semibold tabular-nums text-text">
                   <AnimatedCounter value={entry.value} duration={1.2} />
                 </span>

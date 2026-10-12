@@ -5,10 +5,12 @@ import { useEvents } from "@/features/calendar/context/EventContext/EventContext
 import { AnimatedCounter } from "@/components/animations/AnimatedFramerMotion/AnimatedCounter"
 import { Card, CardContent } from "@/components/ui/card"
 import { getCompletionStats } from "@/features/dashboard/utils/analytics"
+import { useLocalization } from "@/i18n/LocalizationProvider"
 
 export const GridStatus = () => {
   const { tasks } = useTask()
   const { events } = useEvents()
+  const { t } = useLocalization()
   const stats = useMemo(() => getCompletionStats(tasks), [tasks])
 
   return (
@@ -20,7 +22,7 @@ export const GridStatus = () => {
               <CircleCheckBig size={20} />
             </span>
           </div>
-          <h3 className="text-sm text-text-muted font-light mb-1">Completed Tasks</h3>
+          <h3 className="text-sm text-text-muted font-light mb-1">{t('dashboard.completed')}</h3>
           <p className="text-3xl font-bold text-text tabular-nums">
             <AnimatedCounter value={stats.completed} duration={1.2} />
           </p>
@@ -34,7 +36,7 @@ export const GridStatus = () => {
               <Clock2 size={20} />
             </span>
           </div>
-          <h3 className="text-sm text-text-muted font-light mb-1">Pending Tasks</h3>
+          <h3 className="text-sm text-text-muted font-light mb-1">{t('dashboard.pending')}</h3>
           <p className="text-3xl font-bold text-text tabular-nums">
             <AnimatedCounter value={stats.pending} duration={1.2} />
           </p>
@@ -48,7 +50,7 @@ export const GridStatus = () => {
               <ClipboardList size={20} />
             </span>
           </div>
-          <h3 className="text-sm text-text-muted font-light mb-1">Total Tasks</h3>
+          <h3 className="text-sm text-text-muted font-light mb-1">{t('dashboard.totalTasks')}</h3>
           <p className="text-3xl font-bold text-text tabular-nums">
             <AnimatedCounter value={stats.total} duration={1.2} />
           </p>
@@ -62,7 +64,7 @@ export const GridStatus = () => {
               <CalendarClock size={20} />
             </span>
           </div>
-          <h3 className="text-sm text-text-muted font-light mb-1">Upcoming Events</h3>
+          <h3 className="text-sm text-text-muted font-light mb-1">{t('dashboard.upcomingEvents')}</h3>
           <p className="text-3xl font-bold text-text tabular-nums">
             <AnimatedCounter value={events.length} duration={1.2} />
           </p>

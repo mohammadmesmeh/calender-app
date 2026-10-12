@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
+import { useLocalization } from '@/i18n/LocalizationProvider'
 
 const overlayClasses = [
   'fixed inset-0 bg-text/30 backdrop-blur-sm z-50',
@@ -25,6 +26,8 @@ const closeButtonClasses = [
 ].join(' ')
 
 export const Modal = ({ title, isOpen, onClose, children }) => {
+  const { t } = useLocalization()
+
   useEffect(() => {
     const handleEscape = (event) => {
       if (event.key === 'Escape' && isOpen) {
@@ -56,7 +59,7 @@ export const Modal = ({ title, isOpen, onClose, children }) => {
           >
             <div className={headerClasses}>
               <h2 className="text-lg font-semibold">{title}</h2>
-              <button type="button" className={closeButtonClasses} onClick={onClose} aria-label="Close modal">
+              <button type="button" className={closeButtonClasses} onClick={onClose} aria-label={t('common.close')}>
                 <X size={18} />
               </button>
             </div>

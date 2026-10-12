@@ -1,124 +1,147 @@
-import { CONST } from "@/constants/const";
-import { useDate } from "../../hooks/useDate"
+import { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { BaseCalendarDay } from "../BaseCalendarDay";
-import { IconBtn } from '@/components/buttons/IconBtn'
-import { ChevronLeft, ChevronRight, Calendar } from "lucide-react";
+import { useCalendarData } from "../../hooks/useCalendarData";
+import { useCalendarDataDrop } from "../../hooks/useCalendarDataDrop";
+import { useCalendarDate } from "../../context/CalendarDateContext/useCalendarDate";
+import { useCalendarOverlay } from "../../context/CalendarOverlayContext";
+import { buildCalendarItems } from "../../utils/calendarItems";
+import { isSameDay } from "../../utils/calendarUtils";
+import { CalendarEventBar } from "../CalendarEventBar";
+import { CalendarAddButton } from "../CalendarAddButton";
+import { CalendarDragPreview } from "../CalendarDragPreview";
+import { useLocalization } from "@/i18n/LocalizationProvider";
+
+const MAX_VISIBLE_ITEMS = 3;
+// A known Sunday, used only to read locale weekday names in a fixed
+// Sun..Sat order that matches the grid below (which always starts the
+// week on Sunday regardless of the user's week-start preference).
+const REFERENCE_SUNDAY = new Date(2024, 0, 7);
 
 export const MonthCalendar = () => {
-    const {
-        ThisMonthDaysNumsArray,
-        NumFirstDayInMonth,
-        PrevMonthDaysNumsArray,
-        NextMonthDaysNumsArray,
-        nextMonthName,
-        prevMonthName,
-        handleClickNextMonth,
-        handleClickPrevMonth,
-        monthName,
-        thisMonth,
-        DAY,
-        MONTH,
-        YEAR,
-        thisYear,
-        thisDay
-    } = useDate();
+    const { events, tasks } = useCalendarData();
+    const { viewDate, selectedDate, goToDay } = useCalendarDate();
+    const { openAdd, openItem } = useCalendarOverlay();
+    const navigate = useNavigate();
+    const { t, month, weekday } = useLocalization();
 
-    const handleTodayClick = () => {
-        const today = new Date()
-        const diff = (today.getFullYear() - YEAR) * 12 + (today.getMonth() - MONTH)
-        if (diff > 0) {
-            for (let i = 0; i < diff; i++) handleClickNextMonth()
-        } else if (diff < 0) {
-            for (let i = 0; i < -diff; i++) handleClickPrevMonth()
-        }
-    }
-
-    const isCurrentMonth = thisMonth === MONTH && thisYear === YEAR
-
-    const allCells = [
-        ...(NumFirstDayInMonth !== 0
-            ? PrevMonthDaysNumsArray.slice(-NumFirstDayInMonth).map((item, index) => {
-                const dayOfWeek = index % 7
-                return { key: `prev-${index}`, day: item, month: prevMonthName.slice(0, 3), isOutsideMonth: true, isWeekend: dayOfWeek === 0 || dayOfWeek === 6, isToday: false, isSelected: false }
-            })
-            : []),
-        ...ThisMonthDaysNumsArray.map((item, index) => {
-            const dayOfWeek = (NumFirstDayInMonth + index) % 7
-            const isToday = item === thisDay && isCurrentMonth
-            const isSelected = item === DAY && MONTH === thisMonth && YEAR === thisYear
-            return { key: `curr-${index}`, day: item, month: null, isOutsideMonth: false, isWeekend: dayOfWeek === 0 || dayOfWeek === 6, isToday, isSelected }
+    const weekdayHeaders = useMemo(
+        () => Array.from({ length: 7 }, (_, i) => {
+            const date = new Date(REFERENCE_SUNDAY);
+            date.setDate(REFERENCE_SUNDAY.getDate() + i);
+            return { full: weekday(date, "long"), short: weekday(date, "short") };
         }),
-        ...(() => {
-            const remaining = 42 - NumFirstDayInMonth - ThisMonthDaysNumsArray.length
-            return NextMonthDaysNumsArray.slice(0, remaining).map((item, index) => {
-                const dayOfWeek = (NumFirstDayInMonth + ThisMonthDaysNumsArray.length + index) % 7
-                return { key: `next-${index}`, day: item, month: nextMonthName.slice(0, 3), isOutsideMonth: true, isWeekend: dayOfWeek === 0 || dayOfWeek === 6, isToday: false, isSelected: false }
-            })
-        })()
-    ]
+        [weekday]
+    );
 
-    const totalCells = allCells.length
+    const { draggingItem, dragPoint, getDragSourceProps, getDropTargetProps } = useCalendarDataDrop();
+
+    const YEAR = viewDate.getFullYear();
+    const MONTH = viewDate.getMonth();
+
+    const today = new Date();
+
+    const grid = useMemo(() => {
+        const first = new Date(YEAR, MONTH, 1);
+        const numFirst = first.getDay();
+        const start = new Date(YEAR, MONTH, 1 - numFirst);
+        return Array.from({ length: 42 }, (_, i) => {
+            const date = new Date(start);
+            date.setDate(start.getDate() + i);
+            return date;
+        });
+    }, [YEAR, MONTH]);
+
+    const itemsByDate = useMemo(() => {
+        const map = {};
+        grid.forEach((date) => {
+            map[date.getTime()] = buildCalendarItems(events, tasks, date);
+        });
+        return map;
+    }, [events, tasks, grid]);
+
+    const openDay = (date) => {
+        goToDay(date);
+        navigate("/day");
+    };
 
     return (
-        <div className="flex flex-col flex-1 bg-surface overflow-hidden">
-            <div className="sticky top-0 z-10 bg-surface border-b border-border">
-                <div className="flex items-center justify-between px-3 md:px-5 pt-2 md:pt-3 pb-1.5">
-                    <div className="flex items-center gap-0.5">
-                        <IconBtn icon={ChevronLeft} onClick={handleClickPrevMonth} aria-label="Previous month" />
-                        <button
-                            type="button"
-                            onClick={handleTodayClick}
-                            className="flex items-center gap-1.5 px-2.5 py-1.5 md:px-3 md:py-2 rounded-button bg-background border border-border shadow-subtle text-xs md:text-sm font-medium text-text hover:bg-border/70 hover:shadow-card active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
-                            aria-label="Go to today"
-                        >
-                            <Calendar size={14} />
-                            <span className="hidden sm:inline">Today</span>
-                        </button>
-                        <IconBtn icon={ChevronRight} onClick={handleClickNextMonth} aria-label="Next month" />
+        <div className="flex flex-col flex-1 min-h-0 bg-surface overflow-hidden">
+            <div className="grid grid-cols-7 px-container-sm md:px-container-md lg:px-container-lg pb-1.5 md:pb-2 pt-2 md:pt-3 border-b border-border sticky top-0 z-10 bg-surface">
+                {weekdayHeaders.map((label, index) => (
+                    <div
+                        key={index}
+                        className="text-center text-[10px] md:text-xs font-medium text-text-muted uppercase tracking-wider"
+                    >
+                        <span className="hidden sm:inline">{label.full}</span>
+                        <span className="sm:hidden">{label.short}</span>
                     </div>
-
-                    <h2 className="text-base md:text-xl font-semibold text-text select-none">
-                        {monthName} <span className="font-normal text-text-secondary">{YEAR}</span>
-                    </h2>
-
-                    <div className="w-20 md:w-28" />
-                </div>
-
-                <div className="grid grid-cols-7 px-3 md:px-5 pb-1.5 md:pb-2">
-                    {CONST.DAYS__OF__WEEK.map((item, index) => (
-                        <div
-                            key={index}
-                            className="text-center text-[10px] md:text-xs font-medium text-text-muted uppercase tracking-wider"
-                        >
-                            <span className="hidden sm:inline">{item}</span>
-                            <span className="sm:hidden">{item.slice(0, 3)}</span>
-                        </div>
-                    ))}
-                </div>
+                ))}
             </div>
 
             <div className="flex-1 overflow-y-auto overflow-x-hidden">
                 <div className="grid grid-cols-7 border-border border-b">
-                    {allCells.map((cell, index) => {
-                        const isLastRow = index >= totalCells - 7
+                    {grid.map((date, index) => {
+                        const isLastRow = index >= grid.length - 7
+                        const isOutsideMonth = date.getMonth() !== MONTH
+                        const isSelected = isSameDay(date, selectedDate)
+                        const isToday = isSameDay(date, today)
+
+                        const monthLabel = isOutsideMonth ? month(date, "short") : null
+
+                        const items = itemsByDate[date.getTime()] || []
+                        const visibleItems = items.slice(0, MAX_VISIBLE_ITEMS)
+                        const overflow = items.length - MAX_VISIBLE_ITEMS
+
+                        const addLabel = `${monthLabel ? monthLabel + ' ' : ''}${date.getDate()}`
+
                         return (
                             <div
-                                key={cell.key}
-                                className={`border-r border-border ${!isLastRow ? 'border-b' : ''} ${cell.isOutsideMonth ? 'bg-background/40' : ''}`}
+                                key={`${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`}
+                                className={`border-e border-border ${!isLastRow ? 'border-b' : ''} ${isOutsideMonth ? 'bg-background/40' : ''}`}
+                                {...getDropTargetProps({ date })}
                             >
                                 <BaseCalendarDay
-                                    day={cell.day}
-                                    Month={cell.month}
-                                    isToday={cell.isToday}
-                                    isSelected={cell.isSelected}
-                                    isOutsideMonth={cell.isOutsideMonth}
-                                    isWeekend={cell.isWeekend}
-                                />
+                                    day={date.getDate()}
+                                    Month={monthLabel}
+                                    isToday={isToday}
+                                    isSelected={isSelected}
+                                    isOutsideMonth={isOutsideMonth}
+                                    isWeekend={date.getDay() === 0 || date.getDay() === 6}
+                                    action={
+                                        <CalendarAddButton
+                                            onClick={() => openAdd(date)}
+                                            label={`${t('calendar.addItemOn')} ${addLabel}`}
+                                            className="opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-150"
+                                        />
+                                    }
+                                >
+                                    {visibleItems.map((item) => (
+                                        <CalendarEventBar
+                                            key={`${item.source}-${item.id}`}
+                                            event={{ title: item.title, time: item.time, color: item.color }}
+                                            completed={item.completed}
+                                            isDragging={!!draggingItem && draggingItem.source === item.source && draggingItem.id === item.id}
+                                            {...getDragSourceProps(item, () => openItem(item))}
+                                        />
+                                    ))}
+                                    {overflow > 0 && (
+                                        <button
+                                            type="button"
+                                            onClick={() => openDay(date)}
+                                            className="text-start text-[10px] md:text-[11px] font-medium text-text-secondary hover:text-primary transition-colors"
+                                        >
+                                            {t('calendar.moreCount', { count: overflow })}
+                                        </button>
+                                    )}
+                                </BaseCalendarDay>
                             </div>
                         )
                     })}
                 </div>
             </div>
+
+            <CalendarDragPreview item={draggingItem} startPoint={dragPoint} />
         </div>
     )
 }

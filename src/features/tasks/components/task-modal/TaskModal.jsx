@@ -4,44 +4,110 @@ import { TaskForm } from './TaskForm'
 import { TaskActions } from './TaskActions'
 import { EventForm } from '../EventForm'
 import { FORM_CLASSES, buildTimeValue } from '@/constants/form'
+import { parseTimeString, combineDateAndTime, DEFAULT_DURATION_MINUTES } from "@/features/calendar/utils/calendarUtils"
+import { useLocalization } from "@/i18n/LocalizationProvider"
 
-export const TaskModal = ({ isOpen, onClose, onSave }) => {
-  const [type, setType] = useState('task')
-  const [date, setDate] = useState(null)
-  const [description, setDescription] = useState('')
+const toParts = (minutesOfDay) => {
+  const m24 = ((Math.round(minutesOfDay) % 1440) + 1440) % 1440
+  const hour = Math.floor(m24 / 60)
+  return {
+    hour: String(hour % 12 || 12),
+    minute: String(m24 % 60).padStart(2, '0'),
+    period: hour >= 12 ? 'PM' : 'AM',
+  }
+}
+
+const getCurrentHourDefaults = () => {
+  const currentHour = new Date().getHours()
+  const startMinutes = currentHour * 60
+  const startParts = toParts(startMinutes)
+  const endParts = toParts(startMinutes + DEFAULT_DURATION_MINUTES)
+  return { startMinutes, startParts, endParts }
+}
+
+export const TaskModal = ({ isOpen, onClose, onSave, initialValues = null, editing = false }) => {
+  const { t } = useLocalization()
+  const seed = initialValues || {}
+  const seedTime = parseTimeString(seed.time)
+  const hasTime = Boolean(seed.time)
+  const seedHour = seedTime.hours % 12 || 12
+
+  const seedEndTime = parseTimeString(seed.endTime)
+  const currentDefaults = useMemo(() => getCurrentHourDefaults(), [])
+  const startInitMinutes = hasTime ? seedTime.hours * 60 + seedTime.minutes : currentDefaults.startMinutes
+  const startParts = hasTime
+    ? {
+        hour: String(seedHour),
+        minute: String(seedTime.minutes).padStart(2, '0'),
+        period: seedTime.hours >= 12 ? 'PM' : 'AM',
+      }
+    : currentDefaults.startParts
+
+  const endInit = (() => {
+    if (seed.endTime) return toParts(seedEndTime.hours * 60 + seedEndTime.minutes)
+    return toParts(startInitMinutes + DEFAULT_DURATION_MINUTES)
+  })()
+
+  const [type, setType] = useState(() => (seed.type === 'event' ? 'event' : 'task'))
+  const [date, setDate] = useState(() => {
+    if (!seed.date) return null
+    const base = new Date(seed.date)
+    if (editing || !hasTime) return base
+    try {
+      return combineDateAndTime(base, seed.time)
+    } catch {
+      return base
+    }
+  })
+  const [description, setDescription] = useState(() => seed.description || '')
   const [error, setError] = useState('')
 
-  const [title, setTitle] = useState('')
-  const [category, setCategory] = useState('')
-  const [hour, setHour] = useState('9')
-  const [minute, setMinute] = useState('00')
-  const [period, setPeriod] = useState('AM')
-  const [location, setLocation] = useState('')
+  const [title, setTitle] = useState(() => seed.title || '')
+  const [category, setCategory] = useState(() => seed.category || '')
+  const [hour, setHour] = useState(() => startParts.hour)
+  const [minute, setMinute] = useState(() => startParts.minute)
+  const [period, setPeriod] = useState(() => startParts.period)
+  const [location, setLocation] = useState(() => seed.location || '')
+
+  const [endHour, setEndHour] = useState(() => endInit.hour)
+  const [endMinute, setEndMinute] = useState(() => endInit.minute)
+  const [endPeriod, setEndPeriod] = useState(() => endInit.period)
 
   const combinedTime = useMemo(() => buildTimeValue(hour, minute, period), [hour, minute, period])
+  const combinedEndTime = useMemo(() => buildTimeValue(endHour, endMinute, endPeriod), [endHour, endMinute, endPeriod])
 
   const resetState = () => {
     setDate(null)
     setDescription('')
     setTitle('')
     setCategory('')
-    setHour('9')
-    setMinute('00')
-    setPeriod('AM')
+    const defs = getCurrentHourDefaults()
+    setHour(defs.startParts.hour)
+    setMinute(defs.startParts.minute)
+    setPeriod(defs.startParts.period)
+    setEndHour(defs.endParts.hour)
+    setEndMinute(defs.endParts.minute)
+    setEndPeriod(defs.endParts.period)
     setLocation('')
     setError('')
   }
 
   const handleSubmit = () => {
     if (type === 'task') {
-      if (!title.trim()) { setError('Please enter a task title'); return }
-      if (!date) { setError('Please select a task date'); return }
+      if (!title.trim()) { setError(t('taskForm.taskTitleRequired')); return }
+      if (!date) { setError(t('taskForm.taskDateRequired')); return }
+      const startMinutes = parseTimeString(combinedTime).hours * 60 + parseTimeString(combinedTime).minutes
+      const endMinutes = parseTimeString(combinedEndTime).hours * 60 + parseTimeString(combinedEndTime).minutes
+      if (!combinedTime || !combinedEndTime || endMinutes <= startMinutes) {
+        setError(t('taskForm.endAfterStart'))
+        return
+      }
       setError('')
-      onSave({ type: 'task', title: title.trim(), date, description: description.trim(), completed: false, priority: 'medium' })
+      onSave({ type: 'task', title: title.trim(), date, time: combinedTime, endTime: combinedEndTime, description: description.trim(), completed: false, priority: 'medium' })
     } else {
-      if (!title.trim()) { setError('Please enter an event title'); return }
-      if (!date) { setError('Please select an event date'); return }
-      if (!category) { setError('Please select a category'); return }
+      if (!title.trim()) { setError(t('taskForm.eventTitleRequired')); return }
+      if (!date) { setError(t('taskForm.eventDateRequired')); return }
+      if (!category) { setError(t('taskForm.categoryRequired')); return }
       setError('')
       onSave({ type: 'event', title: title.trim(), date, time: combinedTime, description: description.trim(), location: location.trim(), category })
     }
@@ -52,20 +118,35 @@ export const TaskModal = ({ isOpen, onClose, onSave }) => {
   const handleClose = () => { resetState(); onClose() }
   const clearError = () => { if (error) setError('') }
 
+  const modalTitle = editing
+    ? type === 'task' ? t('taskForm.editTask') : t('taskForm.editEvent')
+    : type === 'task' ? t('taskForm.addNewTask') : t('taskForm.addNewEvent')
+
   return (
-    <Modal title={type === 'task' ? 'Add New Task' : 'Add New Event'} isOpen={isOpen} onClose={handleClose}>
+    <Modal title={modalTitle} isOpen={isOpen} onClose={handleClose}>
       <div className="space-y-6">
         <div className="grid gap-3 sm:grid-cols-2">
           <button type="button" className={`${FORM_CLASSES.segmented} ${type === 'task' ? FORM_CLASSES.selected : FORM_CLASSES.unselected}`} onClick={() => { setType('task'); setError('') }}>
-            Task
+            {t('taskForm.task')}
           </button>
           <button type="button" className={`${FORM_CLASSES.segmented} ${type === 'event' ? FORM_CLASSES.selected : FORM_CLASSES.unselected}`} onClick={() => { setType('event'); setError('') }}>
-            Event
+            {t('taskForm.event')}
           </button>
         </div>
 
         {type === 'task' ? (
-          <TaskForm title={title} onTitleChange={setTitle} date={date} onDateChange={(d) => { setDate(d); clearError() }} description={description} onDescriptionChange={setDescription} error={error} />
+          <TaskForm
+            title={title} onTitleChange={setTitle}
+            date={date} onDateChange={(d) => { setDate(d); clearError() }}
+            hour={hour} onHourChange={setHour}
+            minute={minute} onMinuteChange={setMinute}
+            period={period} onPeriodChange={setPeriod}
+            endHour={endHour} onEndHourChange={setEndHour}
+            endMinute={endMinute} onEndMinuteChange={setEndMinute}
+            endPeriod={endPeriod} onEndPeriodChange={setEndPeriod}
+            description={description} onDescriptionChange={setDescription}
+            error={error}
+          />
         ) : (
           <EventForm
             title={title} onTitleChange={setTitle}
