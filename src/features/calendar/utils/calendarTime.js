@@ -12,7 +12,7 @@ export const MIN_BLOCK_HEIGHT = 22;
 
 // Local calendar Date the item actually starts at. Real scheduled items carry
 // startAt; legacy tasks fall back to their `date` + `time` string.
-const resolveStartDateTime = (item) => {
+export const resolveStartDateTime = (item) => {
   const start = toDate(item?.record?.startAt);
   if (start) return start;
   const date =
@@ -26,7 +26,7 @@ const resolveStartDateTime = (item) => {
 
 // Local Date the item ends at. Prefers endAt, then the endTime string, then
 // falls back to the default single-slot span.
-const resolveEndDateTime = (item) => {
+export const resolveEndDateTime = (item) => {
   const end = toDate(item?.record?.endAt);
   if (end) return end;
   const start = resolveStartDateTime(item);
@@ -53,7 +53,7 @@ export const itemDurationMinutes = (item) => {
   const start = resolveStartDateTime(item);
   const end = resolveEndDateTime(item);
   if (start && end && end.getTime() > start.getTime()) {
-    return Math.max(FALLBACK_DURATION_MINUTES, Math.round((end.getTime() - start.getTime()) / 60000));
+    return Math.max(15, Math.round((end.getTime() - start.getTime()) / 60000));
   }
   return FALLBACK_DURATION_MINUTES;
 };

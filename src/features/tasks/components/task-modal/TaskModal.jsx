@@ -17,6 +17,14 @@ const toParts = (minutesOfDay) => {
   }
 }
 
+const getCurrentHourDefaults = () => {
+  const currentHour = new Date().getHours()
+  const startMinutes = currentHour * 60
+  const startParts = toParts(startMinutes)
+  const endParts = toParts(startMinutes + DEFAULT_DURATION_MINUTES)
+  return { startMinutes, startParts, endParts }
+}
+
 export const TaskModal = ({ isOpen, onClose, onSave, initialValues = null, editing = false }) => {
   const { t } = useLocalization()
   const seed = initialValues || {}
@@ -25,7 +33,16 @@ export const TaskModal = ({ isOpen, onClose, onSave, initialValues = null, editi
   const seedHour = seedTime.hours % 12 || 12
 
   const seedEndTime = parseTimeString(seed.endTime)
-  const startInitMinutes = hasTime ? seedTime.hours * 60 + seedTime.minutes : 9 * 60
+  const currentDefaults = useMemo(() => getCurrentHourDefaults(), [])
+  const startInitMinutes = hasTime ? seedTime.hours * 60 + seedTime.minutes : currentDefaults.startMinutes
+  const startParts = hasTime
+    ? {
+        hour: String(seedHour),
+        minute: String(seedTime.minutes).padStart(2, '0'),
+        period: seedTime.hours >= 12 ? 'PM' : 'AM',
+      }
+    : currentDefaults.startParts
+
   const endInit = (() => {
     if (seed.endTime) return toParts(seedEndTime.hours * 60 + seedEndTime.minutes)
     return toParts(startInitMinutes + DEFAULT_DURATION_MINUTES)
@@ -47,9 +64,9 @@ export const TaskModal = ({ isOpen, onClose, onSave, initialValues = null, editi
 
   const [title, setTitle] = useState(() => seed.title || '')
   const [category, setCategory] = useState(() => seed.category || '')
-  const [hour, setHour] = useState(() => (hasTime ? String(seedHour) : '9'))
-  const [minute, setMinute] = useState(() => (hasTime ? String(seedTime.minutes).padStart(2, '0') : '00'))
-  const [period, setPeriod] = useState(() => (seedTime.hours >= 12 ? 'PM' : 'AM'))
+  const [hour, setHour] = useState(() => startParts.hour)
+  const [minute, setMinute] = useState(() => startParts.minute)
+  const [period, setPeriod] = useState(() => startParts.period)
   const [location, setLocation] = useState(() => seed.location || '')
 
   const [endHour, setEndHour] = useState(() => endInit.hour)
@@ -64,13 +81,13 @@ export const TaskModal = ({ isOpen, onClose, onSave, initialValues = null, editi
     setDescription('')
     setTitle('')
     setCategory('')
-    setHour('9')
-    setMinute('00')
-    setPeriod('AM')
-    const defaultEnd = toParts(9 * 60 + DEFAULT_DURATION_MINUTES)
-    setEndHour(defaultEnd.hour)
-    setEndMinute(defaultEnd.minute)
-    setEndPeriod(defaultEnd.period)
+    const defs = getCurrentHourDefaults()
+    setHour(defs.startParts.hour)
+    setMinute(defs.startParts.minute)
+    setPeriod(defs.startParts.period)
+    setEndHour(defs.endParts.hour)
+    setEndMinute(defs.endParts.minute)
+    setEndPeriod(defs.endParts.period)
     setLocation('')
     setError('')
   }

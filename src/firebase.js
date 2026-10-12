@@ -14,6 +14,19 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
+// Validate required environment variables
+const missingKeys = [];
+if (!firebaseConfig.apiKey) missingKeys.push("VITE_FIREBASE_API_KEY");
+if (!firebaseConfig.projectId) missingKeys.push("VITE_FIREBASE_PROJECT_ID");
+if (!firebaseConfig.appId) missingKeys.push("VITE_FIREBASE_APP_ID");
+
+if (missingKeys.length > 0) {
+  console.error(
+    `[Firebase Config Error] Missing required environment variables: ${missingKeys.join(", ")}.\n` +
+    `If this is a deployed site (Vercel, Netlify, Firebase Hosting, etc.), add these variables to your hosting dashboard's Environment Variables settings.`
+  );
+}
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 

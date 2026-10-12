@@ -133,9 +133,11 @@ export const SettingsMenu = ({ isExpanded }) => {
                 >
                     {t('nav.settings')}
                 </span>
-                <span className={`ms-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-text-muted transition-all duration-200 ${isOpen ? (dir === 'rtl' ? "-rotate-90 text-primary" : "rotate-90 text-primary") : ""}`}>
-                    <Chevron size={16} />
-                </span>
+                {isExpanded && (
+                    <span className={`ms-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-text-muted transition-all duration-200 ${isOpen ? (dir === 'rtl' ? "-rotate-90 text-primary" : "rotate-90 text-primary") : ""}`}>
+                        <Chevron size={16} />
+                    </span>
+                )}
             </button>
 
             <AnimatePresence>
@@ -149,7 +151,7 @@ export const SettingsMenu = ({ isExpanded }) => {
                         transition={{ duration: 0.18, ease: "easeOut" }}
                         role="menu"
                         aria-label={panel === 'themes' ? t('settings.themeSelection') : t('settings.settingsSubmenu')}
-                        className="max-md:fixed max-md:start-4 max-md:end-4 max-md:top-16 max-md:w-[calc(100vw-2rem)] md:absolute md:start-full md:ms-3 z-50 md:w-72 max-h-[calc(100vh-2rem)] overflow-y-auto rounded-card border border-border/70 bg-surface p-2 shadow-dropdown"
+                        className="max-md:fixed max-md:start-4 max-md:end-4 max-md:top-16 max-md:w-[calc(100vw-2rem)] md:absolute md:top-0 md:start-full md:ms-3 z-50 md:w-72 max-h-[calc(100vh-2rem)] overflow-y-auto rounded-card border border-border/70 bg-surface p-2 shadow-dropdown"
                     >
                         <span className="hidden md:block absolute -start-3 top-0 bottom-0 w-3 pointer-events-auto" aria-hidden="true" />
                         {panel === 'themes' ? (

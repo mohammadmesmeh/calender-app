@@ -7,6 +7,7 @@ import { isSameDay, HOUR_HEIGHT } from "../../utils/calendarUtils";
 import { buildCalendarItems } from "../../utils/calendarItems";
 import { minutesToCalendarTime, timeFromDropOffset } from "../../utils/dragDrop";
 import { itemBlockHeight, itemBlockTop, layoutDayBlocks } from "../../utils/calendarTime";
+import { useCalendarItemResize } from "../../hooks/useCalendarItemResize";
 import { CalendarEventBar } from "../CalendarEventBar";
 import { CurrentTimeLine } from "../CurrentTimeLine";
 import { TimeGutter } from "../TimeGutter";
@@ -50,6 +51,7 @@ export const DayCalendar = () => {
     const { openItem } = useCalendarOverlay();
 
     const { draggingItem, dragPoint, getDragSourceProps, getDropTargetProps } = useCalendarDataDrop();
+    const { resizing, getResizeHandleProps } = useCalendarItemResize();
     const createAtSlot = useCreateAtSlot(viewDate);
     const { t, time } = useLocalization();
 
@@ -94,25 +96,43 @@ export const DayCalendar = () => {
                         <div className="pointer-events-none absolute inset-0 z-10">
                             {dayItems.map((item, itemIndex) => {
                                 const lanes = dayLayout[itemIndex] || { inlineStartPct: 0, widthPct: 100 };
+                                const isResizing = resizing?.itemId === item.id;
+                                const itemHeight = isResizing ? (resizing.duration / 60) * HOUR_HEIGHT : itemBlockHeight(item);
+
                                 return (
                                     <div
                                         key={`${item.source}-${item.id}`}
-                                        className="pointer-events-auto absolute"
+                                        className="pointer-events-auto absolute group/item select-none"
                                         style={{
                                             top: itemBlockTop(item),
-                                            height: itemBlockHeight(item),
+                                            height: itemHeight,
                                             insetInlineStart: `calc(${lanes.inlineStartPct}% + ${LANE_GAP_PX}px)`,
                                             width: `calc(${lanes.widthPct}% - ${2 * LANE_GAP_PX}px)`,
-                                            zIndex: 11,
+                                            zIndex: isResizing ? 30 : 11,
                                         }}
                                     >
                                         <CalendarEventBar
                                             event={{ title: item.title, time: item.time, color: item.color }}
                                             completed={item.completed}
                                             isDragging={!!draggingItem && draggingItem.source === item.source && draggingItem.id === item.id}
-                                            className="h-full w-full"
+                                            className={`h-full w-full ${isResizing ? "ring-2 ring-primary ring-offset-1 shadow-md" : ""}`}
                                             {...getDragSourceProps(item, () => openItem(item))}
                                         />
+
+                                        {/* Google Calendar-style bottom resize handle */}
+                                        <div
+                                            className="absolute inset-x-0 bottom-0 h-2.5 cursor-s-resize z-20 flex items-center justify-center opacity-0 group-hover/item:opacity-100 transition-opacity touch-none"
+                                            {...getResizeHandleProps(item)}
+                                        >
+                                            <div className="w-6 h-1 rounded-full bg-text-muted/60 hover:bg-primary transition-colors" />
+                                        </div>
+
+                                        {/* Live time indicator during resize */}
+                                        {isResizing && (
+                                            <div className="absolute -bottom-6 start-1/2 -translate-x-1/2 bg-text text-surface text-[10px] font-semibold px-2 py-0.5 rounded shadow-lg z-40 whitespace-nowrap pointer-events-none">
+                                                {resizing.liveEndTime}
+                                            </div>
+                                        )}
                                     </div>
                                 );
                             })}

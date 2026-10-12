@@ -82,7 +82,7 @@ export const Sidebar = () => {
 
           <div className="my-3 border-b border-border/50" />
 
-          <nav className="flex-1 overflow-y-auto overflow-x-hidden" aria-label={t('nav.sidebarNav')}>
+          <nav className="flex-1" aria-label={t('nav.sidebarNav')}>
             <ul className="flex flex-col gap-1.5">
               {navItems.map((item) => (
                 <NavigationMenuItem
