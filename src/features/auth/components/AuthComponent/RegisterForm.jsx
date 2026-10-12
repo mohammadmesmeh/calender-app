@@ -60,10 +60,10 @@ export function RegisterForm() {
 
   return (
     <>
-      <div className="mb-3 flex justify-center">
+      <div className="mb-4 flex justify-center">
         <AuthLogo />
       </div>
-      <h1 className="text-center text-xl font-semibold tracking-tight text-text">
+      <h1 className="text-center text-2xl font-bold tracking-tight text-text sm:text-3xl">
         {t('auth.createAccountTitle')}
       </h1>
       <p className="mt-1.5 text-center text-sm text-text-secondary">
