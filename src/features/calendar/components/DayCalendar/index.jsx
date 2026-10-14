@@ -53,7 +53,7 @@ export const DayCalendar = () => {
     const { draggingItem, dragPoint, getDragSourceProps, getDropTargetProps } = useCalendarDataDrop();
     const { resizing, getResizeHandleProps } = useCalendarItemResize();
     const createAtSlot = useCreateAtSlot(viewDate);
-    const { t, time } = useLocalization();
+    const { t, time, weekday, dateFull, showHijri, hijri } = useLocalization();
 
     const isToday = isSameDay(viewDate, new Date());
 
@@ -66,6 +66,25 @@ export const DayCalendar = () => {
 
     return (
         <div className="flex flex-col flex-1 min-h-0 bg-surface overflow-hidden">
+            {/* Day Header Banner */}
+            <div className="px-container-sm md:px-container-md lg:px-container-lg py-2.5 border-b border-border bg-surface flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                    <span className={`inline-flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold ${isToday ? "bg-primary text-white" : "bg-primary-light text-primary"}`}>
+                        {viewDate.getDate()}
+                    </span>
+                    <div>
+                        <h3 className="text-sm md:text-base font-semibold text-text">
+                            {weekday(viewDate, "long")}, {dateFull(viewDate)}
+                        </h3>
+                        {showHijri && (
+                            <p className="text-xs text-text-muted">
+                                {hijri(viewDate)}
+                            </p>
+                        )}
+                    </div>
+                </div>
+            </div>
+
             {/* Scrollable time grid */}
             <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-minimal">
                 <div className="flex px-container-sm md:px-container-md lg:px-container-lg pt-3 pb-3">

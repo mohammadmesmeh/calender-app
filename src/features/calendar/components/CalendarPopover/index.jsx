@@ -5,10 +5,7 @@ import { ChevronLeft, ChevronRight, CalendarPlus } from 'lucide-react';
 import { useDate } from '../../hooks/useDate';
 import { useLocalization } from '@/i18n/LocalizationProvider';
 
-// A known Sunday, used only to read locale weekday names in a fixed
-// Sun..Sat order that matches the grid below (which always starts the
-// week on Sunday regardless of the user's week-start preference).
-const REFERENCE_SUNDAY = new Date(2024, 0, 7);
+import { resolveWeekStartDay } from '../../utils/calendarUtils';
 
 export const CalendarPopover = () => {
     const {
@@ -17,26 +14,32 @@ export const CalendarPopover = () => {
         handleClickNextMonth,
         handleClickPrevMonth,
         monthName,
-        NumFirstDayInMonth,
-        PrevMonthDaysNumsArray,
         ThisMonthDaysNumsArray,
+        PrevMonthDaysNumsArray,
+        NextMonthDaysNumsArray,
         thisDay,
         thisMonth,
-        NextMonthDaysNumsArray,
         thisYear
     } = useDate()
-    const { t, dir, weekday } = useLocalization();
+    const { t, dir, weekday, weekStart } = useLocalization();
     const PrevIcon = dir === 'rtl' ? ChevronRight : ChevronLeft;
     const NextIcon = dir === 'rtl' ? ChevronLeft : ChevronRight;
 
-    const weekdayHeaders = useMemo(
-        () => Array.from({ length: 7 }, (_, i) => {
-            const date = new Date(REFERENCE_SUNDAY);
-            date.setDate(REFERENCE_SUNDAY.getDate() + i);
+    const startDayIndex = resolveWeekStartDay(weekStart);
+
+    const weekdayHeaders = useMemo(() => {
+        const base = new Date(2024, 0, 7 + startDayIndex);
+        return Array.from({ length: 7 }, (_, i) => {
+            const date = new Date(base);
+            date.setDate(base.getDate() + i);
             return weekday(date, "short");
-        }),
-        [weekday]
-    );
+        });
+    }, [weekday, startDayIndex]);
+
+    const leadingDaysCount = useMemo(() => {
+        const firstDay = new Date(YEAR, MONTH, 1).getDay();
+        return (firstDay - startDayIndex + 7) % 7;
+    }, [YEAR, MONTH, startDayIndex]);
 
     return (
         <div className="w-[280px] p-4 bg-surface rounded-card border border-border shadow-dropdown select-none">
@@ -57,8 +60,8 @@ export const CalendarPopover = () => {
             </div>
 
             <div className="grid grid-cols-7 gap-0.5 mb-3">
-                {NumFirstDayInMonth !== 0 && (
-                    PrevMonthDaysNumsArray.slice(-NumFirstDayInMonth).map((item, index) => (
+                {leadingDaysCount !== 0 && (
+                    PrevMonthDaysNumsArray.slice(-leadingDaysCount).map((item, index) => (
                         <DayNum key={`prev-${index}`} content={item} isOutsideMonth />
                     ))
                 )}
@@ -75,7 +78,7 @@ export const CalendarPopover = () => {
                 })}
 
                 {(() => {
-                    const remaining = 42 - NumFirstDayInMonth - ThisMonthDaysNumsArray.length
+                    const remaining = 42 - leadingDaysCount - ThisMonthDaysNumsArray.length
                     return NextMonthDaysNumsArray.slice(0, remaining).map((item, index) => (
                         <DayNum key={`next-${index}`} content={item} isOutsideMonth />
                     ))

@@ -8,7 +8,7 @@ const STORAGE_KEY = 'calendar-language'
 const PREFS_KEY = 'calendar-preferences'
 
 const DEFAULT_PREFS = {
-  weekStart: null,
+  weekStart: 'sat',
   digits: 'latn',
   showHijri: false,
 }
@@ -31,9 +31,7 @@ export const getInitialPrefs = (lang) => {
     const stored = JSON.parse(localStorage.getItem(PREFS_KEY) || 'null')
     if (stored && typeof stored === 'object') {
       return {
-        weekStart: lang === 'ar'
-          ? stored.weekStart || 'sat'
-          : stored.weekStart || 'sun',
+        weekStart: stored.weekStart || 'sat',
         digits: stored.digits === 'arab' ? 'arab' : 'latn',
         showHijri: !!stored.showHijri,
       }
@@ -41,7 +39,7 @@ export const getInitialPrefs = (lang) => {
   } catch {
     // ignore corrupted prefs
   }
-  return { ...DEFAULT_PREFS, weekStart: lang === 'ar' ? 'sat' : 'sun' }
+  return { ...DEFAULT_PREFS, weekStart: 'sat' }
 }
 
 const getDict = (lang) => (lang === 'ar' ? ar : en)
@@ -83,10 +81,7 @@ export function LocalizationProvider({ children }) {
     setLangState(next)
     setPrefs((current) => ({
       ...current,
-      weekStart:
-        current.weekStart == null
-          ? next === 'ar' ? 'sat' : 'sun'
-          : current.weekStart || (next === 'ar' ? 'sat' : 'sun'),
+      weekStart: current.weekStart || 'sat',
     }))
   }, [])
 
@@ -154,6 +149,15 @@ export function LocalizationProvider({ children }) {
           return ''
         }
       },
+      hijriDay: (date) => {
+        try {
+          return new Intl.DateTimeFormat(hijriLocale, {
+            day: 'numeric',
+          }).format(date)
+        } catch {
+          return ''
+        }
+      },
       dayNumber: (date) => String(date.getDate()),
     }
   }, [locale, hijriLocale])
@@ -181,7 +185,7 @@ export function LocalizationProvider({ children }) {
       locale,
       prefs,
       setPref,
-      weekStart: prefs.weekStart || (lang === 'ar' ? 'sat' : 'sun'),
+      weekStart: prefs.weekStart || 'sat',
       digits: prefs.digits,
       showHijri: prefs.showHijri,
       ...formatters,

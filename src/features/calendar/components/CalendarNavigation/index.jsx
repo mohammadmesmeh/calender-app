@@ -29,9 +29,9 @@ const viewKeyFor = (pathname) => {
   return "month";
 };
 
-const titleFor = (viewKey, viewDate, { month, weekday, dateFull }) => {
+const titleFor = (viewKey, viewDate, { month, weekday, dateFull, weekStart }) => {
   if (viewKey === "week") {
-    const days = getWeekDays(viewDate);
+    const days = getWeekDays(viewDate, weekStart);
     const start = days[0];
     const end = days[6];
     const startMonth = month(start, "long");
@@ -48,7 +48,7 @@ const titleFor = (viewKey, viewDate, { month, weekday, dateFull }) => {
 export const CalendarNavigation = () => {
   const { pathname } = useLocation();
   const viewKey = viewKeyFor(pathname);
-  const { t, dir, month, weekday, dateFull } = useLocalization();
+  const { t, dir, month, weekday, dateFull, weekStart } = useLocalization();
   const PrevIcon = dir === "rtl" ? ChevronRight : ChevronLeft;
   const NextIcon = dir === "rtl" ? ChevronLeft : ChevronRight;
 
@@ -72,11 +72,11 @@ export const CalendarNavigation = () => {
     return { prev: goPrevMonth, next: goNextMonth };
   }, [viewKey, goNextMonth, goPrevMonth, goNextWeek, goPrevWeek, goNextDay, goPrevDay]);
 
-  const title = titleFor(viewKey, viewDate, { month, weekday, dateFull });
+  const title = titleFor(viewKey, viewDate, { month, weekday, dateFull, weekStart });
   const today = new Date();
   let isToday;
   if (viewKey === "week") {
-    isToday = getWeekDays(viewDate).some((d) => isSameDay(d, today));
+    isToday = getWeekDays(viewDate, weekStart).some((d) => isSameDay(d, today));
   } else if (viewKey === "day") {
     isToday = isSameDay(viewDate, today);
   } else {
@@ -86,72 +86,75 @@ export const CalendarNavigation = () => {
   const Icon = VIEW_ICONS[viewKey];
 
   return (
-    <div className="flex flex-wrap items-center gap-x-3 gap-y-2" aria-label={t('calendar.calendarView')}>
-      <CalendarViewSwitcher />
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 w-full" aria-label={t('calendar.calendarView')}>
+      {/* Left section: View switcher + Title */}
+      <div className="flex items-center justify-between sm:justify-start gap-2 sm:gap-3">
+        <CalendarViewSwitcher />
 
-      <h2 className="hidden md:flex items-center gap-2 text-sm lg:text-base font-semibold text-text select-none truncate" aria-hidden="true">
-        <Icon size={16} className="text-primary" aria-hidden="true" />
-        <span className="sr-only">{`${t(`calendar.${viewKey}`)}: `}</span>
-        <span className="truncate">{title}</span>
-      </h2>
-
-      <div className="flex items-center gap-1.5" role="group" aria-label={t('calendar.calendarView')}>
-        <button
-          type="button"
-          onClick={prev}
-          className="rounded-button bg-background p-2 shadow-subtle transition-all duration-200 ease-out hover:bg-border/70 hover:shadow-subtle active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
-          aria-label={`${t('calendar.previous')} ${t(`calendar.${viewKey}`)}`}
-        >
-          <PrevIcon size={18} className="text-text" />
-        </button>
-
-        <button
-          type="button"
-          onClick={goToday}
-          disabled={isToday}
-          className="rounded-button bg-background px-3 py-2 text-xs md:text-sm font-medium text-text shadow-subtle transition-all duration-200 ease-out hover:bg-border/70 hover:shadow-subtle active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 disabled:opacity-40 disabled:pointer-events-none"
-          aria-label={t('calendar.goToToday')}
-        >
-          {t('calendar.today')}
-        </button>
-
-        <button
-          type="button"
-          onClick={next}
-          className="rounded-button bg-background p-2 shadow-subtle transition-all duration-200 ease-out hover:bg-border/70 hover:shadow-subtle active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
-          aria-label={`${t('calendar.next')} ${t(`calendar.${viewKey}`)}`}
-        >
-          <NextIcon size={18} className="text-text" />
-        </button>
+        <h2 className="flex items-center gap-1.5 text-xs sm:text-sm md:text-base font-semibold text-text select-none truncate" aria-hidden="true">
+          <Icon size={16} className="text-primary shrink-0" aria-hidden="true" />
+          <span className="sr-only">{`${t(`calendar.${viewKey}`)}: `}</span>
+          <span className="truncate">{title}</span>
+        </h2>
       </div>
 
-      <span className="hidden min-[480px]:block mx-1 h-6 w-px bg-border" aria-hidden="true" />
+      {/* Right section: Navigation controls (< Today >) + Add button */}
+      <div className="flex items-center justify-between sm:justify-end gap-2">
+        <div className="flex items-center gap-1.5" role="group" aria-label={t('calendar.calendarView')}>
+          <button
+            type="button"
+            onClick={prev}
+            className="rounded-button bg-background p-1.5 sm:p-2 shadow-subtle transition-all duration-200 ease-out hover:bg-border/70 hover:shadow-subtle active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+            aria-label={`${t('calendar.previous')} ${t(`calendar.${viewKey}`)}`}
+          >
+            <PrevIcon size={16} className="text-text" />
+          </button>
 
-      <button
-        type="button"
-        onClick={() => openAdd(viewDate)}
-        className="flex items-center gap-1.5 rounded-button bg-primary px-3 py-2 text-xs md:text-sm font-medium text-white shadow-subtle transition-all duration-200 ease-out hover:bg-primary/90 hover:shadow-card active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
-        aria-label={t('calendar.addNewItem')}
-      >
-        <CirclePlus size={16} className="hidden sm:block" />
-        <span className="sm:hidden">{t('calendar.add')}</span>
-        <span className="hidden sm:inline">{t('calendar.add')}</span>
-      </button>
+          <button
+            type="button"
+            onClick={goToday}
+            disabled={isToday}
+            className="rounded-button bg-background px-2.5 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm font-medium text-text shadow-subtle transition-all duration-200 ease-out hover:bg-border/70 hover:shadow-subtle active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 disabled:opacity-40 disabled:pointer-events-none"
+            aria-label={t('calendar.goToToday')}
+          >
+            {t('calendar.today')}
+          </button>
 
-      {isLoading && (
-        <span className="inline-flex items-center gap-1.5 text-text-muted" title={t('calendar.loadingItems')} role="status">
-          <Loader2 size={14} className="animate-spin" aria-label={t('calendar.loadingItems')} />
-        </span>
-      )}
+          <button
+            type="button"
+            onClick={next}
+            className="rounded-button bg-background p-1.5 sm:p-2 shadow-subtle transition-all duration-200 ease-out hover:bg-border/70 hover:shadow-subtle active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+            aria-label={`${t('calendar.next')} ${t(`calendar.${viewKey}`)}`}
+          >
+            <NextIcon size={16} className="text-text" />
+          </button>
+        </div>
 
-      {!isLoading && error && (
-        <span
-          className="inline-flex items-center gap-1.5 text-text-muted"
-          title={t('calendar.loadError')}
+        <button
+          type="button"
+          onClick={() => openAdd(viewDate)}
+          className="flex items-center gap-1.5 rounded-button bg-primary px-2.5 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm font-medium text-white shadow-subtle transition-all duration-200 ease-out hover:bg-primary/90 hover:shadow-card active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+          aria-label={t('calendar.addNewItem')}
         >
-          <CloudAlert size={14} className="text-warning" aria-label={t('calendar.loadError')} />
-        </span>
-      )}
+          <CirclePlus size={16} />
+          <span>{t('calendar.add')}</span>
+        </button>
+
+        {isLoading && (
+          <span className="inline-flex items-center gap-1.5 text-text-muted" title={t('calendar.loadingItems')} role="status">
+            <Loader2 size={14} className="animate-spin" aria-label={t('calendar.loadingItems')} />
+          </span>
+        )}
+
+        {!isLoading && error && (
+          <span
+            className="inline-flex items-center gap-1.5 text-text-muted"
+            title={t('calendar.loadError')}
+          >
+            <CloudAlert size={14} className="text-warning" aria-label={t('calendar.loadError')} />
+          </span>
+        )}
+      </div>
     </div>
   );
 };

@@ -53,9 +53,9 @@ export const WeekCalendar = () => {
     const { draggingItem, dragPoint, getDragSourceProps, getDropTargetProps } = useCalendarDataDrop();
     const { resizing, getResizeHandleProps } = useCalendarItemResize();
     const createAtSlot = useCreateAtSlot();
-    const { t, month, weekday, time } = useLocalization();
+    const { t, month, weekday, time, weekStart, showHijri, hijriDay } = useLocalization();
 
-    const weekDays = useMemo(() => getWeekDays(viewDate), [viewDate]);
+    const weekDays = useMemo(() => getWeekDays(viewDate, weekStart), [viewDate, weekStart]);
 
     const weekItems = useMemo(
         () => weekDays.map((day) => buildCalendarItems(events, tasks, day)),
@@ -76,6 +76,7 @@ export const WeekCalendar = () => {
                 <div />
                 {weekDays.map((day) => {
                     const isToday = isSameDay(day, today);
+                    const hijriLabel = showHijri ? hijriDay(day) : null;
                     return (
                         <div
                             key={day.toISOString()}
@@ -85,9 +86,16 @@ export const WeekCalendar = () => {
                             <span className={`text-[11px] md:text-xs font-medium uppercase tracking-wide ${isToday ? "text-primary" : "text-text-muted/70"}`}>
                                 {weekday(day, "short")}
                             </span>
-                            <span className={`mt-0.5 inline-flex h-7 w-7 md:h-8 md:w-8 items-center justify-center rounded-full text-sm md:text-base font-medium ${isToday ? "bg-primary text-white" : "text-text"}`}>
-                                {day.getDate()}
-                            </span>
+                            <div className="flex items-center gap-1 mt-0.5">
+                                <span className={`inline-flex h-7 w-7 md:h-8 md:w-8 items-center justify-center rounded-full text-sm md:text-base font-medium ${isToday ? "bg-primary text-white" : "text-text"}`}>
+                                    {day.getDate()}
+                                </span>
+                                {hijriLabel && (
+                                    <span className="text-[10px] md:text-xs text-text-muted">
+                                        {hijriLabel}
+                                    </span>
+                                )}
+                            </div>
                             <CalendarAddButton
                                 onClick={() => openAdd(day)}
                                 label={`${t('calendar.addItemOn')} ${month(day, "short")} ${day.getDate()}`}

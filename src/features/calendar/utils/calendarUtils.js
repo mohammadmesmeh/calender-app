@@ -82,15 +82,31 @@ export const addMonths = (date, months) => {
   return d;
 };
 
-export const startOfWeek = (date, startDay = 0) => {
+export const WEEK_START_MAP = {
+  sun: 0,
+  mon: 1,
+  tue: 2,
+  wed: 3,
+  thu: 4,
+  fri: 5,
+  sat: 6,
+};
+
+export const resolveWeekStartDay = (startDay = "sat") => {
+  if (typeof startDay === "number") return startDay;
+  return WEEK_START_MAP[startDay] ?? 6; // default 6 (Saturday)
+};
+
+export const startOfWeek = (date, startDay = "sat") => {
   const d = new Date(date);
-  const diff = (d.getDay() - startDay + 7) % 7;
+  const targetDay = resolveWeekStartDay(startDay);
+  const diff = (d.getDay() - targetDay + 7) % 7;
   d.setDate(d.getDate() - diff);
   d.setHours(0, 0, 0, 0);
   return d;
 };
 
-export const getWeekDays = (date, startDay = 0) =>
+export const getWeekDays = (date, startDay = "sat") =>
   Array.from({ length: 7 }, (_, i) => addDays(startOfWeek(date, startDay), i));
 
 export const parseTimeString = (time) => {

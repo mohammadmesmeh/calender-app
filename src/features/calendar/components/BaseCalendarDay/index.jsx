@@ -1,5 +1,6 @@
 export const BaseCalendarDay = ({
     day,
+    hijriDay,
     children,
     Month,
     isToday,
@@ -11,9 +12,9 @@ export const BaseCalendarDay = ({
     return (
         <div
             role="gridcell"
-            aria-label={`${Month ? Month + ' ' : ''}${day}`}
+            aria-label={`${Month ? Month + ' ' : ''}${day}${hijriDay ? ` (${hijriDay})` : ''}`}
             className={`
-                min-h-[80px] md:min-h-[100px] lg:min-h-[110px]
+                min-h-[72px] sm:min-h-[85px] md:min-h-[100px] lg:min-h-[110px]
                 p-1 md:p-1.5
                 flex flex-col
                 transition-colors duration-100
@@ -30,25 +31,32 @@ export const BaseCalendarDay = ({
                 role="presentation"
                 className="flex items-center justify-between mb-0.5 px-0.5"
             >
-                <span
-                    className={`
-                        inline-flex items-center justify-center
-                        text-[11px] md:text-sm font-medium
-                        min-w-[22px] md:min-w-[26px]
-                        h-[22px] md:h-[26px]
-                        ${isToday
-                            ? 'bg-primary text-white w-[22px] md:w-[26px] rounded-full'
-                            : isSelected
-                                ? 'border-2 border-primary text-primary w-[22px] md:w-[26px] rounded-full'
-                                : isOutsideMonth
-                                    ? 'text-text-muted'
-                                    : 'text-text'
-                        }
-                        ${!isToday && !isSelected && !isOutsideMonth ? 'group-hover:bg-background/80 rounded-full' : ''}
-                    `}
-                >
-                    {day}
-                </span>
+                <div className="flex items-baseline gap-1">
+                    <span
+                        className={`
+                            inline-flex items-center justify-center
+                            text-[11px] md:text-sm font-medium
+                            min-w-[20px] md:min-w-[26px]
+                            h-[20px] md:h-[26px]
+                            ${isToday
+                                ? 'bg-primary text-white w-[20px] md:w-[26px] rounded-full'
+                                : isSelected
+                                    ? 'border-2 border-primary text-primary w-[20px] md:w-[26px] rounded-full'
+                                    : isOutsideMonth
+                                        ? 'text-text-muted'
+                                        : 'text-text'
+                            }
+                            ${!isToday && !isSelected && !isOutsideMonth ? 'group-hover:bg-background/80 rounded-full' : ''}
+                        `}
+                    >
+                        {day}
+                    </span>
+                    {hijriDay && (
+                        <span className="text-[9px] md:text-[10px] text-text-muted/80 font-normal">
+                            {hijriDay}
+                        </span>
+                    )}
+                </div>
                 {action}
                 {Month && (
                     <span className="text-[8px] md:text-[10px] text-text-muted font-medium leading-none">

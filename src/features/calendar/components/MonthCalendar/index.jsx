@@ -12,27 +12,30 @@ import { CalendarAddButton } from "../CalendarAddButton";
 import { CalendarDragPreview } from "../CalendarDragPreview";
 import { useLocalization } from "@/i18n/LocalizationProvider";
 
+import { resolveWeekStartDay } from "../../utils/calendarUtils";
+
 const MAX_VISIBLE_ITEMS = 3;
-// A known Sunday, used only to read locale weekday names in a fixed
-// Sun..Sat order that matches the grid below (which always starts the
-// week on Sunday regardless of the user's week-start preference).
-const REFERENCE_SUNDAY = new Date(2024, 0, 7);
 
 export const MonthCalendar = () => {
     const { events, tasks } = useCalendarData();
     const { viewDate, selectedDate, goToDay } = useCalendarDate();
     const { openAdd, openItem } = useCalendarOverlay();
     const navigate = useNavigate();
-    const { t, month, weekday } = useLocalization();
+    const { t, month, weekday, weekStart, showHijri, hijriDay } = useLocalization();
 
-    const weekdayHeaders = useMemo(
-        () => Array.from({ length: 7 }, (_, i) => {
-            const date = new Date(REFERENCE_SUNDAY);
-            date.setDate(REFERENCE_SUNDAY.getDate() + i);
+    const startDayIndex = resolveWeekStartDay(weekStart);
+
+    // Weekday headers starting from user's selected weekStart (default Saturday: 6)
+    const weekdayHeaders = useMemo(() => {
+        // Reference week: 2024-01-07 was a Sunday (0).
+        // To start at startDayIndex, offset by startDayIndex from 2024-01-07.
+        const base = new Date(2024, 0, 7 + startDayIndex);
+        return Array.from({ length: 7 }, (_, i) => {
+            const date = new Date(base);
+            date.setDate(base.getDate() + i);
             return { full: weekday(date, "long"), short: weekday(date, "short") };
-        }),
-        [weekday]
-    );
+        });
+    }, [weekday, startDayIndex]);
 
     const { draggingItem, dragPoint, getDragSourceProps, getDropTargetProps } = useCalendarDataDrop();
 
@@ -43,14 +46,16 @@ export const MonthCalendar = () => {
 
     const grid = useMemo(() => {
         const first = new Date(YEAR, MONTH, 1);
-        const numFirst = first.getDay();
-        const start = new Date(YEAR, MONTH, 1 - numFirst);
+        const dayOfWeek = first.getDay(); // 0 = Sun, 6 = Sat
+        // Calculate diff between dayOfWeek and startDayIndex
+        const diff = (dayOfWeek - startDayIndex + 7) % 7;
+        const start = new Date(YEAR, MONTH, 1 - diff);
         return Array.from({ length: 42 }, (_, i) => {
             const date = new Date(start);
             date.setDate(start.getDate() + i);
             return date;
         });
-    }, [YEAR, MONTH]);
+    }, [YEAR, MONTH, startDayIndex]);
 
     const itemsByDate = useMemo(() => {
         const map = {};
@@ -103,11 +108,12 @@ export const MonthCalendar = () => {
                             >
                                 <BaseCalendarDay
                                     day={date.getDate()}
+                                    hijriDay={showHijri ? hijriDay(date) : null}
                                     Month={monthLabel}
                                     isToday={isToday}
                                     isSelected={isSelected}
                                     isOutsideMonth={isOutsideMonth}
-                                    isWeekend={date.getDay() === 0 || date.getDay() === 6}
+                                    isWeekend={date.getDay() === 5 || date.getDay() === 6}
                                     action={
                                         <CalendarAddButton
                                             onClick={() => openAdd(date)}

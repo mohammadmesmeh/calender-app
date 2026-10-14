@@ -61,28 +61,28 @@ export const Sidebar = () => {
         className={`fixed start-0 top-0 z-50 flex shrink-0 flex-col border-e border-border/80 bg-surface/95 text-text shadow-card backdrop-blur transition-all duration-300 ease-out ${
           isDesktop
             ? expanded
-              ? "w-80 h-screen"
-              : "w-24 h-screen"
+              ? "w-80 h-dvh"
+              : "w-24 h-dvh"
             : mobileOpen
-              ? "w-72 translate-x-0 h-screen"
-              : "w-72 -translate-x-full rtl:translate-x-full h-screen"
+              ? "w-72 translate-x-0 h-dvh"
+              : "w-72 -translate-x-full rtl:translate-x-full h-dvh"
         }`}
       >
-        <div className="flex min-h-0 flex-1 flex-col px-4 py-5">
-          <header className="flex shrink-0 items-center px-1" aria-label="Brand">
-            <div className={`flex items-center w-full ${expanded ? "gap-3 justify-start" : "justify-center"}`}>
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-card bg-primary-light text-primary shadow-subtle">
-                <Calendar size={20} />
-              </div>
-              <div className={`overflow-hidden transition-all duration-300 ${expanded ? "max-w-[12rem] opacity-100" : "max-w-0 opacity-0"}`}>
-                <Logo />
-              </div>
+        {/* Fixed Header */}
+        <header className="flex shrink-0 items-center px-5 py-4 border-b border-border/50" aria-label="Brand">
+          <div className={`flex items-center w-full ${expanded ? "gap-3 justify-start" : "justify-center"}`}>
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-card bg-primary-light text-primary shadow-subtle">
+              <Calendar size={20} />
             </div>
-          </header>
+            <div className={`overflow-hidden transition-all duration-300 ${expanded ? "max-w-[12rem] opacity-100" : "max-w-0 opacity-0"}`}>
+              <Logo />
+            </div>
+          </div>
+        </header>
 
-          <div className="my-3 border-b border-border/50" />
-
-          <nav className="flex-1" aria-label={t('nav.sidebarNav')}>
+        {/* Scrollable Navigation Body */}
+        <div className="flex-1 min-h-0 overflow-y-auto px-4 py-4 space-y-4 scrollbar-minimal">
+          <nav aria-label={t('nav.sidebarNav')}>
             <ul className="flex flex-col gap-1.5">
               {navItems.map((item) => (
                 <NavigationMenuItem
@@ -98,7 +98,7 @@ export const Sidebar = () => {
             </ul>
           </nav>
 
-          <div className="mt-3 shrink-0">
+          <div className="pt-2">
             <ShineButton className="w-full" icon={CalendarPlus} isExpanded={expanded} onClick={() => setIsTaskModalOpen(true)}>
               {t('nav.addTask')}
             </ShineButton>
@@ -111,7 +111,8 @@ export const Sidebar = () => {
           onSave={(data) => (data.type === "event" ? addEvent(data) : addTask(data))}
         />
 
-        <footer className="shrink-0 border-t border-border/70 p-3 space-y-2">
+        {/* Fixed Bottom Footer */}
+        <footer className="shrink-0 border-t border-border/70 p-3 space-y-2 bg-surface">
           <LanguageToggle showLabel={expanded} className="w-full justify-center" />
           <UserProfile
             expanded={expanded}
