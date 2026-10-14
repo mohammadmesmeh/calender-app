@@ -15,6 +15,15 @@ import {
  * block in Day and Week calendar views, snapping duration to 30-min intervals,
  * and persisting the new endAt / endTime to Firestore via Task & Event contexts.
  */
+const ensureValidDate = (date) => {
+  if (date instanceof Date && !Number.isNaN(date.getTime())) return date;
+  if (typeof date?.toDate === "function") {
+    const d = date.toDate();
+    if (d instanceof Date && !Number.isNaN(d.getTime())) return d;
+  }
+  return new Date();
+};
+
 export const useCalendarItemResize = () => {
   const { updateTask, updateEvent } = useCalendarData();
   const [resizing, setResizing] = useState(null);
@@ -27,7 +36,7 @@ export const useCalendarItemResize = () => {
 
     const initialDuration = itemDurationMinutes(item);
     const startM = itemStartMinutes(item);
-    const startAt = resolveStartDateTime(item) || new Date();
+    const startAt = ensureValidDate(resolveStartDateTime(item));
     const initialEndAt = new Date(startAt.getTime() + initialDuration * 60000);
 
     const session = {

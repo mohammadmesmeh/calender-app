@@ -15,12 +15,33 @@ const TYPE_COLOR = {
   system: 'text-secondary bg-secondary-light',
 }
 
+const coerceToDate = (value) => {
+  if (!value) return null
+  if (value instanceof Date && !Number.isNaN(value.getTime())) return value
+  if (typeof value?.toDate === 'function') {
+    const d = value.toDate()
+    return d instanceof Date && !Number.isNaN(d.getTime()) ? d : null
+  }
+  if (typeof value === 'number') {
+    const d = new Date(value)
+    return !Number.isNaN(d.getTime()) ? d : null
+  }
+  if (typeof value === 'string') {
+    const d = new Date(value)
+    return !Number.isNaN(d.getTime()) ? d : null
+  }
+  return null
+}
+
 const useRelativeTime = () => {
   const { t, locale } = useLocalization()
 
-  return (date) => {
+  return (rawDate) => {
+    const date = coerceToDate(rawDate)
+    if (!date) return ''
+
     const now = Date.now()
-    const diff = now - date.getTime()
+    const diff = Math.max(0, now - date.getTime())
     const mins = Math.floor(diff / 60000)
     const hours = Math.floor(diff / 3600000)
     const days = Math.floor(diff / 86400000)
@@ -72,7 +93,7 @@ export const NotificationItem = ({ notification, onMarkRead, onDismiss }) => {
         </p>
         <div className="flex items-center gap-1 mt-1.5">
           <Clock size={11} className="text-text-muted" />
-          <span className="text-[11px] text-text-muted">{relativeTime(notification.time)}</span>
+          <span className="text-[11px] text-text-muted">{relativeTime(notification.time || notification.createdAt)}</span>
         </div>
       </div>
 
