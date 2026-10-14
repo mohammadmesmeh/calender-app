@@ -50,13 +50,14 @@ export function AuthLayout({ children }) {
       {/* Main Content Area */}
       <main className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
         <div className="grid w-full items-center gap-12 lg:grid-cols-12 lg:gap-14 xl:gap-16">
-          {/* Left Column: Visual Showcase (Hidden on Mobile/Tablet, visible on Desktop) */}
-          <div className="hidden select-none flex-col gap-7 lg:col-span-7 lg:flex">
-            {/* Headline Badge */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-3.5 py-1 text-xs font-semibold text-primary backdrop-blur-sm self-start">
-              <Sparkles className="h-3.5 w-3.5" />
-              <span>{isAr ? 'المساحة الأذكى لتنظيم الوقت' : 'Smart Scheduling Workspace'}</span>
-            </div>
+          {/* Left Column: Visual Showcase wrapped in an elegant card with shadow */}
+          <div className="hidden select-none lg:col-span-7 lg:flex">
+            <motion.div
+              initial={{ opacity: 0, x: isAr ? 24 : -24 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="flex w-full flex-col gap-6 rounded-3xl border border-border/70 bg-surface/60 p-7 shadow-2xl backdrop-blur-xl ring-1 ring-black/[0.04] dark:bg-surface/50 sm:p-9"
+            >
 
             {/* Showcase Headlines */}
             <div className="space-y-3">
@@ -173,7 +174,7 @@ export function AuthLayout({ children }) {
             </motion.div>
 
             {/* Feature Pills */}
-            <div className="flex flex-wrap items-center gap-3 pt-2 text-xs font-medium text-text-secondary">
+            <div className="flex flex-wrap items-center gap-3 pt-1 text-xs font-medium text-text-secondary">
               <span className="flex items-center gap-1.5 rounded-lg border border-border/60 bg-surface/60 px-3 py-1.5 shadow-sm">
                 <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
                 {isAr ? 'تمديد وسحب مثل Google Calendar' : 'Google Calendar-style Resize'}
@@ -187,6 +188,7 @@ export function AuthLayout({ children }) {
                 {isAr ? 'سحابي وآمن مع Firebase' : 'Secure Cloud Sync'}
               </span>
             </div>
+            </motion.div>
           </div>
 
           {/* Right Column: Auth Form Card */}
